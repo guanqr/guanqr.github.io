@@ -1,0 +1,416 @@
+<!doctype html><html lang=zh-cn><head prefix="og: http://ogp.me/ns# article: http://ogp.me/ns/article#"><meta charset=UTF-8><meta name=generator content="Hugo 0.148.2"><meta name=theme-color content="#fff"><meta name=color-scheme content="light dark"><meta name=viewport content="width=device-width,initial-scale=1"><meta name=format-detection content="telephone=no, date=no, address=no, email=no"><meta http-equiv=Cache-Control content="no-transform"><meta http-equiv=Cache-Control content="no-siteapp"><title>树莓派利用水墨屏显示实时天气状况 | 荷戟獨彷徨</title><link rel=stylesheet href=../../../css/meme.min.css><script src=../../../js/meme.min.js></script><link rel=preconnect href=https://fonts.gstatic.com crossorigin><link rel=stylesheet href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@700&amp;family=Noto+Serif+SC:wght@700&amp;display=swap" media=print onload='this.media="all"'><noscript><link rel=stylesheet href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@700&amp;family=Noto+Serif+SC:wght@700&amp;display=swap"></noscript><meta name=author content="Guan Qirui"><meta name=description content="
+前言 一直想给自己的树莓派配一个屏幕，不是用于显示系统桌面，而是用于设计一些可以显示信息的程序。普通的屏幕不够有特色，不够新颖，因此我购买了微雪的一款 2.7 英寸三色水墨屏。这一款水墨屏和树莓派差不多大小，可以直接固定在树莓派上。
+微雪在官方的树莓派例程中提供了写好的绘图、字符显示、图像显示的函数，我们直接使用这些函数即可，下面是官方例程的代码仓库：
+"><link rel="shortcut icon" type=image/x-icon href=../../../favicon.ico><link rel=icon type=image/svg+xml href=../../../icons/favicon.svg><link rel=icon type=image/png href=../../../icons/favicon-96x96.png sizes=96x96><link rel=apple-touch-icon href=../../../icons/apple-touch-icon.png sizes=180x180><meta name=apple-mobile-web-app-capable content="yes"><meta name=apple-mobile-web-app-title content="荷戟獨彷徨"><meta name=apple-mobile-web-app-status-bar-style content="black"><meta name=mobile-web-app-capable content="yes"><meta name=application-name content="荷戟獨彷徨"><link rel=manifest href=../../../manifest.json><link rel=canonical href=https://guanqr.com/tech/computer/raspberry-pie-shows-the-weather-through-e-paper/><script type=application/ld+json>{"@context":"https://schema.org","@type":"BlogPosting","datePublished":"2020-07-08T18:17:53+08:00","dateModified":"2020-07-09T18:17:53+08:00","url":"https://guanqr.com/tech/computer/raspberry-pie-shows-the-weather-through-e-paper/","headline":"\n树莓派利用水墨屏显示实时天气状况","description":"\n前言 一直想给自己的树莓派配一个屏幕，不是用于显示系统桌面，而是用于设计一些可以显示信息的程序。普通的屏幕不够有特色，不够新颖，因此我购买了微雪的一款 2.7 英寸三色水墨屏。这一款水墨屏和树莓派差不多大小，可以直接固定在树莓派上。\n微雪在官方的树莓派例程中提供了写好的绘图、字符显示、图像显示的函数，我们直接使用这些函数即可，下面是官方例程的代码仓库：\n","inLanguage":"zh-cn","articleSection":"tech","wordCount":1802,"image":["https://guanqr.com/images/raspberry-pie-and-e-paper.jpg","https://guanqr.com/images/raspberry-pie-pins.png"],"author":{"@type":"Person","description":"爱光学，爱生活，爱创造","email":"guanqirui@zju.edu.cn","image":"https://guanqr.com/icons/apple-touch-icon.png","url":"https://guanqr.com/","name":"Guan Qirui"},"license":"本文采用 [CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh) 许可协议，转载请注明出处。","publisher":{"@type":"Organization","name":"荷戟獨彷徨","logo":{"@type":"ImageObject","url":"https://guanqr.com/icons/apple-touch-icon.png"},"url":"https://guanqr.com/"},"mainEntityOfPage":{"@type":"WebSite","@id":"https://guanqr.com/"}}</script><meta name=twitter:card content="summary_large_image"><meta property="og:title" content="
+树莓派利用水墨屏显示实时天气状况"><meta property="og:description" content="
+前言 一直想给自己的树莓派配一个屏幕，不是用于显示系统桌面，而是用于设计一些可以显示信息的程序。普通的屏幕不够有特色，不够新颖，因此我购买了微雪的一款 2.7 英寸三色水墨屏。这一款水墨屏和树莓派差不多大小，可以直接固定在树莓派上。
+微雪在官方的树莓派例程中提供了写好的绘图、字符显示、图像显示的函数，我们直接使用这些函数即可，下面是官方例程的代码仓库：
+"><meta property="og:url" content="https://guanqr.com/tech/computer/raspberry-pie-shows-the-weather-through-e-paper/"><meta property="og:site_name" content="荷戟獨彷徨"><meta property="og:locale" content="zh-cn"><meta property="og:image" content="https://guanqr.com/images/raspberry-pie-and-e-paper.jpg"><meta property="og:type" content="article"><meta property="article:published_time" content="2020-07-08T18:17:53+08:00"><meta property="article:modified_time" content="2020-07-09T18:17:53+08:00"><meta property="article:section" content="tech"><link rel=preconnect href=https://www.google-analytics.com crossorigin><script async src="https://www.googletagmanager.com/gtag/js?id=UA-140800645-1"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","UA-140800645-1")</script><link rel=preconnect href=https://cdn.jsdelivr.net crossorigin><link rel=stylesheet href=https://cdn.jsdelivr.net/gh/guanqr/fonts@build/css/fonts.min.css media=print onload='this.media="all"'></head><body><div class=container><header class=header><div class=header-wrapper><div class="header-inner single"><div class=site-brand><a href=../../../ class=brand>荷戟獨彷徨</a></div><nav class=nav><ul class=menu id=menu><li class=menu-item><a href=../../../archives/><svg viewBox="0 0 512 512" class="icon archives"><path d="M32 448c0 17.7 14.3 32 32 32h384c17.7.0 32-14.3 32-32V160H32v288zm160-212c0-6.6 5.4-12 12-12h104c6.6.0 12 5.4 12 12v8c0 6.6-5.4 12-12 12H204c-6.6.0-12-5.4-12-12v-8zM480 32H32C14.3 32 0 46.3.0 64v48c0 8.8 7.2 16 16 16h480c8.8.0 16-7.2 16-16V64c0-17.7-14.3-32-32-32z"/></svg><span class=menu-item-name>文章</span></a></li><li class=menu-item><a href=../../../tags/><svg viewBox="0 0 640 512" class="icon tags"><path d="M497.941 225.941 286.059 14.059A48 48 0 00252.118.0H48C21.49.0.0 21.49.0 48v204.118a48 48 0 0014.059 33.941l211.882 211.882c18.744 18.745 49.136 18.746 67.882.0l204.118-204.118c18.745-18.745 18.745-49.137.0-67.882zM112 160c-26.51.0-48-21.49-48-48s21.49-48 48-48 48 21.49 48 48-21.49 48-48 48zm513.941 133.823L421.823 497.941c-18.745 18.745-49.137 18.745-67.882.0l-.36-.36L527.64 323.522c16.999-16.999 26.36-39.6 26.36-63.64s-9.362-46.641-26.36-63.64L331.397.0h48.721a48 48 0 0133.941 14.059l211.882 211.882c18.745 18.745 18.745 49.137.0 67.882z"/></svg><span class=menu-item-name>标签</span></a></li><li class=menu-item><a href=../../../blogroll/><svg viewBox="0 0 384 512" class="icon friends"><path d="M384 312.7c-55.1 136.7-187.1 54-187.1 54-40.5 81.8-107.4 134.4-184.6 134.7-16.1.0-16.6-24.4.0-24.4 64.4-.3 120.5-42.7 157.2-110.1-41.1 15.9-118.6 27.9-161.6-82.2 109-44.9 159.1 11.2 178.3 45.5 9.9-24.4 17-50.9 21.6-79.7.0.0-139.7 21.9-149.5-98.1 119.1-47.9 152.6 76.7 152.6 76.7 1.6-16.7 3.3-52.6 3.3-53.4.0.0-106.3-73.7-38.1-165.2 124.6 43 61.4 162.4 61.4 162.4.5 1.6.5 23.8.0 33.4.0.0 45.2-89 136.4-57.5-4.2 134-141.9 106.4-141.9 106.4-4.4 27.4-11.2 53.4-20 77.5.0.0 83-91.8 172-20z"/></svg><span class=menu-item-name>友链</span></a></li><li class=menu-item><a href=../../../about/><svg viewBox="0 0 496 512" class="icon about"><path d="M248 8C111 8 0 119 0 256s111 248 248 248 248-111 248-248S385 8 248 8zm0 96c48.6.0 88 39.4 88 88s-39.4 88-88 88-88-39.4-88-88 39.4-88 88-88zm0 344c-58.7.0-111.3-26.6-146.5-68.2 18.8-35.4 55.6-59.8 98.5-59.8 2.4.0 4.8.4 7.1 1.1 13 4.2 26.6 6.9 40.9 6.9s28-2.7 40.9-6.9c2.3-.7 4.7-1.1 7.1-1.1 42.9.0 79.7 24.4 98.5 59.8C359.3 421.4 306.7 448 248 448z"/></svg><span class=menu-item-name>关于</span></a></li><li class=menu-item><button id=theme-switcher type=button aria-label=切换主题><svg viewBox="0 0 512 512" class="icon theme-icon-light"><path d="M193.2 104.5 242 7a18 18 0 0128 0l48.8 97.5L422.2 70A18 18 0 01442 89.8l-34.5 103.4L505 242a18 18 0 010 28l-97.5 48.8L442 422.2A18 18 0 01422.2 442l-103.4-34.5L270 505a18 18 0 01-28 0l-48.8-97.5L89.8 442A18 18 0 0170 422.2l34.5-103.4-97.5-48.8a18 18 0 010-28l97.5-48.8L70 89.8A18 18 0 0189.8 70zM256 128a128 128 0 10.01.0M256 160a96 96 0 10.01.0"/></svg><svg viewBox="0 0 512 512" class="icon theme-icon-dark"><path d="M27 412A256 256 0 10181 5a11.5 11.5.0 00-5 20A201.5 201.5.0 0142 399a11.5 11.5.0 00-15 13"/></svg><svg viewBox="0 0 576 512" class="icon theme-icon-system"><path d="M528 0H48C21.5.0.0 21.5.0 48v320c0 26.5 21.5 48 48 48h192l-16 48h-72c-13.3.0-24 10.7-24 24s10.7 24 24 24h272c13.3.0 24-10.7 24-24s-10.7-24-24-24h-72l-16-48h192c26.5.0 48-21.5 48-48V48c0-26.5-21.5-48-48-48zm-16 352H64V64h448v288z"/></svg></button></li></ul></nav></div></div><input type=checkbox id=nav-toggle aria-hidden=true>
+<label for=nav-toggle class=nav-toggle></label><label for=nav-toggle class=nav-curtain></label></header><main class="main single" id=main><div class=main-inner><article class="content post h-entry" data-align=justify data-type=tech data-toc-num=true><h1 class="post-title p-name">树莓派利用水墨屏显示实时天气状况</h1><div class=post-meta><time datetime=2020-07-08T18:17:53+08:00 class="post-meta-item published dt-published"><svg viewBox="0 0 448 512" class="icon post-meta-icon"><path d="M148 288h-40c-6.6.0-12-5.4-12-12v-40c0-6.6 5.4-12 12-12h40c6.6.0 12 5.4 12 12v40c0 6.6-5.4 12-12 12zm108-12v-40c0-6.6-5.4-12-12-12h-40c-6.6.0-12 5.4-12 12v40c0 6.6 5.4 12 12 12h40c6.6.0 12-5.4 12-12zm96 0v-40c0-6.6-5.4-12-12-12h-40c-6.6.0-12 5.4-12 12v40c0 6.6 5.4 12 12 12h40c6.6.0 12-5.4 12-12zm-96 96v-40c0-6.6-5.4-12-12-12h-40c-6.6.0-12 5.4-12 12v40c0 6.6 5.4 12 12 12h40c6.6.0 12-5.4 12-12zm-96 0v-40c0-6.6-5.4-12-12-12h-40c-6.6.0-12 5.4-12 12v40c0 6.6 5.4 12 12 12h40c6.6.0 12-5.4 12-12zm192 0v-40c0-6.6-5.4-12-12-12h-40c-6.6.0-12 5.4-12 12v40c0 6.6 5.4 12 12 12h40c6.6.0 12-5.4 12-12zm96-260v352c0 26.5-21.5 48-48 48H48c-26.5.0-48-21.5-48-48V112c0-26.5 21.5-48 48-48h48V12c0-6.6 5.4-12 12-12h40c6.6.0 12 5.4 12 12v52h128V12c0-6.6 5.4-12 12-12h40c6.6.0 12 5.4 12 12v52h48c26.5.0 48 21.5 48 48zm-48 346V160H48v298c0 3.3 2.7 6 6 6h340c3.3.0 6-2.7 6-6z"/></svg>&nbsp;2020-07-08</time>
+<span class="post-meta-item category"><svg viewBox="0 0 512 512" class="icon post-meta-icon"><path d="M464 128H272l-54.63-54.63c-6-6-14.14-9.37-22.63-9.37H48C21.49 64 0 85.49.0 112v288c0 26.51 21.49 48 48 48h416c26.51.0 48-21.49 48-48V176c0-26.51-21.49-48-48-48zm0 272H48V112h140.12l54.63 54.63c6 6 14.14 9.37 22.63 9.37H464v224z"/></svg>&nbsp;<a href=../../../tech/ class="category-link p-category">科学技术</a>·<a href=../../../tech/computer/ class="category-link p-category">电子信息</a></span><div id=expiredTip>本文已超过一年未更新。随着版本迭代，文中所述信息可能已失效，仅供参考。</div></div><div class="post-body e-content"><p><img src=../../../images/raspberry-pie-and-e-paper.jpg alt=raspberry-pie-and-e-paper.jpg></p><h2 id=前言><a href=#前言 class=anchor-link aria-label=前言><svg viewBox="0 0 512 512" class="icon anchor-icon"><path d="M326.612 185.391c59.747 59.809 58.927 155.698.36 214.59-.11.12-.24.25-.36.37l-67.2 67.2c-59.27 59.27-155.699 59.262-214.96.0-59.27-59.26-59.27-155.7.0-214.96l37.106-37.106c9.84-9.84 26.786-3.3 27.294 10.606.648 17.722 3.826 35.527 9.69 52.721 1.986 5.822.567 12.262-3.783 16.612l-13.087 13.087c-28.026 28.026-28.905 73.66-1.155 101.96 28.024 28.579 74.086 28.749 102.325.51l67.2-67.19c28.191-28.191 28.073-73.757.0-101.83-3.701-3.694-7.429-6.564-10.341-8.569a16.037 16.037.0 01-6.947-12.606c-.396-10.567 3.348-21.456 11.698-29.806l21.054-21.055c5.521-5.521 14.182-6.199 20.584-1.731a152.482 152.482.0 0120.522 17.197zM467.547 44.449c-59.261-59.262-155.69-59.27-214.96.0l-67.2 67.2c-.12.12-.25.25-.36.37-58.566 58.892-59.387 154.781.36 214.59a152.454 152.454.0 0020.521 17.196c6.402 4.468 15.064 3.789 20.584-1.731l21.054-21.055c8.35-8.35 12.094-19.239 11.698-29.806a16.037 16.037.0 00-6.947-12.606c-2.912-2.005-6.64-4.875-10.341-8.569-28.073-28.073-28.191-73.639.0-101.83l67.2-67.19c28.239-28.239 74.3-28.069 102.325.51 27.75 28.3 26.872 73.934-1.155 101.96l-13.087 13.087c-4.35 4.35-5.769 10.79-3.783 16.612 5.864 17.194 9.042 34.999 9.69 52.721.509 13.906 17.454 20.446 27.294 10.606l37.106-37.106c59.271-59.259 59.271-155.699.001-214.959z"/></svg></a>前言</h2><p>一直想给自己的树莓派配一个屏幕，不是用于显示系统桌面，而是用于设计一些可以显示信息的程序。普通的屏幕不够有特色，不够新颖，因此我购买了微雪的一款 2.7 英寸三色水墨屏。这一款水墨屏和树莓派差不多大小，可以直接固定在树莓派上。</p><p>微雪在官方的树莓派例程中提供了写好的绘图、字符显示、图像显示的函数，我们直接使用这些函数即可，下面是官方例程的代码仓库：</p><div class=github><div class=logo><svg class="icon github-icon" viewBox="0 0 16 16"><path fill-rule="evenodd" clip-rule="evenodd" d="M2 2.5c0-.66304.26339-1.29893.73223-1.767767C3.20108.263392 3.83696.0 4.5.0h8.75c.1989.0.3897.0790176.5303.21967C13.921.360322 14 .551088 14 .75v12.5C14 13.4489 13.921 13.6397 13.7803 13.7803 13.6397 13.921 13.4489 14 13.25 14h-2.5C10.5511 14 10.3603 13.921 10.2197 13.7803 10.079 13.6397 10 13.4489 10 13.25S10.079 12.8603 10.2197 12.7197C10.3603 12.579 10.5511 12.5 10.75 12.5H12.5v-2h-8C4.30308 10.5 4.11056 10.5582 3.94657 10.6672 3.78257 10.7762 3.65442 10.9312 3.57816 11.1128 3.50191 11.2943 3.48096 11.4943 3.51793 11.6878 3.5549 11.8812 3.64816 12.0594 3.786 12.2c.13924.142200000000001.2163.3338.21424.5328C3.99818 12.9318 3.91716 13.1218 3.775 13.261 3.63285 13.4002 3.4412 13.4773 3.24222 13.4752 3.04325 13.4732 2.85324 13.3922 2.714 13.25c-.45829-.4671-.71471-1.0956-.714-1.75v-9zm10.5-1V9h-8C4.144 9 3.806 9.074 3.5 9.208V2.5c0-.26522.10536-.51957.29289-.70711C3.98043 1.60536 4.23478 1.5 4.5 1.5h8zM5 12.25V15.5C5 15.5464 5.01293 15.5919 5.03734 15.6314 5.06175 15.6709 5.09667 15.7028 5.1382 15.7236 5.17972 15.7444 5.22621 15.7532 5.27245 15.749 5.31869 15.7448 5.36286 15.7279 5.4 15.7l1.45-1.087C6.89328 14.5805 6.94591 14.563 7 14.563S7.10673 14.5805 7.15 14.613L8.6 15.7C8.63714 15.7279 8.68131 15.7448 8.72755 15.749 8.77379 15.7532 8.82028 15.7444 8.8618 15.7236 8.90333 15.7028 8.93826 15.6709 8.96266 15.6314 8.98707 15.5919 9 15.5464 9 15.5V12.25C9 12.1837 8.97366 12.1201 8.92678 12.0732 8.87989 12.0263 8.81631 12 8.75 12H5.25C5.1837 12 5.12011 12.0263 5.07322 12.0732 5.02634 12.1201 5 12.1837 5 12.25z"/></svg>
+<a class=name href=https://github.com/waveshare/e-Paper target=_blank>waveshare / e-Paper</a></div><div class=description>Jetson Nano、Raspberry Pi、Arduino、STM32 例程</div><div class=language><span class=language-color style=background-color:#555></span>
+<span class=language-name>C</span></div></div><p>三色水墨屏可以显示黑、白、红三种颜色，我选择购买三色正是因为三色比双色能够传达更多的信息。不过通过测试，我发现如果要显示三种颜色的话，屏幕刷新率要比显示双色慢得多，所以在程序开发的时候，我选择了双色显示。</p><h2 id=获取天气信息><a href=#获取天气信息 class=anchor-link aria-label=获取天气信息><svg viewBox="0 0 512 512" class="icon anchor-icon"><path d="M326.612 185.391c59.747 59.809 58.927 155.698.36 214.59-.11.12-.24.25-.36.37l-67.2 67.2c-59.27 59.27-155.699 59.262-214.96.0-59.27-59.26-59.27-155.7.0-214.96l37.106-37.106c9.84-9.84 26.786-3.3 27.294 10.606.648 17.722 3.826 35.527 9.69 52.721 1.986 5.822.567 12.262-3.783 16.612l-13.087 13.087c-28.026 28.026-28.905 73.66-1.155 101.96 28.024 28.579 74.086 28.749 102.325.51l67.2-67.19c28.191-28.191 28.073-73.757.0-101.83-3.701-3.694-7.429-6.564-10.341-8.569a16.037 16.037.0 01-6.947-12.606c-.396-10.567 3.348-21.456 11.698-29.806l21.054-21.055c5.521-5.521 14.182-6.199 20.584-1.731a152.482 152.482.0 0120.522 17.197zM467.547 44.449c-59.261-59.262-155.69-59.27-214.96.0l-67.2 67.2c-.12.12-.25.25-.36.37-58.566 58.892-59.387 154.781.36 214.59a152.454 152.454.0 0020.521 17.196c6.402 4.468 15.064 3.789 20.584-1.731l21.054-21.055c8.35-8.35 12.094-19.239 11.698-29.806a16.037 16.037.0 00-6.947-12.606c-2.912-2.005-6.64-4.875-10.341-8.569-28.073-28.073-28.191-73.639.0-101.83l67.2-67.19c28.239-28.239 74.3-28.069 102.325.51 27.75 28.3 26.872 73.934-1.155 101.96l-13.087 13.087c-4.35 4.35-5.769 10.79-3.783 16.612 5.864 17.194 9.042 34.999 9.69 52.721.509 13.906 17.454 20.446 27.294 10.606l37.106-37.106c59.271-59.259 59.271-155.699.001-214.959z"/></svg></a>获取天气信息</h2><p>天气信息我使用的是「<a href=https://www.seniverse.com/ target=_blank rel=noopener>心知天气</a>」的 API 接口。对于 API 接口的使用，在<a href=https://docs.seniverse.com/api/start/start.html target=_blank rel=noopener>官方文档</a>中有详细的说明。当然，我使用的是免费版的服务，因此获取到的信息只有天气和温度：</p><blockquote><p>获取指定城市的天气实况。付费用户可获取全部数据，免费用户只返回天气现象文字、代码和气温 3 项数据。注：中国城市暂不支持云量和露点温度。</p></blockquote><p>首先在「心知天气」的控制台中获取到你申请的应用的私钥，即为下面代码 <code>key</code> 的值，代码中 <code>location</code> 是你想要获取信息的城市拼音，这里我选择的是杭州。</p><div class=highlight><div class=chroma><div class=table-container><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-python data-lang=python><span class=line><span class=cl><span class=kn>import</span> <span class=nn>requests</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>location</span> <span class=o>=</span> <span class=s2>&#34;hangzhou&#34;</span>
+</span></span><span class=line><span class=cl><span class=n>key</span> <span class=o>=</span> <span class=s2>&#34;YOUR_KEY&#34;</span>
+</span></span><span class=line><span class=cl><span class=n>url</span> <span class=o>=</span> <span class=s2>&#34;https://api.seniverse.com/v3/weather/now.json?key=&#34;</span> <span class=o>+</span> <span class=n>key</span> <span class=o>+</span> <span class=s2>&#34;&amp;location=&#34;</span> <span class=o>+</span> <span class=n>location</span> <span class=o>+</span> <span class=s2>&#34;&amp;language=zh-Hans&amp;unit=c&#34;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>weaData</span> <span class=o>=</span> <span class=n>requests</span><span class=o>.</span><span class=n>get</span><span class=p>(</span><span class=n>url</span><span class=p>)</span>
+</span></span></code></pre></td></tr></table></div></div></div><p>然后我们通过 <code>weaData.json()</code> 即可获取到返回的信息：</p><div class=highlight><div class=chroma><div class=table-container><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-python data-lang=python><span class=line><span class=cl><span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=s1>&#39;results&#39;</span><span class=p>:</span>
+</span></span><span class=line><span class=cl>    <span class=p>[{</span>
+</span></span><span class=line><span class=cl>        <span class=s1>&#39;location&#39;</span><span class=p>:</span>
+</span></span><span class=line><span class=cl>        <span class=p>{</span>
+</span></span><span class=line><span class=cl>            <span class=s1>&#39;id&#39;</span><span class=p>:</span> <span class=s1>&#39;WTMKQ069CCJ7&#39;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>            <span class=s1>&#39;name&#39;</span><span class=p>:</span> <span class=s1>&#39;杭州&#39;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>            <span class=s1>&#39;country&#39;</span><span class=p>:</span> <span class=s1>&#39;CN&#39;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>            <span class=s1>&#39;path&#39;</span><span class=p>:</span> <span class=s1>&#39;杭州,杭州,浙江,中国&#39;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>            <span class=s1>&#39;timezone&#39;</span><span class=p>:</span> <span class=s1>&#39;Asia/Shanghai&#39;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>            <span class=s1>&#39;timezone_offset&#39;</span><span class=p>:</span> <span class=s1>&#39;+08:00&#39;</span>
+</span></span><span class=line><span class=cl>        <span class=p>},</span>
+</span></span><span class=line><span class=cl>        <span class=s1>&#39;now&#39;</span><span class=p>:</span>
+</span></span><span class=line><span class=cl>        <span class=p>{</span>
+</span></span><span class=line><span class=cl>            <span class=s1>&#39;text&#39;</span><span class=p>:</span> <span class=s1>&#39;小雨&#39;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>            <span class=s1>&#39;code&#39;</span><span class=p>:</span> <span class=s1>&#39;13&#39;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>            <span class=s1>&#39;temperature&#39;</span><span class=p>:</span> <span class=s1>&#39;27&#39;</span>
+</span></span><span class=line><span class=cl>        <span class=p>},</span>
+</span></span><span class=line><span class=cl>        <span class=s1>&#39;last_update&#39;</span><span class=p>:</span> <span class=s1>&#39;2020-07-09T19:24:00+08:00&#39;</span>
+</span></span><span class=line><span class=cl>    <span class=p>}]</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span></code></pre></td></tr></table></div></div></div><p>我想要的是城市名字、天气、温度这三个信息，因此有：</p><div class=highlight><div class=chroma><div class=table-container><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-python data-lang=python><span class=line><span class=cl><span class=n>cityName</span> <span class=o>=</span> <span class=n>weaData</span><span class=o>.</span><span class=n>json</span><span class=p>()[</span><span class=s1>&#39;results&#39;</span><span class=p>][</span><span class=mi>0</span><span class=p>][</span><span class=s1>&#39;location&#39;</span><span class=p>][</span><span class=s1>&#39;name&#39;</span><span class=p>]</span> <span class=c1># city</span>
+</span></span><span class=line><span class=cl><span class=n>cityWea</span> <span class=o>=</span> <span class=n>weaData</span><span class=o>.</span><span class=n>json</span><span class=p>()[</span><span class=s1>&#39;results&#39;</span><span class=p>][</span><span class=mi>0</span><span class=p>][</span><span class=s1>&#39;now&#39;</span><span class=p>][</span><span class=s1>&#39;text&#39;</span><span class=p>]</span> <span class=c1># weather</span>
+</span></span><span class=line><span class=cl><span class=n>cityTemp</span> <span class=o>=</span> <span class=n>weaData</span><span class=o>.</span><span class=n>json</span><span class=p>()[</span><span class=s1>&#39;results&#39;</span><span class=p>][</span><span class=mi>0</span><span class=p>][</span><span class=s1>&#39;now&#39;</span><span class=p>][</span><span class=s1>&#39;temperature&#39;</span><span class=p>]</span> <span class=o>+</span> <span class=s1>&#39;°C&#39;</span> <span class=c1># temp</span>
+</span></span></code></pre></td></tr></table></div></div></div><p>至此，我们已经获取到了指定城市的天气信息。</p><h2 id=文字显示><a href=#文字显示 class=anchor-link aria-label=文字显示><svg viewBox="0 0 512 512" class="icon anchor-icon"><path d="M326.612 185.391c59.747 59.809 58.927 155.698.36 214.59-.11.12-.24.25-.36.37l-67.2 67.2c-59.27 59.27-155.699 59.262-214.96.0-59.27-59.26-59.27-155.7.0-214.96l37.106-37.106c9.84-9.84 26.786-3.3 27.294 10.606.648 17.722 3.826 35.527 9.69 52.721 1.986 5.822.567 12.262-3.783 16.612l-13.087 13.087c-28.026 28.026-28.905 73.66-1.155 101.96 28.024 28.579 74.086 28.749 102.325.51l67.2-67.19c28.191-28.191 28.073-73.757.0-101.83-3.701-3.694-7.429-6.564-10.341-8.569a16.037 16.037.0 01-6.947-12.606c-.396-10.567 3.348-21.456 11.698-29.806l21.054-21.055c5.521-5.521 14.182-6.199 20.584-1.731a152.482 152.482.0 0120.522 17.197zM467.547 44.449c-59.261-59.262-155.69-59.27-214.96.0l-67.2 67.2c-.12.12-.25.25-.36.37-58.566 58.892-59.387 154.781.36 214.59a152.454 152.454.0 0020.521 17.196c6.402 4.468 15.064 3.789 20.584-1.731l21.054-21.055c8.35-8.35 12.094-19.239 11.698-29.806a16.037 16.037.0 00-6.947-12.606c-2.912-2.005-6.64-4.875-10.341-8.569-28.073-28.073-28.191-73.639.0-101.83l67.2-67.19c28.239-28.239 74.3-28.069 102.325.51 27.75 28.3 26.872 73.934-1.155 101.96l-13.087 13.087c-4.35 4.35-5.769 10.79-3.783 16.612 5.864 17.194 9.042 34.999 9.69 52.721.509 13.906 17.454 20.446 27.294 10.606l37.106-37.106c59.271-59.259 59.271-155.699.001-214.959z"/></svg></a>文字显示</h2><p>文字显示功能，由于微雪官方的例程已经提供了很方便的函数，直接使用这些函数即可。这里我没有使用绘图的函数，只是用了显示文本的函数，即 <code>draw.text()</code> 函数。</p><div class=highlight><div class=chroma><div class=table-container><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-python data-lang=python><span class=line><span class=cl><span class=kn>import</span> <span class=nn>sys</span>
+</span></span><span class=line><span class=cl><span class=kn>import</span> <span class=nn>os</span>
+</span></span><span class=line><span class=cl><span class=n>picdir</span> <span class=o>=</span> <span class=n>os</span><span class=o>.</span><span class=n>path</span><span class=o>.</span><span class=n>join</span><span class=p>(</span><span class=n>os</span><span class=o>.</span><span class=n>path</span><span class=o>.</span><span class=n>dirname</span><span class=p>(</span><span class=n>os</span><span class=o>.</span><span class=n>path</span><span class=o>.</span><span class=n>dirname</span><span class=p>(</span><span class=n>os</span><span class=o>.</span><span class=n>path</span><span class=o>.</span><span class=n>realpath</span><span class=p>(</span><span class=vm>__file__</span><span class=p>))),</span> <span class=s1>&#39;pic&#39;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>libdir</span> <span class=o>=</span> <span class=n>os</span><span class=o>.</span><span class=n>path</span><span class=o>.</span><span class=n>join</span><span class=p>(</span><span class=n>os</span><span class=o>.</span><span class=n>path</span><span class=o>.</span><span class=n>dirname</span><span class=p>(</span><span class=n>os</span><span class=o>.</span><span class=n>path</span><span class=o>.</span><span class=n>dirname</span><span class=p>(</span><span class=n>os</span><span class=o>.</span><span class=n>path</span><span class=o>.</span><span class=n>realpath</span><span class=p>(</span><span class=vm>__file__</span><span class=p>))),</span> <span class=s1>&#39;lib&#39;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=k>if</span> <span class=n>os</span><span class=o>.</span><span class=n>path</span><span class=o>.</span><span class=n>exists</span><span class=p>(</span><span class=n>libdir</span><span class=p>):</span>
+</span></span><span class=line><span class=cl>    <span class=n>sys</span><span class=o>.</span><span class=n>path</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=n>libdir</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=kn>import</span> <span class=nn>logging</span>
+</span></span><span class=line><span class=cl><span class=kn>from</span> <span class=nn>waveshare_epd</span> <span class=kn>import</span> <span class=n>epd2in7</span>
+</span></span><span class=line><span class=cl><span class=kn>import</span> <span class=nn>time</span>
+</span></span><span class=line><span class=cl><span class=kn>from</span> <span class=nn>PIL</span> <span class=kn>import</span> <span class=n>Image</span><span class=p>,</span><span class=n>ImageDraw</span><span class=p>,</span><span class=n>ImageFont</span>
+</span></span><span class=line><span class=cl><span class=kn>import</span> <span class=nn>traceback</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>epd</span> <span class=o>=</span> <span class=n>epd2in7</span><span class=o>.</span><span class=n>EPD</span><span class=p>()</span>
+</span></span><span class=line><span class=cl><span class=n>epd</span><span class=o>.</span><span class=n>init</span><span class=p>()</span>
+</span></span><span class=line><span class=cl><span class=n>epd</span><span class=o>.</span><span class=n>Clear</span><span class=p>(</span><span class=mh>0xFF</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>font36</span> <span class=o>=</span> <span class=n>ImageFont</span><span class=o>.</span><span class=n>truetype</span><span class=p>(</span><span class=n>os</span><span class=o>.</span><span class=n>path</span><span class=o>.</span><span class=n>join</span><span class=p>(</span><span class=n>picdir</span><span class=p>,</span> <span class=s1>&#39;Font.ttc&#39;</span><span class=p>),</span> <span class=mi>36</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>font84</span> <span class=o>=</span> <span class=n>ImageFont</span><span class=o>.</span><span class=n>truetype</span><span class=p>(</span><span class=n>os</span><span class=o>.</span><span class=n>path</span><span class=o>.</span><span class=n>join</span><span class=p>(</span><span class=n>picdir</span><span class=p>,</span> <span class=s1>&#39;Font.ttc&#39;</span><span class=p>),</span> <span class=mi>84</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>Himage</span> <span class=o>=</span> <span class=n>Image</span><span class=o>.</span><span class=n>new</span><span class=p>(</span><span class=s1>&#39;1&#39;</span><span class=p>,</span> <span class=p>(</span><span class=n>epd</span><span class=o>.</span><span class=n>height</span><span class=p>,</span> <span class=n>epd</span><span class=o>.</span><span class=n>width</span><span class=p>),</span> <span class=mi>255</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>draw</span> <span class=o>=</span> <span class=n>ImageDraw</span><span class=o>.</span><span class=n>Draw</span><span class=p>(</span><span class=n>Himage</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>draw</span><span class=o>.</span><span class=n>text</span><span class=p>((</span><span class=mi>10</span><span class=p>,</span> <span class=mi>10</span><span class=p>),</span> <span class=n>cityName</span><span class=p>,</span> <span class=n>font</span> <span class=o>=</span> <span class=n>font36</span><span class=p>,</span> <span class=n>fill</span> <span class=o>=</span> <span class=mi>0</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>draw</span><span class=o>.</span><span class=n>text</span><span class=p>((</span><span class=mi>90</span><span class=p>,</span> <span class=mi>10</span><span class=p>),</span> <span class=n>cityWea</span><span class=p>,</span> <span class=n>font</span> <span class=o>=</span> <span class=n>font36</span><span class=p>,</span> <span class=n>fill</span> <span class=o>=</span> <span class=mi>0</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>draw</span><span class=o>.</span><span class=n>text</span><span class=p>((</span><span class=mi>10</span><span class=p>,</span> <span class=mi>50</span><span class=p>),</span> <span class=n>cityTemp</span><span class=p>,</span> <span class=n>font</span> <span class=o>=</span> <span class=n>font84</span><span class=p>,</span> <span class=n>fill</span> <span class=o>=</span> <span class=mi>0</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>epd</span><span class=o>.</span><span class=n>display</span><span class=p>(</span><span class=n>epd</span><span class=o>.</span><span class=n>getbuffer</span><span class=p>(</span><span class=n>Himage</span><span class=p>))</span>
+</span></span></code></pre></td></tr></table></div></div></div><p>此外，为了显示获取天气信息的时间，我还添加了一行信息：</p><div class=highlight><div class=chroma><div class=table-container><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-python data-lang=python><span class=line><span class=cl><span class=kn>from</span> <span class=nn>datetime</span> <span class=kn>import</span> <span class=n>datetime</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>font16</span> <span class=o>=</span> <span class=n>ImageFont</span><span class=o>.</span><span class=n>truetype</span><span class=p>(</span><span class=n>os</span><span class=o>.</span><span class=n>path</span><span class=o>.</span><span class=n>join</span><span class=p>(</span><span class=n>picdir</span><span class=p>,</span> <span class=s1>&#39;Font.ttc&#39;</span><span class=p>),</span> <span class=mi>16</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>dayTime</span> <span class=o>=</span> <span class=n>datetime</span><span class=o>.</span><span class=n>now</span><span class=p>()</span><span class=o>.</span><span class=n>strftime</span><span class=p>(</span><span class=s1>&#39;%Y-%m-</span><span class=si>%d</span><span class=s1> %H:%M:%S&#39;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>draw</span><span class=o>.</span><span class=n>text</span><span class=p>((</span><span class=mi>10</span><span class=p>,</span> <span class=mi>150</span><span class=p>),</span> <span class=sa>u</span><span class=s1>&#39;更新时间：&#39;</span><span class=p>,</span> <span class=n>font</span> <span class=o>=</span> <span class=n>font16</span><span class=p>,</span> <span class=n>fill</span> <span class=o>=</span> <span class=mi>0</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>draw</span><span class=o>.</span><span class=n>text</span><span class=p>((</span><span class=mi>100</span><span class=p>,</span> <span class=mi>150</span><span class=p>),</span> <span class=n>dayTime</span><span class=p>,</span> <span class=n>font</span> <span class=o>=</span> <span class=n>font16</span><span class=p>,</span> <span class=n>fill</span> <span class=o>=</span> <span class=mi>0</span><span class=p>)</span>
+</span></span></code></pre></td></tr></table></div></div></div><h2 id=按键控制><a href=#按键控制 class=anchor-link aria-label=按键控制><svg viewBox="0 0 512 512" class="icon anchor-icon"><path d="M326.612 185.391c59.747 59.809 58.927 155.698.36 214.59-.11.12-.24.25-.36.37l-67.2 67.2c-59.27 59.27-155.699 59.262-214.96.0-59.27-59.26-59.27-155.7.0-214.96l37.106-37.106c9.84-9.84 26.786-3.3 27.294 10.606.648 17.722 3.826 35.527 9.69 52.721 1.986 5.822.567 12.262-3.783 16.612l-13.087 13.087c-28.026 28.026-28.905 73.66-1.155 101.96 28.024 28.579 74.086 28.749 102.325.51l67.2-67.19c28.191-28.191 28.073-73.757.0-101.83-3.701-3.694-7.429-6.564-10.341-8.569a16.037 16.037.0 01-6.947-12.606c-.396-10.567 3.348-21.456 11.698-29.806l21.054-21.055c5.521-5.521 14.182-6.199 20.584-1.731a152.482 152.482.0 0120.522 17.197zM467.547 44.449c-59.261-59.262-155.69-59.27-214.96.0l-67.2 67.2c-.12.12-.25.25-.36.37-58.566 58.892-59.387 154.781.36 214.59a152.454 152.454.0 0020.521 17.196c6.402 4.468 15.064 3.789 20.584-1.731l21.054-21.055c8.35-8.35 12.094-19.239 11.698-29.806a16.037 16.037.0 00-6.947-12.606c-2.912-2.005-6.64-4.875-10.341-8.569-28.073-28.073-28.191-73.639.0-101.83l67.2-67.19c28.239-28.239 74.3-28.069 102.325.51 27.75 28.3 26.872 73.934-1.155 101.96l-13.087 13.087c-4.35 4.35-5.769 10.79-3.783 16.612 5.864 17.194 9.042 34.999 9.69 52.721.509 13.906 17.454 20.446 27.294 10.606l37.106-37.106c59.271-59.259 59.271-155.699.001-214.959z"/></svg></a>按键控制</h2><p>我购买的水墨屏模块上还有四个按键，因此我想，可以通过按键切换城市，从而能够显示不同城市的天气信息。通过观察，我发现四个按键对应 BCM 编码的引脚号为 5、6、13、19。</p><p><img src=../../../images/raspberry-pie-pins.png alt=raspberry-pie-pins.png><span class=caption>※ 树莓派引脚对照表</span></p><p>因此有：</p><div class=highlight><div class=chroma><div class=table-container><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-python data-lang=python><span class=line><span class=cl><span class=kn>import</span> <span class=nn>RPi.GPIO</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>button1</span> <span class=o>=</span> <span class=mi>5</span>
+</span></span><span class=line><span class=cl><span class=n>button2</span> <span class=o>=</span> <span class=mi>6</span>
+</span></span><span class=line><span class=cl><span class=n>button3</span> <span class=o>=</span> <span class=mi>13</span>
+</span></span><span class=line><span class=cl><span class=n>button4</span> <span class=o>=</span> <span class=mi>19</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>RPi</span><span class=o>.</span><span class=n>GPIO</span><span class=o>.</span><span class=n>setmode</span><span class=p>(</span><span class=n>RPi</span><span class=o>.</span><span class=n>GPIO</span><span class=o>.</span><span class=n>BCM</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>RPi</span><span class=o>.</span><span class=n>GPIO</span><span class=o>.</span><span class=n>setup</span><span class=p>(</span><span class=n>button1</span><span class=p>,</span> <span class=n>RPi</span><span class=o>.</span><span class=n>GPIO</span><span class=o>.</span><span class=n>IN</span><span class=p>,</span> <span class=n>pull_up_down</span><span class=o>=</span><span class=n>RPi</span><span class=o>.</span><span class=n>GPIO</span><span class=o>.</span><span class=n>PUD_UP</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>RPi</span><span class=o>.</span><span class=n>GPIO</span><span class=o>.</span><span class=n>setup</span><span class=p>(</span><span class=n>button2</span><span class=p>,</span> <span class=n>RPi</span><span class=o>.</span><span class=n>GPIO</span><span class=o>.</span><span class=n>IN</span><span class=p>,</span> <span class=n>pull_up_down</span><span class=o>=</span><span class=n>RPi</span><span class=o>.</span><span class=n>GPIO</span><span class=o>.</span><span class=n>PUD_UP</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>RPi</span><span class=o>.</span><span class=n>GPIO</span><span class=o>.</span><span class=n>setup</span><span class=p>(</span><span class=n>button3</span><span class=p>,</span> <span class=n>RPi</span><span class=o>.</span><span class=n>GPIO</span><span class=o>.</span><span class=n>IN</span><span class=p>,</span> <span class=n>pull_up_down</span><span class=o>=</span><span class=n>RPi</span><span class=o>.</span><span class=n>GPIO</span><span class=o>.</span><span class=n>PUD_UP</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>RPi</span><span class=o>.</span><span class=n>GPIO</span><span class=o>.</span><span class=n>setup</span><span class=p>(</span><span class=n>button4</span><span class=p>,</span> <span class=n>RPi</span><span class=o>.</span><span class=n>GPIO</span><span class=o>.</span><span class=n>IN</span><span class=p>,</span> <span class=n>pull_up_down</span><span class=o>=</span><span class=n>RPi</span><span class=o>.</span><span class=n>GPIO</span><span class=o>.</span><span class=n>PUD_UP</span><span class=p>)</span>
+</span></span></code></pre></td></tr></table></div></div></div><p>实现切换城市，可以考虑将不同城市的名称存放在一个数组中，通过按键选择数组中指定位的数据。这里我以杭州、北京
+天津、上海四个城市为例：</p><div class=highlight><div class=chroma><div class=table-container><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-python data-lang=python><span class=line><span class=cl><span class=n>Lct</span> <span class=o>=</span> <span class=p>[</span><span class=s1>&#39;hangzhou&#39;</span><span class=p>,</span><span class=s1>&#39;beijing&#39;</span><span class=p>,</span><span class=s1>&#39;tianjin&#39;</span><span class=p>,</span><span class=s1>&#39;shanghai&#39;</span><span class=p>]</span>
+</span></span><span class=line><span class=cl><span class=n>lct</span> <span class=o>=</span> <span class=n>Lct</span><span class=p>[</span><span class=mi>0</span><span class=p>]</span>
+</span></span><span class=line><span class=cl><span class=n>c</span> <span class=o>=</span> <span class=mi>0</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=k>if</span> <span class=n>RPi</span><span class=o>.</span><span class=n>GPIO</span><span class=o>.</span><span class=n>input</span><span class=p>(</span><span class=n>button1</span><span class=p>)</span> <span class=o>==</span> <span class=mi>0</span><span class=p>:</span>
+</span></span><span class=line><span class=cl>    <span class=n>time</span><span class=o>.</span><span class=n>sleep</span><span class=p>(</span><span class=mf>0.1</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=k>if</span> <span class=n>RPi</span><span class=o>.</span><span class=n>GPIO</span><span class=o>.</span><span class=n>input</span><span class=p>(</span><span class=n>button1</span><span class=p>)</span> <span class=o>==</span> <span class=mi>0</span><span class=p>:</span>
+</span></span><span class=line><span class=cl>        <span class=n>c</span> <span class=o>=</span> <span class=n>c</span> <span class=o>-</span> <span class=mi>1</span>
+</span></span><span class=line><span class=cl>        <span class=k>if</span> <span class=n>c</span> <span class=o>&lt;</span> <span class=mi>0</span><span class=p>:</span>
+</span></span><span class=line><span class=cl>            <span class=n>c</span> <span class=o>=</span> <span class=mi>3</span>
+</span></span><span class=line><span class=cl>        <span class=n>lct</span> <span class=o>=</span> <span class=n>Lct</span><span class=p>[</span><span class=n>c</span><span class=p>]</span>
+</span></span><span class=line><span class=cl><span class=k>if</span> <span class=n>RPi</span><span class=o>.</span><span class=n>GPIO</span><span class=o>.</span><span class=n>input</span><span class=p>(</span><span class=n>button2</span><span class=p>)</span> <span class=o>==</span> <span class=mi>0</span><span class=p>:</span>
+</span></span><span class=line><span class=cl>    <span class=n>time</span><span class=o>.</span><span class=n>sleep</span><span class=p>(</span><span class=mf>0.1</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=k>if</span> <span class=n>RPi</span><span class=o>.</span><span class=n>GPIO</span><span class=o>.</span><span class=n>input</span><span class=p>(</span><span class=n>button2</span><span class=p>)</span> <span class=o>==</span> <span class=mi>0</span><span class=p>:</span>
+</span></span><span class=line><span class=cl>        <span class=n>c</span> <span class=o>=</span> <span class=n>c</span> <span class=o>+</span> <span class=mi>1</span>
+</span></span><span class=line><span class=cl>        <span class=k>if</span> <span class=n>c</span> <span class=o>&gt;=</span> <span class=mi>4</span><span class=p>:</span>
+</span></span><span class=line><span class=cl>            <span class=n>c</span> <span class=o>=</span> <span class=mi>0</span>
+</span></span><span class=line><span class=cl>        <span class=n>lct</span> <span class=o>=</span> <span class=n>Lct</span><span class=p>[</span><span class=n>c</span><span class=p>]</span>
+</span></span></code></pre></td></tr></table></div></div></div><p>这里间隔 0.1s 重复确认一次按键是否按下，是为了防抖动，经过测试，我发现如果不增加防抖动，那么按下按钮一次会返回多次信息。</p><p>当然，为了让程序能够在任意时刻切换城市，我们需要设定一个循环。综合上述分析，下面给出我的完整程序。</p><div class=highlight><div class=chroma><div class=table-container><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>  1
+</span><span class=lnt>  2
+</span><span class=lnt>  3
+</span><span class=lnt>  4
+</span><span class=lnt>  5
+</span><span class=lnt>  6
+</span><span class=lnt>  7
+</span><span class=lnt>  8
+</span><span class=lnt>  9
+</span><span class=lnt> 10
+</span><span class=lnt> 11
+</span><span class=lnt> 12
+</span><span class=lnt> 13
+</span><span class=lnt> 14
+</span><span class=lnt> 15
+</span><span class=lnt> 16
+</span><span class=lnt> 17
+</span><span class=lnt> 18
+</span><span class=lnt> 19
+</span><span class=lnt> 20
+</span><span class=lnt> 21
+</span><span class=lnt> 22
+</span><span class=lnt> 23
+</span><span class=lnt> 24
+</span><span class=lnt> 25
+</span><span class=lnt> 26
+</span><span class=lnt> 27
+</span><span class=lnt> 28
+</span><span class=lnt> 29
+</span><span class=lnt> 30
+</span><span class=lnt> 31
+</span><span class=lnt> 32
+</span><span class=lnt> 33
+</span><span class=lnt> 34
+</span><span class=lnt> 35
+</span><span class=lnt> 36
+</span><span class=lnt> 37
+</span><span class=lnt> 38
+</span><span class=lnt> 39
+</span><span class=lnt> 40
+</span><span class=lnt> 41
+</span><span class=lnt> 42
+</span><span class=lnt> 43
+</span><span class=lnt> 44
+</span><span class=lnt> 45
+</span><span class=lnt> 46
+</span><span class=lnt> 47
+</span><span class=lnt> 48
+</span><span class=lnt> 49
+</span><span class=lnt> 50
+</span><span class=lnt> 51
+</span><span class=lnt> 52
+</span><span class=lnt> 53
+</span><span class=lnt> 54
+</span><span class=lnt> 55
+</span><span class=lnt> 56
+</span><span class=lnt> 57
+</span><span class=lnt> 58
+</span><span class=lnt> 59
+</span><span class=lnt> 60
+</span><span class=lnt> 61
+</span><span class=lnt> 62
+</span><span class=lnt> 63
+</span><span class=lnt> 64
+</span><span class=lnt> 65
+</span><span class=lnt> 66
+</span><span class=lnt> 67
+</span><span class=lnt> 68
+</span><span class=lnt> 69
+</span><span class=lnt> 70
+</span><span class=lnt> 71
+</span><span class=lnt> 72
+</span><span class=lnt> 73
+</span><span class=lnt> 74
+</span><span class=lnt> 75
+</span><span class=lnt> 76
+</span><span class=lnt> 77
+</span><span class=lnt> 78
+</span><span class=lnt> 79
+</span><span class=lnt> 80
+</span><span class=lnt> 81
+</span><span class=lnt> 82
+</span><span class=lnt> 83
+</span><span class=lnt> 84
+</span><span class=lnt> 85
+</span><span class=lnt> 86
+</span><span class=lnt> 87
+</span><span class=lnt> 88
+</span><span class=lnt> 89
+</span><span class=lnt> 90
+</span><span class=lnt> 91
+</span><span class=lnt> 92
+</span><span class=lnt> 93
+</span><span class=lnt> 94
+</span><span class=lnt> 95
+</span><span class=lnt> 96
+</span><span class=lnt> 97
+</span><span class=lnt> 98
+</span><span class=lnt> 99
+</span><span class=lnt>100
+</span><span class=lnt>101
+</span><span class=lnt>102
+</span><span class=lnt>103
+</span><span class=lnt>104
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-python data-lang=python><span class=line><span class=cl><span class=ch>#!/usr/bin/python</span>
+</span></span><span class=line><span class=cl><span class=c1># -*- coding:utf-8 -*-</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=kn>import</span> <span class=nn>sys</span>
+</span></span><span class=line><span class=cl><span class=kn>import</span> <span class=nn>os</span>
+</span></span><span class=line><span class=cl><span class=n>picdir</span> <span class=o>=</span> <span class=n>os</span><span class=o>.</span><span class=n>path</span><span class=o>.</span><span class=n>join</span><span class=p>(</span><span class=n>os</span><span class=o>.</span><span class=n>path</span><span class=o>.</span><span class=n>dirname</span><span class=p>(</span><span class=n>os</span><span class=o>.</span><span class=n>path</span><span class=o>.</span><span class=n>dirname</span><span class=p>(</span><span class=n>os</span><span class=o>.</span><span class=n>path</span><span class=o>.</span><span class=n>realpath</span><span class=p>(</span><span class=vm>__file__</span><span class=p>))),</span> <span class=s1>&#39;pic&#39;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>libdir</span> <span class=o>=</span> <span class=n>os</span><span class=o>.</span><span class=n>path</span><span class=o>.</span><span class=n>join</span><span class=p>(</span><span class=n>os</span><span class=o>.</span><span class=n>path</span><span class=o>.</span><span class=n>dirname</span><span class=p>(</span><span class=n>os</span><span class=o>.</span><span class=n>path</span><span class=o>.</span><span class=n>dirname</span><span class=p>(</span><span class=n>os</span><span class=o>.</span><span class=n>path</span><span class=o>.</span><span class=n>realpath</span><span class=p>(</span><span class=vm>__file__</span><span class=p>))),</span> <span class=s1>&#39;lib&#39;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=k>if</span> <span class=n>os</span><span class=o>.</span><span class=n>path</span><span class=o>.</span><span class=n>exists</span><span class=p>(</span><span class=n>libdir</span><span class=p>):</span>
+</span></span><span class=line><span class=cl>    <span class=n>sys</span><span class=o>.</span><span class=n>path</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=n>libdir</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=kn>import</span> <span class=nn>logging</span>
+</span></span><span class=line><span class=cl><span class=kn>from</span> <span class=nn>waveshare_epd</span> <span class=kn>import</span> <span class=n>epd2in7</span>
+</span></span><span class=line><span class=cl><span class=kn>import</span> <span class=nn>time</span>
+</span></span><span class=line><span class=cl><span class=kn>from</span> <span class=nn>PIL</span> <span class=kn>import</span> <span class=n>Image</span><span class=p>,</span><span class=n>ImageDraw</span><span class=p>,</span><span class=n>ImageFont</span>
+</span></span><span class=line><span class=cl><span class=kn>import</span> <span class=nn>traceback</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># custom</span>
+</span></span><span class=line><span class=cl><span class=kn>from</span> <span class=nn>datetime</span> <span class=kn>import</span> <span class=n>datetime</span>
+</span></span><span class=line><span class=cl><span class=kn>import</span> <span class=nn>requests</span>
+</span></span><span class=line><span class=cl><span class=kn>import</span> <span class=nn>RPi.GPIO</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>button1</span> <span class=o>=</span> <span class=mi>5</span>
+</span></span><span class=line><span class=cl><span class=n>button2</span> <span class=o>=</span> <span class=mi>6</span>
+</span></span><span class=line><span class=cl><span class=n>button3</span> <span class=o>=</span> <span class=mi>13</span>
+</span></span><span class=line><span class=cl><span class=n>button4</span> <span class=o>=</span> <span class=mi>19</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>RPi</span><span class=o>.</span><span class=n>GPIO</span><span class=o>.</span><span class=n>setmode</span><span class=p>(</span><span class=n>RPi</span><span class=o>.</span><span class=n>GPIO</span><span class=o>.</span><span class=n>BCM</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>RPi</span><span class=o>.</span><span class=n>GPIO</span><span class=o>.</span><span class=n>setup</span><span class=p>(</span><span class=n>button1</span><span class=p>,</span> <span class=n>RPi</span><span class=o>.</span><span class=n>GPIO</span><span class=o>.</span><span class=n>IN</span><span class=p>,</span> <span class=n>pull_up_down</span><span class=o>=</span><span class=n>RPi</span><span class=o>.</span><span class=n>GPIO</span><span class=o>.</span><span class=n>PUD_UP</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>RPi</span><span class=o>.</span><span class=n>GPIO</span><span class=o>.</span><span class=n>setup</span><span class=p>(</span><span class=n>button2</span><span class=p>,</span> <span class=n>RPi</span><span class=o>.</span><span class=n>GPIO</span><span class=o>.</span><span class=n>IN</span><span class=p>,</span> <span class=n>pull_up_down</span><span class=o>=</span><span class=n>RPi</span><span class=o>.</span><span class=n>GPIO</span><span class=o>.</span><span class=n>PUD_UP</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>RPi</span><span class=o>.</span><span class=n>GPIO</span><span class=o>.</span><span class=n>setup</span><span class=p>(</span><span class=n>button3</span><span class=p>,</span> <span class=n>RPi</span><span class=o>.</span><span class=n>GPIO</span><span class=o>.</span><span class=n>IN</span><span class=p>,</span> <span class=n>pull_up_down</span><span class=o>=</span><span class=n>RPi</span><span class=o>.</span><span class=n>GPIO</span><span class=o>.</span><span class=n>PUD_UP</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>RPi</span><span class=o>.</span><span class=n>GPIO</span><span class=o>.</span><span class=n>setup</span><span class=p>(</span><span class=n>button4</span><span class=p>,</span> <span class=n>RPi</span><span class=o>.</span><span class=n>GPIO</span><span class=o>.</span><span class=n>IN</span><span class=p>,</span> <span class=n>pull_up_down</span><span class=o>=</span><span class=n>RPi</span><span class=o>.</span><span class=n>GPIO</span><span class=o>.</span><span class=n>PUD_UP</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>epd</span> <span class=o>=</span> <span class=n>epd2in7</span><span class=o>.</span><span class=n>EPD</span><span class=p>()</span>
+</span></span><span class=line><span class=cl>    
+</span></span><span class=line><span class=cl><span class=n>epd</span><span class=o>.</span><span class=n>init</span><span class=p>()</span>
+</span></span><span class=line><span class=cl><span class=n>epd</span><span class=o>.</span><span class=n>Clear</span><span class=p>(</span><span class=mh>0xFF</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    
+</span></span><span class=line><span class=cl><span class=n>font24</span> <span class=o>=</span> <span class=n>ImageFont</span><span class=o>.</span><span class=n>truetype</span><span class=p>(</span><span class=n>os</span><span class=o>.</span><span class=n>path</span><span class=o>.</span><span class=n>join</span><span class=p>(</span><span class=n>picdir</span><span class=p>,</span> <span class=s1>&#39;Font.ttc&#39;</span><span class=p>),</span> <span class=mi>24</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>font16</span> <span class=o>=</span> <span class=n>ImageFont</span><span class=o>.</span><span class=n>truetype</span><span class=p>(</span><span class=n>os</span><span class=o>.</span><span class=n>path</span><span class=o>.</span><span class=n>join</span><span class=p>(</span><span class=n>picdir</span><span class=p>,</span> <span class=s1>&#39;Font.ttc&#39;</span><span class=p>),</span> <span class=mi>16</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>font36</span> <span class=o>=</span> <span class=n>ImageFont</span><span class=o>.</span><span class=n>truetype</span><span class=p>(</span><span class=n>os</span><span class=o>.</span><span class=n>path</span><span class=o>.</span><span class=n>join</span><span class=p>(</span><span class=n>picdir</span><span class=p>,</span> <span class=s1>&#39;Font.ttc&#39;</span><span class=p>),</span> <span class=mi>36</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>font84</span> <span class=o>=</span> <span class=n>ImageFont</span><span class=o>.</span><span class=n>truetype</span><span class=p>(</span><span class=n>os</span><span class=o>.</span><span class=n>path</span><span class=o>.</span><span class=n>join</span><span class=p>(</span><span class=n>picdir</span><span class=p>,</span> <span class=s1>&#39;Font.ttc&#39;</span><span class=p>),</span> <span class=mi>84</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># Location</span>
+</span></span><span class=line><span class=cl><span class=n>Lct</span> <span class=o>=</span> <span class=p>[</span><span class=s1>&#39;hangzhou&#39;</span><span class=p>,</span><span class=s1>&#39;beijing&#39;</span><span class=p>,</span><span class=s1>&#39;tianjin&#39;</span><span class=p>,</span><span class=s1>&#39;shanghai&#39;</span><span class=p>]</span>
+</span></span><span class=line><span class=cl><span class=n>lct</span> <span class=o>=</span> <span class=n>Lct</span><span class=p>[</span><span class=mi>0</span><span class=p>]</span>
+</span></span><span class=line><span class=cl><span class=n>c</span> <span class=o>=</span> <span class=mi>0</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=k>def</span> <span class=nf>refreshWeather</span><span class=p>():</span>
+</span></span><span class=line><span class=cl>    <span class=n>Himage</span> <span class=o>=</span> <span class=n>Image</span><span class=o>.</span><span class=n>new</span><span class=p>(</span><span class=s1>&#39;1&#39;</span><span class=p>,</span> <span class=p>(</span><span class=n>epd</span><span class=o>.</span><span class=n>height</span><span class=p>,</span> <span class=n>epd</span><span class=o>.</span><span class=n>width</span><span class=p>),</span> <span class=mi>255</span><span class=p>)</span>  <span class=c1># 255: clear the frame</span>
+</span></span><span class=line><span class=cl>    <span class=n>draw</span> <span class=o>=</span> <span class=n>ImageDraw</span><span class=o>.</span><span class=n>Draw</span><span class=p>(</span><span class=n>Himage</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    
+</span></span><span class=line><span class=cl>    <span class=n>key</span> <span class=o>=</span> <span class=s2>&#34;YOUR_KEY&#34;</span>
+</span></span><span class=line><span class=cl>    <span class=n>url</span> <span class=o>=</span> <span class=s2>&#34;https://api.seniverse.com/v3/weather/now.json?key=&#34;</span> <span class=o>+</span> <span class=n>key</span> <span class=o>+</span> <span class=s2>&#34;&amp;location=&#34;</span> <span class=o>+</span> <span class=n>lct</span> <span class=o>+</span> <span class=s2>&#34;&amp;language=zh-Hans&amp;unit=c&#34;</span>
+</span></span><span class=line><span class=cl>    
+</span></span><span class=line><span class=cl>    <span class=n>weaData</span> <span class=o>=</span> <span class=n>requests</span><span class=o>.</span><span class=n>get</span><span class=p>(</span><span class=n>url</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=n>cityName</span> <span class=o>=</span> <span class=n>weaData</span><span class=o>.</span><span class=n>json</span><span class=p>()[</span><span class=s1>&#39;results&#39;</span><span class=p>][</span><span class=mi>0</span><span class=p>][</span><span class=s1>&#39;location&#39;</span><span class=p>][</span><span class=s1>&#39;name&#39;</span><span class=p>]</span> <span class=c1># city</span>
+</span></span><span class=line><span class=cl>    <span class=n>cityWea</span> <span class=o>=</span> <span class=n>weaData</span><span class=o>.</span><span class=n>json</span><span class=p>()[</span><span class=s1>&#39;results&#39;</span><span class=p>][</span><span class=mi>0</span><span class=p>][</span><span class=s1>&#39;now&#39;</span><span class=p>][</span><span class=s1>&#39;text&#39;</span><span class=p>]</span> <span class=c1># weather</span>
+</span></span><span class=line><span class=cl>    <span class=n>cityTemp</span> <span class=o>=</span> <span class=n>weaData</span><span class=o>.</span><span class=n>json</span><span class=p>()[</span><span class=s1>&#39;results&#39;</span><span class=p>][</span><span class=mi>0</span><span class=p>][</span><span class=s1>&#39;now&#39;</span><span class=p>][</span><span class=s1>&#39;temperature&#39;</span><span class=p>]</span> <span class=o>+</span> <span class=s1>&#39;°C&#39;</span> <span class=c1># temp</span>
+</span></span><span class=line><span class=cl>    
+</span></span><span class=line><span class=cl>    <span class=n>draw</span><span class=o>.</span><span class=n>text</span><span class=p>((</span><span class=mi>10</span><span class=p>,</span> <span class=mi>10</span><span class=p>),</span> <span class=n>cityName</span><span class=p>,</span> <span class=n>font</span> <span class=o>=</span> <span class=n>font36</span><span class=p>,</span> <span class=n>fill</span> <span class=o>=</span> <span class=mi>0</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=n>draw</span><span class=o>.</span><span class=n>text</span><span class=p>((</span><span class=mi>90</span><span class=p>,</span> <span class=mi>10</span><span class=p>),</span> <span class=n>cityWea</span><span class=p>,</span> <span class=n>font</span> <span class=o>=</span> <span class=n>font36</span><span class=p>,</span> <span class=n>fill</span> <span class=o>=</span> <span class=mi>0</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=n>draw</span><span class=o>.</span><span class=n>text</span><span class=p>((</span><span class=mi>10</span><span class=p>,</span> <span class=mi>50</span><span class=p>),</span> <span class=n>cityTemp</span><span class=p>,</span> <span class=n>font</span> <span class=o>=</span> <span class=n>font84</span><span class=p>,</span> <span class=n>fill</span> <span class=o>=</span> <span class=mi>0</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    
+</span></span><span class=line><span class=cl>    <span class=c1># show the refresh date</span>
+</span></span><span class=line><span class=cl>    <span class=n>dayTime</span> <span class=o>=</span> <span class=n>datetime</span><span class=o>.</span><span class=n>now</span><span class=p>()</span><span class=o>.</span><span class=n>strftime</span><span class=p>(</span><span class=s1>&#39;%Y-%m-</span><span class=si>%d</span><span class=s1> %H:%M:%S&#39;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=n>draw</span><span class=o>.</span><span class=n>text</span><span class=p>((</span><span class=mi>10</span><span class=p>,</span> <span class=mi>150</span><span class=p>),</span> <span class=sa>u</span><span class=s1>&#39;更新时间：&#39;</span><span class=p>,</span> <span class=n>font</span> <span class=o>=</span> <span class=n>font16</span><span class=p>,</span> <span class=n>fill</span> <span class=o>=</span> <span class=mi>0</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=n>draw</span><span class=o>.</span><span class=n>text</span><span class=p>((</span><span class=mi>100</span><span class=p>,</span> <span class=mi>150</span><span class=p>),</span> <span class=n>dayTime</span><span class=p>,</span> <span class=n>font</span> <span class=o>=</span> <span class=n>font16</span><span class=p>,</span> <span class=n>fill</span> <span class=o>=</span> <span class=mi>0</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    
+</span></span><span class=line><span class=cl>    <span class=n>epd</span><span class=o>.</span><span class=n>display</span><span class=p>(</span><span class=n>epd</span><span class=o>.</span><span class=n>getbuffer</span><span class=p>(</span><span class=n>Himage</span><span class=p>))</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=k>try</span><span class=p>:</span>
+</span></span><span class=line><span class=cl>    <span class=n>refreshWeather</span><span class=p>()</span>
+</span></span><span class=line><span class=cl>    <span class=k>while</span> <span class=kc>True</span><span class=p>:</span>
+</span></span><span class=line><span class=cl>        <span class=k>if</span> <span class=n>RPi</span><span class=o>.</span><span class=n>GPIO</span><span class=o>.</span><span class=n>input</span><span class=p>(</span><span class=n>button1</span><span class=p>)</span> <span class=o>==</span> <span class=mi>0</span><span class=p>:</span>
+</span></span><span class=line><span class=cl>            <span class=n>time</span><span class=o>.</span><span class=n>sleep</span><span class=p>(</span><span class=mf>0.1</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>            <span class=k>if</span> <span class=n>RPi</span><span class=o>.</span><span class=n>GPIO</span><span class=o>.</span><span class=n>input</span><span class=p>(</span><span class=n>button1</span><span class=p>)</span> <span class=o>==</span> <span class=mi>0</span><span class=p>:</span>
+</span></span><span class=line><span class=cl>                <span class=n>c</span> <span class=o>=</span> <span class=n>c</span> <span class=o>-</span> <span class=mi>1</span>
+</span></span><span class=line><span class=cl>                <span class=k>if</span> <span class=n>c</span> <span class=o>&lt;</span> <span class=mi>0</span><span class=p>:</span>
+</span></span><span class=line><span class=cl>                    <span class=n>c</span> <span class=o>=</span> <span class=mi>3</span>
+</span></span><span class=line><span class=cl>                <span class=n>lct</span> <span class=o>=</span> <span class=n>Lct</span><span class=p>[</span><span class=n>c</span><span class=p>]</span>
+</span></span><span class=line><span class=cl>                <span class=n>refreshWeather</span><span class=p>()</span>
+</span></span><span class=line><span class=cl>        <span class=k>if</span> <span class=n>RPi</span><span class=o>.</span><span class=n>GPIO</span><span class=o>.</span><span class=n>input</span><span class=p>(</span><span class=n>button2</span><span class=p>)</span> <span class=o>==</span> <span class=mi>0</span><span class=p>:</span>
+</span></span><span class=line><span class=cl>            <span class=n>time</span><span class=o>.</span><span class=n>sleep</span><span class=p>(</span><span class=mf>0.1</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>            <span class=k>if</span> <span class=n>RPi</span><span class=o>.</span><span class=n>GPIO</span><span class=o>.</span><span class=n>input</span><span class=p>(</span><span class=n>button2</span><span class=p>)</span> <span class=o>==</span> <span class=mi>0</span><span class=p>:</span>
+</span></span><span class=line><span class=cl>                <span class=n>c</span> <span class=o>=</span> <span class=n>c</span> <span class=o>+</span> <span class=mi>1</span>
+</span></span><span class=line><span class=cl>                <span class=k>if</span> <span class=n>c</span> <span class=o>&gt;=</span> <span class=mi>4</span><span class=p>:</span>
+</span></span><span class=line><span class=cl>                    <span class=n>c</span> <span class=o>=</span> <span class=mi>0</span>
+</span></span><span class=line><span class=cl>                <span class=n>lct</span> <span class=o>=</span> <span class=n>Lct</span><span class=p>[</span><span class=n>c</span><span class=p>]</span>
+</span></span><span class=line><span class=cl>                <span class=n>refreshWeather</span><span class=p>()</span>
+</span></span><span class=line><span class=cl>        <span class=k>if</span> <span class=n>RPi</span><span class=o>.</span><span class=n>GPIO</span><span class=o>.</span><span class=n>input</span><span class=p>(</span><span class=n>button3</span><span class=p>)</span> <span class=o>==</span> <span class=mi>0</span><span class=p>:</span>
+</span></span><span class=line><span class=cl>            <span class=n>epd</span><span class=o>.</span><span class=n>Clear</span><span class=p>(</span><span class=mh>0xFF</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>        <span class=k>if</span> <span class=n>RPi</span><span class=o>.</span><span class=n>GPIO</span><span class=o>.</span><span class=n>input</span><span class=p>(</span><span class=n>button4</span><span class=p>)</span> <span class=o>==</span> <span class=mi>0</span><span class=p>:</span>
+</span></span><span class=line><span class=cl>            <span class=n>time</span><span class=o>.</span><span class=n>sleep</span><span class=p>(</span><span class=mf>0.1</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>            <span class=k>if</span> <span class=n>RPi</span><span class=o>.</span><span class=n>GPIO</span><span class=o>.</span><span class=n>input</span><span class=p>(</span><span class=n>button4</span><span class=p>)</span> <span class=o>==</span> <span class=mi>0</span><span class=p>:</span>
+</span></span><span class=line><span class=cl>                <span class=n>epd2in7</span><span class=o>.</span><span class=n>epdconfig</span><span class=o>.</span><span class=n>module_exit</span><span class=p>()</span>
+</span></span><span class=line><span class=cl>                <span class=n>exit</span><span class=p>()</span>
+</span></span><span class=line><span class=cl>    
+</span></span><span class=line><span class=cl><span class=k>except</span> <span class=ne>IOError</span> <span class=k>as</span> <span class=n>e</span><span class=p>:</span>
+</span></span><span class=line><span class=cl>    <span class=n>logging</span><span class=o>.</span><span class=n>info</span><span class=p>(</span><span class=n>e</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    
+</span></span><span class=line><span class=cl><span class=k>except</span> <span class=ne>KeyboardInterrupt</span><span class=p>:</span>    
+</span></span><span class=line><span class=cl>    <span class=n>logging</span><span class=o>.</span><span class=n>info</span><span class=p>(</span><span class=s2>&#34;ctrl + c:&#34;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=n>epd2in7</span><span class=o>.</span><span class=n>epdconfig</span><span class=o>.</span><span class=n>module_exit</span><span class=p>()</span>
+</span></span><span class=line><span class=cl>    <span class=n>exit</span><span class=p>()</span>
+</span></span></code></pre></td></tr></table></div></div></div></div></article><div class=related-posts><h2 class=related-title>相关文章：<svg viewBox="0 0 512 512" class="icon related-icon"><path d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8zm144 276c0 6.6-5.4 12-12 12h-92v92c0 6.6-5.4 12-12 12h-56c-6.6.0-12-5.4-12-12v-92h-92c-6.6.0-12-5.4-12-12v-56c0-6.6 5.4-12 12-12h92v-92c0-6.6 5.4-12 12-12h56c6.6.0 12 5.4 12 12v92h92c6.6.0 12 5.4 12 12v56z"/></svg></h2><ul class=related-list><li class=related-item><a href=../../../tech/optics/optoelectronic-design-competition-2020/ class=related-link>第八届光电设计竞赛校赛总结</a></li><li class=related-item><a href=../../../tech/computer/upload-local-data-to-the-database-of-wechat-mini-app/ class=related-link>将本地数据上传至小程序云开发数据库</a></li><li class=related-item><a href=../../../tech/computer/insert-echart-into-wechat-mini-app/ class=related-link>在微信小程序中引入 ECharts 图表</a></li><li class=related-item><a href=../../../tech/computer/obtain-meteorological-data/ class=related-link>爬取指定城市的气象数据</a></li><li class=related-item><a href=../../../tech/computer/esp8266-the-internet-of-things/ class=related-link>基于 ESP8266 模块的 MicroPython 入门操作</a></li></ul></div><div class=post-tags><a href=../../../tags/design-contest/ rel=tag class=post-tags-link><svg viewBox="0 0 512 512" class="icon tag-icon"><path d="M0 252.118V48C0 21.49 21.49.0 48 0h204.118a48 48 0 0133.941 14.059l211.882 211.882c18.745 18.745 18.745 49.137.0 67.882L293.823 497.941c-18.745 18.745-49.137 18.745-67.882.0L14.059 286.059A48 48 0 010 252.118zM112 64c-26.51.0-48 21.49-48 48s21.49 48 48 48 48-21.49 48-48-21.49-48-48-48z"/></svg>设计竞赛</a>
+<a href=../../../tags/python/ rel=tag class=post-tags-link><svg viewBox="0 0 512 512" class="icon tag-icon"><path d="M0 252.118V48C0 21.49 21.49.0 48 0h204.118a48 48 0 0133.941 14.059l211.882 211.882c18.745 18.745 18.745 49.137.0 67.882L293.823 497.941c-18.745 18.745-49.137 18.745-67.882.0L14.059 286.059A48 48 0 010 252.118zM112 64c-26.51.0-48 21.49-48 48s21.49 48 48 48 48-21.49 48-48-21.49-48-48-48z"/></svg>Python</a>
+<a href=../../../tags/raspberry-pi/ rel=tag class=post-tags-link><svg viewBox="0 0 512 512" class="icon tag-icon"><path d="M0 252.118V48C0 21.49 21.49.0 48 0h204.118a48 48 0 0133.941 14.059l211.882 211.882c18.745 18.745 18.745 49.137.0 67.882L293.823 497.941c-18.745 18.745-49.137 18.745-67.882.0L14.059 286.059A48 48 0 010 252.118zM112 64c-26.51.0-48 21.49-48 48s21.49 48 48 48 48-21.49 48-48-21.49-48-48-48z"/></svg>树莓派</a></div><div class=load-comments><div id=load-comments>加载评论</div></div><div id=waline></div></div></main><div id=back-to-top class=back-to-top><a href=#top aria-label=回到顶部><svg viewBox="0 0 448 512" class="icon arrow-up"><path d="M34.9 289.5l-22.2-22.2c-9.4-9.4-9.4-24.6.0-33.9L207 39c9.4-9.4 24.6-9.4 33.9.0l194.3 194.3c9.4 9.4 9.4 24.6.0 33.9L413 289.4c-9.5 9.5-25 9.3-34.3-.4L264 168.6V456c0 13.3-10.7 24-24 24h-32c-13.3.0-24-10.7-24-24V168.6L69.2 289.1c-9.3 9.8-24.8 10-34.3.4z"/></svg></a></div><footer id=footer class=footer><div class=footer-inner><div class=site-info>©&nbsp;2019–2026&nbsp;<svg viewBox="0 0 512 512" class="icon footer-icon"><path d="M462.3 62.6C407.5 15.9 326 24.3 275.7 76.2L256 96.5l-19.7-20.3C186.1 24.3 104.5 15.9 49.7 62.6c-62.8 53.6-66.1 149.8-9.9 207.9l193.5 199.8c12.5 12.9 32.8 12.9 45.3.0l193.5-199.8c56.3-58.1 53-154.3-9.8-207.9z"/></svg>&nbsp;Guan Qirui</div></div></footer></div><div class=app-refresh id=app-refresh><div class=app-refresh-wrap onclick=location.reload()><label>已更新最新版本</label>
+<span>点击刷新</span></div></div><script>"serviceWorker"in navigator&&(navigator.serviceWorker.controller&&navigator.serviceWorker.addEventListener("controllerchange",function(){showNotification()}),window.addEventListener("load",function(){navigator.serviceWorker.register("../../../sw.js")}));function showNotification(){document.querySelector("meta[name=theme-color]").content="#000",document.getElementById("app-refresh").className+=" app-refresh-show"}</script><script src=https://cdn.jsdelivr.net/npm/medium-zoom@latest/dist/medium-zoom.min.js></script><script>let imgNodes=document.querySelectorAll("div.post-body img");imgNodes=Array.from(imgNodes).filter(e=>e.parentNode.tagName!=="A"),mediumZoom(imgNodes,{background:"hsla(var(--color-bg-h), var(--color-bg-s), var(--color-bg-l), 0.95)"})</script><script src=https://cdn.jsdelivr.net/npm/instant.page@5.1.0/instantpage.min.js type=module defer></script><script>navigator.userAgent.includes("Safari")&&!navigator.userAgent.includes("Chrome")&&document.body.classList.add("safari-only")</script><link rel=stylesheet href=https://unpkg.com/@waline/client@2.15.8/dist/waline.css><script>function loadComments(){if(!document.getElementById("waline"))return;if(typeof init=="undefined"){const e=e=>{const t=document.createElement("script");t.defer=!0,t.crossOrigin="anonymous",Object.keys(e).forEach(n=>{t[n]=e[n]}),document.body.appendChild(t)};e({src:"https://unpkg.com/@waline/client@2.15.8/dist/waline.js",onload:()=>{newWaline()}})}else newWaline()}function newWaline(){const e={nick:"昵称*",mail:"邮箱*",placeholder:"请填写正确的昵称和邮箱，方便接收评论回复信息。若随意填写邮箱地址，发布包括但不限于广告、攻击性、无意义等内容文字，将会作删除处理。"};Waline.init({el:"#waline",serverURL:"https://waline.guanqr.com/",lang:"zh-CN",locale:e,emoji:["https://unpkg.com/@waline/emojis@1.4.0/weibo","https://unpkg.com/@waline/emojis@1.4.0/bilibili"],dark:'html[data-theme="dark"]',commentSorting:"latest",meta:["nick","mail","link"],requiredMeta:["nick","mail"],login:"enabled",wordLimit:0,pageSize:10,imageUploader:!1,highlighter:!0,search:!1,copyright:!0})}</script></body></html>

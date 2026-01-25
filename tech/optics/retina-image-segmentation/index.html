@@ -1,0 +1,660 @@
+<!doctype html><html lang=zh-cn><head prefix="og: http://ogp.me/ns# article: http://ogp.me/ns/article#"><meta charset=UTF-8><meta name=generator content="Hugo 0.148.2"><meta name=theme-color content="#fff"><meta name=color-scheme content="light dark"><meta name=viewport content="width=device-width,initial-scale=1"><meta name=format-detection content="telephone=no, date=no, address=no, email=no"><meta http-equiv=Cache-Control content="no-transform"><meta http-equiv=Cache-Control content="no-siteapp"><title>OCT 视网膜图像分割 | 荷戟獨彷徨</title><link rel=stylesheet href=../../../css/meme.min.css><script src=../../../js/meme.min.js></script><link rel=preconnect href=https://fonts.gstatic.com crossorigin><link rel=stylesheet href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@700&amp;family=Noto+Serif+SC:wght@700&amp;display=swap" media=print onload='this.media="all"'><noscript><link rel=stylesheet href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@700&amp;family=Noto+Serif+SC:wght@700&amp;display=swap"></noscript><meta name=author content="Guan Qirui"><meta name=description content="光学相干断层扫描技术（Optical Coherence Tomography，OCT）是一种利用低相干光从散射介质中获取微米级分辨率的二维或三维图像的技术1。本学期的「机器视觉与图像处理」课程的老师是激光生物医学研究所的研究光学成像技术的老师，因此期末作业就是与 OCT 技术相关的内容——OCT 视网膜图像分割。关于该课程的其他三次作业内容，请查看我的另一篇文章：《数字图像处理基础练习》。
+题目要求 人眼视网膜由多层组织构成，利用给出的 OCT 视网膜断层图，实现如下图所示的图像分割。给出分割处理方法、结果、程序代码，分析讨论分割方法的稳定性。
+"><link rel="shortcut icon" type=image/x-icon href=../../../favicon.ico><link rel=icon type=image/svg+xml href=../../../icons/favicon.svg><link rel=icon type=image/png href=../../../icons/favicon-96x96.png sizes=96x96><link rel=apple-touch-icon href=../../../icons/apple-touch-icon.png sizes=180x180><meta name=apple-mobile-web-app-capable content="yes"><meta name=apple-mobile-web-app-title content="荷戟獨彷徨"><meta name=apple-mobile-web-app-status-bar-style content="black"><meta name=mobile-web-app-capable content="yes"><meta name=application-name content="荷戟獨彷徨"><link rel=manifest href=../../../manifest.json><link rel=canonical href=https://guanqr.com/tech/optics/retina-image-segmentation/><script type=application/ld+json>{"@context":"https://schema.org","@type":"BlogPosting","datePublished":"2020-06-03T09:37:37+08:00","dateModified":"2020-06-06T09:37:37+08:00","url":"https://guanqr.com/tech/optics/retina-image-segmentation/","headline":"\nOCT 视网膜图像分割","description":"光学相干断层扫描技术（Optical Coherence Tomography，OCT）是一种利用低相干光从散射介质中获取微米级分辨率的二维或三维图像的技术1。本学期的「机器视觉与图像处理」课程的老师是激光生物医学研究所的研究光学成像技术的老师，因此期末作业就是与 OCT 技术相关的内容——OCT 视网膜图像分割。关于该课程的其他三次作业内容，请查看我的另一篇文章：《数字图像处理基础练习》。\n题目要求 人眼视网膜由多层组织构成，利用给出的 OCT 视网膜断层图，实现如下图所示的图像分割。给出分割处理方法、结果、程序代码，分析讨论分割方法的稳定性。\n","inLanguage":"zh-cn","articleSection":"tech","wordCount":4149,"image":["https://guanqr.com/images/retina-image-segmentation-0.jpg","https://guanqr.com/images/retina-image-segmentation-1.png","https://guanqr.com/images/retina-image-segmentation-2.png","https://guanqr.com/images/retina-image-segmentation-3.png","https://guanqr.com/images/retina-image-segmentation-4.png","https://guanqr.com/images/retina-image-segmentation-5.png","https://guanqr.com/images/retina-image-segmentation-6.png","https://guanqr.com/images/retina-image-segmentation-7.png","https://guanqr.com/images/retina-image-segmentation-8.png","https://guanqr.com/images/retina-image-segmentation-9.png","https://guanqr.com/images/retina-image-segmentation-10.png","https://guanqr.com/images/retina-image-segmentation-11.png","https://guanqr.com/images/retina-image-segmentation-12.png","https://guanqr.com/images/retina-image-segmentation-13.png","https://guanqr.com/images/retina-image-segmentation-14.png","https://guanqr.com/images/retina-image-segmentation-15.png","https://guanqr.com/images/retina-image-segmentation-16.png","https://guanqr.com/images/retina-image-segmentation-17.png","https://guanqr.com/images/retina-image-segmentation-18.png","https://guanqr.com/images/retina-image-segmentation-19.png","https://guanqr.com/images/retina-image-segmentation-20.png","https://guanqr.com/images/retina-image-segmentation-21.png","https://guanqr.com/images/retina-image-segmentation-22.png","https://guanqr.com/images/retina-image-segmentation-23.png","https://guanqr.com/images/retina-image-segmentation-24.png","https://guanqr.com/images/retina-image-segmentation-25.png","https://guanqr.com/images/retina-image-segmentation-26.png","https://guanqr.com/images/retina-image-segmentation-27.png","https://guanqr.com/images/retina-image-segmentation-28.png","https://guanqr.com/images/retina-image-segmentation-29.png","https://guanqr.com/images/retina-image-segmentation-30.png","https://guanqr.com/images/retina-image-segmentation-31.png","https://guanqr.com/images/retina-image-segmentation-32.png","https://guanqr.com/images/retina-image-segmentation-33.png","https://guanqr.com/images/retina-image-segmentation-34.png","https://guanqr.com/images/retina-image-segmentation-35.png"],"author":{"@type":"Person","description":"爱光学，爱生活，爱创造","email":"guanqirui@zju.edu.cn","image":"https://guanqr.com/icons/apple-touch-icon.png","url":"https://guanqr.com/","name":"Guan Qirui"},"license":"本文采用 [CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh) 许可协议，转载请注明出处。","publisher":{"@type":"Organization","name":"荷戟獨彷徨","logo":{"@type":"ImageObject","url":"https://guanqr.com/icons/apple-touch-icon.png"},"url":"https://guanqr.com/"},"mainEntityOfPage":{"@type":"WebSite","@id":"https://guanqr.com/"}}</script><meta name=twitter:card content="summary_large_image"><meta property="og:title" content="
+OCT 视网膜图像分割"><meta property="og:description" content="光学相干断层扫描技术（Optical Coherence Tomography，OCT）是一种利用低相干光从散射介质中获取微米级分辨率的二维或三维图像的技术1。本学期的「机器视觉与图像处理」课程的老师是激光生物医学研究所的研究光学成像技术的老师，因此期末作业就是与 OCT 技术相关的内容——OCT 视网膜图像分割。关于该课程的其他三次作业内容，请查看我的另一篇文章：《数字图像处理基础练习》。
+题目要求 人眼视网膜由多层组织构成，利用给出的 OCT 视网膜断层图，实现如下图所示的图像分割。给出分割处理方法、结果、程序代码，分析讨论分割方法的稳定性。
+"><meta property="og:url" content="https://guanqr.com/tech/optics/retina-image-segmentation/"><meta property="og:site_name" content="荷戟獨彷徨"><meta property="og:locale" content="zh-cn"><meta property="og:image" content="https://guanqr.com/images/retina-image-segmentation-0.jpg"><meta property="og:type" content="article"><meta property="article:published_time" content="2020-06-03T09:37:37+08:00"><meta property="article:modified_time" content="2020-06-06T09:37:37+08:00"><meta property="article:section" content="tech"><link rel=preconnect href=https://www.google-analytics.com crossorigin><script async src="https://www.googletagmanager.com/gtag/js?id=UA-140800645-1"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","UA-140800645-1")</script><link rel=preconnect href=https://cdn.jsdelivr.net crossorigin><link rel=stylesheet href=https://cdn.jsdelivr.net/gh/guanqr/fonts@build/css/fonts.min.css media=print onload='this.media="all"'></head><body><div class=container><header class=header><div class=header-wrapper><div class="header-inner single"><div class=site-brand><a href=../../../ class=brand>荷戟獨彷徨</a></div><nav class=nav><ul class=menu id=menu><li class=menu-item><a href=../../../archives/><svg viewBox="0 0 512 512" class="icon archives"><path d="M32 448c0 17.7 14.3 32 32 32h384c17.7.0 32-14.3 32-32V160H32v288zm160-212c0-6.6 5.4-12 12-12h104c6.6.0 12 5.4 12 12v8c0 6.6-5.4 12-12 12H204c-6.6.0-12-5.4-12-12v-8zM480 32H32C14.3 32 0 46.3.0 64v48c0 8.8 7.2 16 16 16h480c8.8.0 16-7.2 16-16V64c0-17.7-14.3-32-32-32z"/></svg><span class=menu-item-name>文章</span></a></li><li class=menu-item><a href=../../../tags/><svg viewBox="0 0 640 512" class="icon tags"><path d="M497.941 225.941 286.059 14.059A48 48 0 00252.118.0H48C21.49.0.0 21.49.0 48v204.118a48 48 0 0014.059 33.941l211.882 211.882c18.744 18.745 49.136 18.746 67.882.0l204.118-204.118c18.745-18.745 18.745-49.137.0-67.882zM112 160c-26.51.0-48-21.49-48-48s21.49-48 48-48 48 21.49 48 48-21.49 48-48 48zm513.941 133.823L421.823 497.941c-18.745 18.745-49.137 18.745-67.882.0l-.36-.36L527.64 323.522c16.999-16.999 26.36-39.6 26.36-63.64s-9.362-46.641-26.36-63.64L331.397.0h48.721a48 48 0 0133.941 14.059l211.882 211.882c18.745 18.745 18.745 49.137.0 67.882z"/></svg><span class=menu-item-name>标签</span></a></li><li class=menu-item><a href=../../../blogroll/><svg viewBox="0 0 384 512" class="icon friends"><path d="M384 312.7c-55.1 136.7-187.1 54-187.1 54-40.5 81.8-107.4 134.4-184.6 134.7-16.1.0-16.6-24.4.0-24.4 64.4-.3 120.5-42.7 157.2-110.1-41.1 15.9-118.6 27.9-161.6-82.2 109-44.9 159.1 11.2 178.3 45.5 9.9-24.4 17-50.9 21.6-79.7.0.0-139.7 21.9-149.5-98.1 119.1-47.9 152.6 76.7 152.6 76.7 1.6-16.7 3.3-52.6 3.3-53.4.0.0-106.3-73.7-38.1-165.2 124.6 43 61.4 162.4 61.4 162.4.5 1.6.5 23.8.0 33.4.0.0 45.2-89 136.4-57.5-4.2 134-141.9 106.4-141.9 106.4-4.4 27.4-11.2 53.4-20 77.5.0.0 83-91.8 172-20z"/></svg><span class=menu-item-name>友链</span></a></li><li class=menu-item><a href=../../../about/><svg viewBox="0 0 496 512" class="icon about"><path d="M248 8C111 8 0 119 0 256s111 248 248 248 248-111 248-248S385 8 248 8zm0 96c48.6.0 88 39.4 88 88s-39.4 88-88 88-88-39.4-88-88 39.4-88 88-88zm0 344c-58.7.0-111.3-26.6-146.5-68.2 18.8-35.4 55.6-59.8 98.5-59.8 2.4.0 4.8.4 7.1 1.1 13 4.2 26.6 6.9 40.9 6.9s28-2.7 40.9-6.9c2.3-.7 4.7-1.1 7.1-1.1 42.9.0 79.7 24.4 98.5 59.8C359.3 421.4 306.7 448 248 448z"/></svg><span class=menu-item-name>关于</span></a></li><li class=menu-item><button id=theme-switcher type=button aria-label=切换主题><svg viewBox="0 0 512 512" class="icon theme-icon-light"><path d="M193.2 104.5 242 7a18 18 0 0128 0l48.8 97.5L422.2 70A18 18 0 01442 89.8l-34.5 103.4L505 242a18 18 0 010 28l-97.5 48.8L442 422.2A18 18 0 01422.2 442l-103.4-34.5L270 505a18 18 0 01-28 0l-48.8-97.5L89.8 442A18 18 0 0170 422.2l34.5-103.4-97.5-48.8a18 18 0 010-28l97.5-48.8L70 89.8A18 18 0 0189.8 70zM256 128a128 128 0 10.01.0M256 160a96 96 0 10.01.0"/></svg><svg viewBox="0 0 512 512" class="icon theme-icon-dark"><path d="M27 412A256 256 0 10181 5a11.5 11.5.0 00-5 20A201.5 201.5.0 0142 399a11.5 11.5.0 00-15 13"/></svg><svg viewBox="0 0 576 512" class="icon theme-icon-system"><path d="M528 0H48C21.5.0.0 21.5.0 48v320c0 26.5 21.5 48 48 48h192l-16 48h-72c-13.3.0-24 10.7-24 24s10.7 24 24 24h272c13.3.0 24-10.7 24-24s-10.7-24-24-24h-72l-16-48h192c26.5.0 48-21.5 48-48V48c0-26.5-21.5-48-48-48zm-16 352H64V64h448v288z"/></svg></button></li></ul></nav></div></div><input type=checkbox id=nav-toggle aria-hidden=true>
+<label for=nav-toggle class=nav-toggle></label><label for=nav-toggle class=nav-curtain></label></header><main class="main single" id=main><div class=main-inner><article class="content post h-entry" data-align=justify data-type=tech data-toc-num=true><h1 class="post-title p-name">OCT 视网膜图像分割</h1><div class=post-meta><time datetime=2020-06-03T09:37:37+08:00 class="post-meta-item published dt-published"><svg viewBox="0 0 448 512" class="icon post-meta-icon"><path d="M148 288h-40c-6.6.0-12-5.4-12-12v-40c0-6.6 5.4-12 12-12h40c6.6.0 12 5.4 12 12v40c0 6.6-5.4 12-12 12zm108-12v-40c0-6.6-5.4-12-12-12h-40c-6.6.0-12 5.4-12 12v40c0 6.6 5.4 12 12 12h40c6.6.0 12-5.4 12-12zm96 0v-40c0-6.6-5.4-12-12-12h-40c-6.6.0-12 5.4-12 12v40c0 6.6 5.4 12 12 12h40c6.6.0 12-5.4 12-12zm-96 96v-40c0-6.6-5.4-12-12-12h-40c-6.6.0-12 5.4-12 12v40c0 6.6 5.4 12 12 12h40c6.6.0 12-5.4 12-12zm-96 0v-40c0-6.6-5.4-12-12-12h-40c-6.6.0-12 5.4-12 12v40c0 6.6 5.4 12 12 12h40c6.6.0 12-5.4 12-12zm192 0v-40c0-6.6-5.4-12-12-12h-40c-6.6.0-12 5.4-12 12v40c0 6.6 5.4 12 12 12h40c6.6.0 12-5.4 12-12zm96-260v352c0 26.5-21.5 48-48 48H48c-26.5.0-48-21.5-48-48V112c0-26.5 21.5-48 48-48h48V12c0-6.6 5.4-12 12-12h40c6.6.0 12 5.4 12 12v52h128V12c0-6.6 5.4-12 12-12h40c6.6.0 12 5.4 12 12v52h48c26.5.0 48 21.5 48 48zm-48 346V160H48v298c0 3.3 2.7 6 6 6h340c3.3.0 6-2.7 6-6z"/></svg>&nbsp;2020-06-03</time>
+<span class="post-meta-item category"><svg viewBox="0 0 512 512" class="icon post-meta-icon"><path d="M464 128H272l-54.63-54.63c-6-6-14.14-9.37-22.63-9.37H48C21.49 64 0 85.49.0 112v288c0 26.51 21.49 48 48 48h416c26.51.0 48-21.49 48-48V176c0-26.51-21.49-48-48-48zm0 272H48V112h140.12l54.63 54.63c6 6 14.14 9.37 22.63 9.37H464v224z"/></svg>&nbsp;<a href=../../../tech/ class="category-link p-category">科学技术</a>·<a href=../../../tech/optics/ class="category-link p-category">光学工程</a></span></div><nav class=contents><h2 id=contents class=contents-title>目录</h2><ol class=toc><li><a id=contents:题目要求 href=#题目要求>题目要求</a></li><li><a id=contents:问题分析 href=#问题分析>问题分析</a><ol><li><a id=contents:vitreous-层 href=#vitreous-层>Vitreous 层</a></li><li><a id=contents:nfl-层 href=#nfl-层>NFL 层</a></li><li><a id=contents:rpe-层 href=#rpe-层>RPE 层</a></li><li><a id=contents:其他层 href=#其他层>其他层</a></li></ol></li><li><a id=contents:结果讨论 href=#结果讨论>结果讨论</a></li></ol></nav><div class="post-body e-content"><p style=text-indent:0><span class=drop-cap>光</span>学相干断层扫描技术（Optical Coherence Tomography，OCT）是一种利用低相干光从散射介质中获取微米级分辨率的二维或三维图像的技术<sup id=fnref:1><a href=#fn:1 class=footnote-ref role=doc-noteref>[1]</a></sup>。本学期的「机器视觉与图像处理」课程的老师是激光生物医学研究所的研究光学成像技术的老师，因此期末作业就是与 OCT 技术相关的内容——OCT 视网膜图像分割。关于该课程的其他三次作业内容，请查看我的另一篇文章：《<a href=../../../tech/optics/digital-image-processing-practice/>数字图像处理基础练习</a>》。</p><h2 id=题目要求><a href=#题目要求 class=anchor-link aria-label=题目要求><svg viewBox="0 0 512 512" class="icon anchor-icon"><path d="M326.612 185.391c59.747 59.809 58.927 155.698.36 214.59-.11.12-.24.25-.36.37l-67.2 67.2c-59.27 59.27-155.699 59.262-214.96.0-59.27-59.26-59.27-155.7.0-214.96l37.106-37.106c9.84-9.84 26.786-3.3 27.294 10.606.648 17.722 3.826 35.527 9.69 52.721 1.986 5.822.567 12.262-3.783 16.612l-13.087 13.087c-28.026 28.026-28.905 73.66-1.155 101.96 28.024 28.579 74.086 28.749 102.325.51l67.2-67.19c28.191-28.191 28.073-73.757.0-101.83-3.701-3.694-7.429-6.564-10.341-8.569a16.037 16.037.0 01-6.947-12.606c-.396-10.567 3.348-21.456 11.698-29.806l21.054-21.055c5.521-5.521 14.182-6.199 20.584-1.731a152.482 152.482.0 0120.522 17.197zM467.547 44.449c-59.261-59.262-155.69-59.27-214.96.0l-67.2 67.2c-.12.12-.25.25-.36.37-58.566 58.892-59.387 154.781.36 214.59a152.454 152.454.0 0020.521 17.196c6.402 4.468 15.064 3.789 20.584-1.731l21.054-21.055c8.35-8.35 12.094-19.239 11.698-29.806a16.037 16.037.0 00-6.947-12.606c-2.912-2.005-6.64-4.875-10.341-8.569-28.073-28.073-28.191-73.639.0-101.83l67.2-67.19c28.239-28.239 74.3-28.069 102.325.51 27.75 28.3 26.872 73.934-1.155 101.96l-13.087 13.087c-4.35 4.35-5.769 10.79-3.783 16.612 5.864 17.194 9.042 34.999 9.69 52.721.509 13.906 17.454 20.446 27.294 10.606l37.106-37.106c59.271-59.259 59.271-155.699.001-214.959z"/></svg></a><a href=#contents:题目要求 class=headings>题目要求</a></h2><p>人眼视网膜由多层组织构成，利用给出的 OCT 视网膜断层图，实现如下图所示的图像分割。给出分割处理方法、结果、程序代码，分析讨论分割方法的稳定性。</p><p><img src=../../../images/retina-image-segmentation-0.jpg alt=retina-image-segmentation-0.jpg><span class=caption>※ 图 1：示例图像</span></p><p>其实题目仅仅要求画出 Vitreous, NFL, RPE 三条线，不过我了解到在以往的课程中，同学们都画出了全部 8 条线，所以我也就尝试画出了 8 条线。关于这种图像的分割方法，老师提供了一个参考程序：</p><div class=github><div class=logo><svg class="icon github-icon" viewBox="0 0 16 16"><path fill-rule="evenodd" clip-rule="evenodd" d="M2 2.5c0-.66304.26339-1.29893.73223-1.767767C3.20108.263392 3.83696.0 4.5.0h8.75c.1989.0.3897.0790176.5303.21967C13.921.360322 14 .551088 14 .75v12.5C14 13.4489 13.921 13.6397 13.7803 13.7803 13.6397 13.921 13.4489 14 13.25 14h-2.5C10.5511 14 10.3603 13.921 10.2197 13.7803 10.079 13.6397 10 13.4489 10 13.25S10.079 12.8603 10.2197 12.7197C10.3603 12.579 10.5511 12.5 10.75 12.5H12.5v-2h-8C4.30308 10.5 4.11056 10.5582 3.94657 10.6672 3.78257 10.7762 3.65442 10.9312 3.57816 11.1128 3.50191 11.2943 3.48096 11.4943 3.51793 11.6878 3.5549 11.8812 3.64816 12.0594 3.786 12.2c.13924.142200000000001.2163.3338.21424.5328C3.99818 12.9318 3.91716 13.1218 3.775 13.261 3.63285 13.4002 3.4412 13.4773 3.24222 13.4752 3.04325 13.4732 2.85324 13.3922 2.714 13.25c-.45829-.4671-.71471-1.0956-.714-1.75v-9zm10.5-1V9h-8C4.144 9 3.806 9.074 3.5 9.208V2.5c0-.26522.10536-.51957.29289-.70711C3.98043 1.60536 4.23478 1.5 4.5 1.5h8zM5 12.25V15.5C5 15.5464 5.01293 15.5919 5.03734 15.6314 5.06175 15.6709 5.09667 15.7028 5.1382 15.7236 5.17972 15.7444 5.22621 15.7532 5.27245 15.749 5.31869 15.7448 5.36286 15.7279 5.4 15.7l1.45-1.087C6.89328 14.5805 6.94591 14.563 7 14.563S7.10673 14.5805 7.15 14.613L8.6 15.7C8.63714 15.7279 8.68131 15.7448 8.72755 15.749 8.77379 15.7532 8.82028 15.7444 8.8618 15.7236 8.90333 15.7028 8.93826 15.6709 8.96266 15.6314 8.98707 15.5919 9 15.5464 9 15.5V12.25C9 12.1837 8.97366 12.1201 8.92678 12.0732 8.87989 12.0263 8.81631 12 8.75 12H5.25C5.1837 12 5.12011 12.0263 5.07322 12.0732 5.02634 12.1201 5 12.1837 5 12.25z"/></svg>
+<a class=name href=https://github.com/pangyuteng/caserel target=_blank>pangyuteng / caserel</a></div><div class=description>computer-aided segmentation of retinal layers in OCT images</div><div class=language><span class=language-color style=background-color:#e16737></span>
+<span class=language-name>MATLAB</span></div></div><p>然而该程序看起来有些复杂，在这么短时间内看懂是很困难的。这个作业毕竟只是个期末作业，自己从零开始写代码也是可以的。</p><h2 id=问题分析><a href=#问题分析 class=anchor-link aria-label=问题分析><svg viewBox="0 0 512 512" class="icon anchor-icon"><path d="M326.612 185.391c59.747 59.809 58.927 155.698.36 214.59-.11.12-.24.25-.36.37l-67.2 67.2c-59.27 59.27-155.699 59.262-214.96.0-59.27-59.26-59.27-155.7.0-214.96l37.106-37.106c9.84-9.84 26.786-3.3 27.294 10.606.648 17.722 3.826 35.527 9.69 52.721 1.986 5.822.567 12.262-3.783 16.612l-13.087 13.087c-28.026 28.026-28.905 73.66-1.155 101.96 28.024 28.579 74.086 28.749 102.325.51l67.2-67.19c28.191-28.191 28.073-73.757.0-101.83-3.701-3.694-7.429-6.564-10.341-8.569a16.037 16.037.0 01-6.947-12.606c-.396-10.567 3.348-21.456 11.698-29.806l21.054-21.055c5.521-5.521 14.182-6.199 20.584-1.731a152.482 152.482.0 0120.522 17.197zM467.547 44.449c-59.261-59.262-155.69-59.27-214.96.0l-67.2 67.2c-.12.12-.25.25-.36.37-58.566 58.892-59.387 154.781.36 214.59a152.454 152.454.0 0020.521 17.196c6.402 4.468 15.064 3.789 20.584-1.731l21.054-21.055c8.35-8.35 12.094-19.239 11.698-29.806a16.037 16.037.0 00-6.947-12.606c-2.912-2.005-6.64-4.875-10.341-8.569-28.073-28.073-28.191-73.639.0-101.83l67.2-67.19c28.239-28.239 74.3-28.069 102.325.51 27.75 28.3 26.872 73.934-1.155 101.96l-13.087 13.087c-4.35 4.35-5.769 10.79-3.783 16.612 5.864 17.194 9.042 34.999 9.69 52.721.509 13.906 17.454 20.446 27.294 10.606l37.106-37.106c59.271-59.259 59.271-155.699.001-214.959z"/></svg></a><a href=#contents:问题分析 class=headings>问题分析</a></h2><p>老师提供了 12 幅需要处理的图像，这些图像可以分为两类，一类是上端较为平滑的，一类是上端凹陷的。这两类图由于差异较大，在部分区域进行分割的时候会有一定的困难。下面我主要详细讲述如何画出 Vitreous, NFL, RPE 三条线，其他线的提取操作与之类似，就不再过多赘述，只讲一讲图像处理中比较困难的地方。</p><p><img src=../../../images/retina-image-segmentation-1.png alt=retina-image-segmentation-1.png><span class=caption>※ 图 2：需要处理的 12 幅图像</span></p><h3 id=vitreous-层><a href=#vitreous-层 class=anchor-link aria-label=vitreous-层><svg viewBox="0 0 512 512" class="icon anchor-icon"><path d="M326.612 185.391c59.747 59.809 58.927 155.698.36 214.59-.11.12-.24.25-.36.37l-67.2 67.2c-59.27 59.27-155.699 59.262-214.96.0-59.27-59.26-59.27-155.7.0-214.96l37.106-37.106c9.84-9.84 26.786-3.3 27.294 10.606.648 17.722 3.826 35.527 9.69 52.721 1.986 5.822.567 12.262-3.783 16.612l-13.087 13.087c-28.026 28.026-28.905 73.66-1.155 101.96 28.024 28.579 74.086 28.749 102.325.51l67.2-67.19c28.191-28.191 28.073-73.757.0-101.83-3.701-3.694-7.429-6.564-10.341-8.569a16.037 16.037.0 01-6.947-12.606c-.396-10.567 3.348-21.456 11.698-29.806l21.054-21.055c5.521-5.521 14.182-6.199 20.584-1.731a152.482 152.482.0 0120.522 17.197zM467.547 44.449c-59.261-59.262-155.69-59.27-214.96.0l-67.2 67.2c-.12.12-.25.25-.36.37-58.566 58.892-59.387 154.781.36 214.59a152.454 152.454.0 0020.521 17.196c6.402 4.468 15.064 3.789 20.584-1.731l21.054-21.055c8.35-8.35 12.094-19.239 11.698-29.806a16.037 16.037.0 00-6.947-12.606c-2.912-2.005-6.64-4.875-10.341-8.569-28.073-28.073-28.191-73.639.0-101.83l67.2-67.19c28.239-28.239 74.3-28.069 102.325.51 27.75 28.3 26.872 73.934-1.155 101.96l-13.087 13.087c-4.35 4.35-5.769 10.79-3.783 16.612 5.864 17.194 9.042 34.999 9.69 52.721.509 13.906 17.454 20.446 27.294 10.606l37.106-37.106c59.271-59.259 59.271-155.699.001-214.959z"/></svg></a><a href=#contents:vitreous-层 class=headings>Vitreous 层</a></h3><p>通过观察所给的示意图可知，Vitreous 层是断层图中最上面的一层。该层与背景黑色的边界清晰，因此分割该层很容易。可以考虑先试用中值滤波去除背景噪点的干扰，然后使用大津法确定合适的二值化阈值，进行二值化操作。</p><div class=highlight><div class=chroma><div class=table-container><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-matlab data-lang=matlab><span class=line><span class=cl><span class=n>I0</span> <span class=p>=</span> <span class=n>imread</span><span class=p>(</span><span class=s>&#39;1.tif&#39;</span><span class=p>);</span>
+</span></span><span class=line><span class=cl><span class=n>I1</span> <span class=p>=</span> <span class=n>medfilt2</span><span class=p>(</span><span class=n>I0</span><span class=p>,[</span><span class=mi>5</span><span class=p>,</span> <span class=mi>5</span><span class=p>]);</span> <span class=c>% 中值滤波</span>
+</span></span><span class=line><span class=cl><span class=n>thresh</span> <span class=p>=</span> <span class=n>graythresh</span><span class=p>(</span><span class=n>I1</span><span class=p>);</span> <span class=c>% 大津法全局阈值调整</span>
+</span></span><span class=line><span class=cl><span class=n>I2</span> <span class=p>=</span> <span class=n>imbinarize</span><span class=p>(</span><span class=n>I1</span><span class=p>,</span> <span class=n>thresh</span><span class=p>);</span> <span class=c>% 二值化</span>
+</span></span></code></pre></td></tr></table></div></div></div><p>对三幅图（#1、#2、#11）进行处理，得到的结果如图 3 至图 5 所示，可以看出效果良好。</p><p><img src=../../../images/retina-image-segmentation-2.png alt=retina-image-segmentation-2.png><span class=caption>※ 图 3：Vitreous 层二值化（1）</span></p><p><img src=../../../images/retina-image-segmentation-3.png alt=retina-image-segmentation-3.png><span class=caption>※ 图 4：Vitreous 层二值化（2）</span></p><p><img src=../../../images/retina-image-segmentation-4.png alt=retina-image-segmentation-4.png><span class=caption>※ 图 5：Vitreous 层二值化（3）</span></p><p>接着对二值化后的图像进行边缘提取。这里我是使用的是 Canny 算子进行边缘检测。完成后对整幅图逐个像素点从上至下，从左至右进行遍历，提取最上层白点的边缘。具体代码如下。</p><div class=highlight><div class=chroma><div class=table-container><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-matlab data-lang=matlab><span class=line><span class=cl><span class=p>[</span><span class=n>m</span><span class=p>,</span> <span class=n>n</span><span class=p>]</span> <span class=p>=</span> <span class=nb>size</span><span class=p>(</span><span class=n>I0</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=k>for</span> <span class=nb>j</span> <span class=p>=</span> <span class=mi>1</span><span class=p>:</span><span class=n>n</span>
+</span></span><span class=line><span class=cl>    <span class=n>ymin</span><span class=p>(</span><span class=nb>j</span><span class=p>)</span> <span class=p>=</span> <span class=n>m</span><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=k>end</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=k>for</span> <span class=nb>i</span> <span class=p>=</span> <span class=mi>1</span><span class=p>:</span><span class=n>m</span>
+</span></span><span class=line><span class=cl>    <span class=k>for</span> <span class=nb>j</span> <span class=p>=</span> <span class=mi>1</span><span class=p>:</span><span class=n>n</span>
+</span></span><span class=line><span class=cl>        <span class=k>if</span> <span class=n>I3</span><span class=p>(</span><span class=nb>i</span><span class=p>,</span> <span class=nb>j</span><span class=p>)</span> <span class=o>==</span> <span class=mi>1</span>
+</span></span><span class=line><span class=cl>            <span class=k>if</span> <span class=nb>i</span> <span class=o>&lt;</span> <span class=n>ymin</span><span class=p>(</span><span class=nb>j</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>                <span class=n>ymin</span><span class=p>(</span><span class=nb>j</span><span class=p>)</span> <span class=p>=</span> <span class=nb>i</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>            <span class=k>elseif</span> <span class=nb>i</span> <span class=o>&lt;</span> <span class=n>ymin</span><span class=p>(</span><span class=nb>j</span><span class=p>)</span> <span class=o>+</span> <span class=mi>10</span> <span class=o>&amp;&amp;</span> <span class=nb>j</span> <span class=o>~=</span> <span class=mi>2</span>
+</span></span><span class=line><span class=cl>                <span class=k>if</span> <span class=n>I3</span><span class=p>(</span><span class=nb>i</span><span class=p>,</span> <span class=nb>j</span><span class=o>+</span><span class=mi>1</span><span class=p>)</span> <span class=o>==</span> <span class=mi>1</span> <span class=o>&amp;&amp;</span> <span class=n>I3</span><span class=p>(</span><span class=nb>i</span><span class=p>,</span> <span class=nb>j</span><span class=o>-</span><span class=mi>1</span><span class=p>)</span> <span class=o>==</span> <span class=mi>1</span>
+</span></span><span class=line><span class=cl>                    <span class=n>I3</span><span class=p>(</span><span class=nb>i</span><span class=p>,</span><span class=nb>j</span><span class=p>)</span> <span class=p>=</span> <span class=mi>0</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>                <span class=k>end</span>
+</span></span><span class=line><span class=cl>            <span class=k>else</span>
+</span></span><span class=line><span class=cl>                <span class=n>I3</span><span class=p>(</span><span class=nb>i</span><span class=p>,</span><span class=nb>j</span><span class=p>)</span> <span class=p>=</span> <span class=mi>0</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>            <span class=k>end</span>
+</span></span><span class=line><span class=cl>        <span class=k>end</span>
+</span></span><span class=line><span class=cl>    <span class=k>end</span>
+</span></span><span class=line><span class=cl><span class=k>end</span>
+</span></span></code></pre></td></tr></table></div></div></div><p>图 6 和图 7 所示的是对第一幅图（#1）进行边缘检测和提取最上层边缘线条的结果。</p><p><img src=../../../images/retina-image-segmentation-5.png alt=retina-image-segmentation-5.png><span class=caption>※ 图 6：Vitreous 层边缘检测</span></p><p><img src=../../../images/retina-image-segmentation-6.png alt=retina-image-segmentation-6.png><span class=caption>※ 图 7：Vitreous 层提取最上层边缘</span></p><p>目前已经将 Vitreous 层的边缘提取出来，只需要对该条线上的每个点进行拟合，形成一条曲线即可，具体代码如下所示。</p><div class=highlight><div class=chroma><div class=table-container><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-matlab data-lang=matlab><span class=line><span class=cl><span class=n>k</span> <span class=p>=</span> <span class=mi>1</span><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=k>for</span> <span class=nb>i</span> <span class=p>=</span> <span class=mi>1</span><span class=p>:</span><span class=n>m</span>
+</span></span><span class=line><span class=cl>    <span class=k>for</span> <span class=nb>j</span> <span class=p>=</span> <span class=mi>1</span><span class=p>:</span><span class=n>n</span>
+</span></span><span class=line><span class=cl>        <span class=k>if</span> <span class=n>I3</span><span class=p>(</span><span class=nb>i</span><span class=p>,</span><span class=nb>j</span><span class=p>)</span> <span class=o>==</span> <span class=mi>1</span>
+</span></span><span class=line><span class=cl>            <span class=k>if</span> <span class=nb>i</span> <span class=o>==</span> <span class=n>ymin</span><span class=p>(</span><span class=nb>j</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>                <span class=n>yV</span><span class=p>(</span><span class=n>k</span><span class=p>)</span> <span class=p>=</span> <span class=nb>i</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>                <span class=n>xV</span><span class=p>(</span><span class=n>k</span><span class=p>)</span> <span class=p>=</span> <span class=nb>j</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>                <span class=n>k</span> <span class=p>=</span> <span class=n>k</span> <span class=o>+</span> <span class=mi>1</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>            <span class=k>end</span>
+</span></span><span class=line><span class=cl>        <span class=k>end</span>
+</span></span><span class=line><span class=cl>    <span class=k>end</span>
+</span></span><span class=line><span class=cl><span class=k>end</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>imshow</span><span class=p>(</span><span class=n>I0</span><span class=p>);</span>
+</span></span><span class=line><span class=cl><span class=n>hold</span> <span class=n>on</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c>% 绘制边界</span>
+</span></span><span class=line><span class=cl><span class=n>pV</span> <span class=p>=</span> <span class=n>polyfit</span><span class=p>(</span><span class=n>xV</span><span class=p>,</span> <span class=n>yV</span><span class=p>,</span> <span class=mi>10</span><span class=p>);</span>
+</span></span><span class=line><span class=cl><span class=n>y1V</span> <span class=p>=</span> <span class=n>polyval</span><span class=p>(</span><span class=n>pV</span><span class=p>,</span> <span class=n>xV</span><span class=p>);</span>
+</span></span><span class=line><span class=cl><span class=n>xxV</span> <span class=p>=</span> <span class=nb>linspace</span><span class=p>(</span><span class=mi>1</span><span class=p>,</span> <span class=n>n</span><span class=p>,</span> <span class=mi>300</span><span class=p>);</span>
+</span></span><span class=line><span class=cl><span class=n>yyV</span> <span class=p>=</span> <span class=n>spline</span><span class=p>(</span><span class=n>xV</span><span class=p>,</span> <span class=n>y1V</span><span class=p>,</span> <span class=n>xxV</span><span class=p>);</span>
+</span></span><span class=line><span class=cl><span class=n>V</span> <span class=p>=</span> <span class=n>plot</span><span class=p>(</span><span class=n>xxV</span><span class=p>,</span> <span class=n>yyV</span><span class=p>,</span> <span class=s>&#39;-&#39;</span><span class=p>,</span> <span class=s>&#39;LineWidth&#39;</span><span class=p>,</span> <span class=mi>1</span><span class=p>,</span> <span class=s>&#39;color&#39;</span><span class=p>,</span> <span class=s>&#39;b&#39;</span><span class=p>);</span>
+</span></span><span class=line><span class=cl><span class=n>legend</span><span class=p>(</span><span class=s>&#39;Vitreous&#39;</span><span class=p>);</span>
+</span></span></code></pre></td></tr></table></div></div></div><p>对不同的图像（#1、#2、#11）进行处理，得到的结果如下。</p><p><img src=../../../images/retina-image-segmentation-7.png alt=retina-image-segmentation-7.png><span class=caption>※ 图 8：Vitreous 层结果（1）</span></p><p><img src=../../../images/retina-image-segmentation-8.png alt=retina-image-segmentation-8.png><span class=caption>※ 图 9：Vitreous 层结果（2）</span></p><p><img src=../../../images/retina-image-segmentation-9.png alt=retina-image-segmentation-9.png><span class=caption>※ 图 10：Vitreous 层结果（3）</span></p><h3 id=nfl-层><a href=#nfl-层 class=anchor-link aria-label=nfl-层><svg viewBox="0 0 512 512" class="icon anchor-icon"><path d="M326.612 185.391c59.747 59.809 58.927 155.698.36 214.59-.11.12-.24.25-.36.37l-67.2 67.2c-59.27 59.27-155.699 59.262-214.96.0-59.27-59.26-59.27-155.7.0-214.96l37.106-37.106c9.84-9.84 26.786-3.3 27.294 10.606.648 17.722 3.826 35.527 9.69 52.721 1.986 5.822.567 12.262-3.783 16.612l-13.087 13.087c-28.026 28.026-28.905 73.66-1.155 101.96 28.024 28.579 74.086 28.749 102.325.51l67.2-67.19c28.191-28.191 28.073-73.757.0-101.83-3.701-3.694-7.429-6.564-10.341-8.569a16.037 16.037.0 01-6.947-12.606c-.396-10.567 3.348-21.456 11.698-29.806l21.054-21.055c5.521-5.521 14.182-6.199 20.584-1.731a152.482 152.482.0 0120.522 17.197zM467.547 44.449c-59.261-59.262-155.69-59.27-214.96.0l-67.2 67.2c-.12.12-.25.25-.36.37-58.566 58.892-59.387 154.781.36 214.59a152.454 152.454.0 0020.521 17.196c6.402 4.468 15.064 3.789 20.584-1.731l21.054-21.055c8.35-8.35 12.094-19.239 11.698-29.806a16.037 16.037.0 00-6.947-12.606c-2.912-2.005-6.64-4.875-10.341-8.569-28.073-28.073-28.191-73.639.0-101.83l67.2-67.19c28.239-28.239 74.3-28.069 102.325.51 27.75 28.3 26.872 73.934-1.155 101.96l-13.087 13.087c-4.35 4.35-5.769 10.79-3.783 16.612 5.864 17.194 9.042 34.999 9.69 52.721.509 13.906 17.454 20.446 27.294 10.606l37.106-37.106c59.271-59.259 59.271-155.699.001-214.959z"/></svg></a><a href=#contents:nfl-层 class=headings>NFL 层</a></h3><p>NFL 层的检测有些困难，因为该层上下区域的灰度对比不是很明显，有的图像用肉眼看也十分难以辨别出 NFL 层的位置。由此可见，直接使用和提取 Vitreous 层相同的做法是不可行的。在多次尝试后，我发现在图像处理的第一步使用直方图均衡化的方法，能够很好地突出 NFL 层上下区域的差异。然后再使用大津法，对图像进行二值化操作，便能够较为有效地提取出所需区域。</p><div class=highlight><div class=chroma><div class=table-container><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-matlab data-lang=matlab><span class=line><span class=cl><span class=n>I0</span> <span class=p>=</span> <span class=n>imread</span><span class=p>(</span><span class=s>&#39;1.tif&#39;</span><span class=p>);</span>
+</span></span><span class=line><span class=cl><span class=n>I1</span> <span class=p>=</span> <span class=n>histeq</span><span class=p>(</span><span class=n>I0</span><span class=p>);</span> 
+</span></span><span class=line><span class=cl><span class=n>thresh</span> <span class=p>=</span> <span class=n>graythresh</span><span class=p>(</span><span class=n>I1</span><span class=p>);</span>
+</span></span><span class=line><span class=cl><span class=n>I2</span> <span class=p>=</span> <span class=n>imbinarize</span><span class=p>(</span><span class=n>I1</span><span class=p>,</span> <span class=n>thresh</span><span class=o>+</span><span class=mf>0.46</span><span class=p>);</span>
+</span></span></code></pre></td></tr></table></div></div></div><p>对三幅图（#1、#2、#11）进行处理，效果如下所示。可以看出，上层较为平滑的图像，其 NFL 层和 Vitreous 层之间的区域较宽，能够很好地分辨。但如图 11 和图 12 所示的上层下凹的图像，该区域较薄，不易分辨。</p><p><img src=../../../images/retina-image-segmentation-10.png alt=retina-image-segmentation-10.png><span class=caption>※ 图 11：NFL 层二值化（1）</span></p><p><img src=../../../images/retina-image-segmentation-11.png alt=retina-image-segmentation-11.png><span class=caption>※ 图 12：NFL 层二值化（2）</span></p><p><img src=../../../images/retina-image-segmentation-12.png alt=retina-image-segmentation-12.png><span class=caption>※ 图 13：NFL 层二值化（3）</span></p><p>为了提取 NFL 层，需要排除其他层的干扰。这里我同样采用了遍历整幅图的方法，从上至下，首先检测出第一个白点，然后去除白点下方一定距离外区域的所有白点。</p><div class=highlight><div class=chroma><div class=table-container><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-matlab data-lang=matlab><span class=line><span class=cl><span class=p>[</span><span class=n>m</span><span class=p>,</span> <span class=n>n</span><span class=p>]</span> <span class=p>=</span> <span class=nb>size</span><span class=p>(</span><span class=n>I0</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=k>for</span> <span class=nb>j</span> <span class=p>=</span> <span class=mi>1</span><span class=p>:</span><span class=n>n</span>
+</span></span><span class=line><span class=cl>    <span class=k>for</span> <span class=nb>i</span> <span class=p>=</span> <span class=mi>1</span><span class=p>:</span><span class=n>m</span>
+</span></span><span class=line><span class=cl>        <span class=k>if</span> <span class=n>I2</span><span class=p>(</span><span class=nb>i</span><span class=p>,</span> <span class=nb>j</span><span class=p>)</span> <span class=o>==</span> <span class=mi>1</span>
+</span></span><span class=line><span class=cl>            <span class=k>for</span> <span class=n>k</span> <span class=p>=</span> <span class=nb>i</span><span class=o>+</span><span class=mi>20</span><span class=p>:</span><span class=n>m</span>
+</span></span><span class=line><span class=cl>                <span class=n>I2</span><span class=p>(</span><span class=n>k</span><span class=p>,</span> <span class=nb>j</span><span class=p>)</span> <span class=p>=</span> <span class=mi>0</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>            <span class=k>end</span>
+</span></span><span class=line><span class=cl>        <span class=k>end</span>
+</span></span><span class=line><span class=cl>    <span class=k>end</span>
+</span></span><span class=line><span class=cl><span class=k>end</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c>% 确定第一个点</span>
+</span></span><span class=line><span class=cl><span class=k>for</span> <span class=nb>i</span> <span class=p>=</span> <span class=mi>1</span><span class=p>:</span><span class=n>m</span>
+</span></span><span class=line><span class=cl>    <span class=k>if</span> <span class=n>I2</span><span class=p>(</span><span class=nb>i</span><span class=p>,</span> <span class=nb>j</span><span class=p>)</span> <span class=o>==</span> <span class=mi>1</span>
+</span></span><span class=line><span class=cl>        <span class=n>k</span> <span class=p>=</span> <span class=nb>i</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=k>end</span>
+</span></span><span class=line><span class=cl><span class=k>end</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c>% 去除下方多余的点</span>
+</span></span><span class=line><span class=cl><span class=k>for</span> <span class=nb>j</span> <span class=p>=</span> <span class=mi>1</span><span class=p>:</span><span class=n>n</span>
+</span></span><span class=line><span class=cl>    <span class=k>for</span> <span class=nb>i</span> <span class=p>=</span> <span class=n>k</span><span class=o>+</span><span class=mi>140</span><span class=p>:</span><span class=n>m</span>
+</span></span><span class=line><span class=cl>        <span class=n>I2</span><span class=p>(</span><span class=nb>i</span><span class=p>,</span> <span class=nb>j</span><span class=p>)</span> <span class=p>=</span> <span class=mi>0</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=k>end</span>
+</span></span><span class=line><span class=cl><span class=k>end</span>
+</span></span></code></pre></td></tr></table></div></div></div><p>如果这种二值化图像z直接采用 Vitreous 层所用的 Canny 算子进行边缘检测，效果肯定很不好，因为该二值化后的图像上的点是杂散分布的，点与点之间距离很大，并未连通。可以考虑使用闭运算将距离较近的点进行连通，其效果如图 14 至图 16 所示。</p><div class=highlight><div class=chroma><div class=table-container><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-matlab data-lang=matlab><span class=line><span class=cl><span class=c>% 闭运算连通</span>
+</span></span><span class=line><span class=cl><span class=n>I3</span> <span class=p>=</span> <span class=n>imclose</span><span class=p>(</span><span class=n>I2</span><span class=p>,</span> <span class=nb>ones</span><span class=p>(</span><span class=mi>3</span><span class=p>));</span>
+</span></span></code></pre></td></tr></table></div></div></div><p><img src=../../../images/retina-image-segmentation-13.png alt=retina-image-segmentation-13.png><span class=caption>※ 图 14：NFL 层闭运算（1）</span></p><p><img src=../../../images/retina-image-segmentation-14.png alt=retina-image-segmentation-14.png><span class=caption>※ 图 15：NFL 层闭运算（2）</span></p><p><img src=../../../images/retina-image-segmentation-15.png alt=retina-image-segmentation-15.png><span class=caption>※ 图 16：NFL 层闭运算（3）</span></p><p>接着就可以提取 NFL 层的曲线。因为图 15 和图 16 中，仍有较多的点并未连通，因此决定不采用 Canny 算子边缘检测。如果直接由下至上遍历图像，提取第一次出现的白点，那么由于部分图像下方的杂散点太多，会影响边界的确认。因此依然考虑从上至下遍历，在同一个纵行，如果出现的第一个像素点是白点，贴紧该点的下方像素点依然是白点的话，那么就将该点去除，保留下方的点。如果该点为白点，其下方的点为黑色，那么该点下方的所有点都改为黑色。</p><div class=highlight><div class=chroma><div class=table-container><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-matlab data-lang=matlab><span class=line><span class=cl><span class=c>% 提取底部轮廓</span>
+</span></span><span class=line><span class=cl><span class=k>for</span> <span class=nb>j</span> <span class=p>=</span> <span class=mi>1</span><span class=p>:</span><span class=n>n</span>
+</span></span><span class=line><span class=cl>    <span class=k>for</span> <span class=nb>i</span> <span class=p>=</span> <span class=mi>1</span><span class=p>:</span><span class=n>m</span>
+</span></span><span class=line><span class=cl>        <span class=k>if</span> <span class=n>I3</span><span class=p>(</span><span class=nb>i</span><span class=p>,</span> <span class=nb>j</span><span class=p>)</span> <span class=o>==</span> <span class=mi>1</span> <span class=o>&amp;&amp;</span> <span class=n>I3</span><span class=p>(</span><span class=nb>i</span><span class=o>+</span><span class=mi>1</span><span class=p>,</span> <span class=nb>j</span><span class=p>)</span> <span class=o>==</span> <span class=mi>1</span>
+</span></span><span class=line><span class=cl>            <span class=n>I3</span><span class=p>(</span><span class=nb>i</span><span class=p>,</span> <span class=nb>j</span><span class=p>)</span> <span class=p>=</span> <span class=mi>0</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>        <span class=k>elseif</span> <span class=n>I3</span><span class=p>(</span><span class=nb>i</span><span class=p>,</span> <span class=nb>j</span><span class=p>)</span> <span class=o>==</span> <span class=mi>1</span> <span class=o>&amp;&amp;</span> <span class=n>I3</span><span class=p>(</span><span class=nb>i</span><span class=o>+</span><span class=mi>1</span><span class=p>,</span> <span class=nb>j</span><span class=p>)</span> <span class=o>==</span> <span class=mi>0</span> <span class=c>% 去除底部多余杂点</span>
+</span></span><span class=line><span class=cl>            <span class=k>for</span> <span class=n>k</span> <span class=p>=</span> <span class=nb>i</span><span class=o>+</span><span class=mi>1</span><span class=p>:</span><span class=n>m</span>
+</span></span><span class=line><span class=cl>                <span class=n>I3</span><span class=p>(</span><span class=n>k</span><span class=p>,</span> <span class=nb>j</span><span class=p>)</span> <span class=p>=</span> <span class=mi>0</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>            <span class=k>end</span>
+</span></span><span class=line><span class=cl>        <span class=k>end</span>
+</span></span><span class=line><span class=cl>    <span class=k>end</span>
+</span></span><span class=line><span class=cl><span class=k>end</span>
+</span></span></code></pre></td></tr></table></div></div></div><p>其效果如下所示。效果还算可以，能够辨别出该条线的区域在哪里。</p><p><img src=../../../images/retina-image-segmentation-16.png alt=retina-image-segmentation-16.png><span class=caption>※ 图 17：NFL 层边缘提取（1）</span></p><p><img src=../../../images/retina-image-segmentation-17.png alt=retina-image-segmentation-17.png><span class=caption>※ 图 18：NFL 层边缘提取（2）</span></p><p><img src=../../../images/retina-image-segmentation-18.png alt=retina-image-segmentation-18.png><span class=caption>※ 图 19：NFL 层边缘提取（3）</span></p><p>最后就是将该边缘进行函数拟合，然后绘制出来。</p><div class=highlight><div class=chroma><div class=table-container><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span><span class=lnt>33
+</span><span class=lnt>34
+</span><span class=lnt>35
+</span><span class=lnt>36
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-matlab data-lang=matlab><span class=line><span class=cl><span class=n>I4</span> <span class=p>=</span> <span class=n>I3</span><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=k>for</span> <span class=nb>j</span> <span class=p>=</span> <span class=mi>1</span><span class=p>:</span><span class=n>n</span>
+</span></span><span class=line><span class=cl>    <span class=n>ymax</span><span class=p>(</span><span class=nb>j</span><span class=p>)</span> <span class=p>=</span> <span class=mi>1</span><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=k>end</span>
+</span></span><span class=line><span class=cl><span class=k>for</span> <span class=nb>i</span> <span class=p>=</span> <span class=mi>1</span><span class=p>:</span><span class=n>m</span>
+</span></span><span class=line><span class=cl>    <span class=k>for</span> <span class=nb>j</span> <span class=p>=</span> <span class=mi>1</span><span class=p>:</span><span class=n>n</span>
+</span></span><span class=line><span class=cl>        <span class=k>if</span> <span class=n>I4</span><span class=p>(</span><span class=nb>i</span><span class=p>,</span><span class=nb>j</span><span class=p>)</span> <span class=o>==</span> <span class=mi>1</span>
+</span></span><span class=line><span class=cl>            <span class=k>if</span> <span class=nb>i</span> <span class=o>&gt;</span> <span class=n>ymax</span><span class=p>(</span><span class=nb>j</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>                <span class=n>ymax</span><span class=p>(</span><span class=nb>j</span><span class=p>)</span> <span class=p>=</span> <span class=nb>i</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>            <span class=k>end</span>
+</span></span><span class=line><span class=cl>        <span class=k>end</span>
+</span></span><span class=line><span class=cl>    <span class=k>end</span>
+</span></span><span class=line><span class=cl><span class=k>end</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>k</span> <span class=p>=</span> <span class=mi>1</span><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=k>for</span> <span class=nb>i</span> <span class=p>=</span> <span class=mi>1</span><span class=p>:</span><span class=n>m</span>
+</span></span><span class=line><span class=cl>    <span class=k>for</span> <span class=nb>j</span> <span class=p>=</span> <span class=mi>1</span><span class=p>:</span><span class=n>n</span>
+</span></span><span class=line><span class=cl>        <span class=k>if</span> <span class=n>I4</span><span class=p>(</span><span class=nb>i</span><span class=p>,</span><span class=nb>j</span><span class=p>)</span> <span class=o>==</span> <span class=mi>1</span>
+</span></span><span class=line><span class=cl>            <span class=k>if</span> <span class=nb>i</span> <span class=o>==</span> <span class=n>ymax</span><span class=p>(</span><span class=nb>j</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>                <span class=n>yN</span><span class=p>(</span><span class=n>k</span><span class=p>)</span> <span class=p>=</span> <span class=nb>i</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>                <span class=n>xN</span><span class=p>(</span><span class=n>k</span><span class=p>)</span> <span class=p>=</span> <span class=nb>j</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>                <span class=n>k</span> <span class=p>=</span> <span class=n>k</span><span class=o>+</span><span class=mi>1</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>            <span class=k>end</span>
+</span></span><span class=line><span class=cl>        <span class=k>end</span>
+</span></span><span class=line><span class=cl>    <span class=k>end</span>
+</span></span><span class=line><span class=cl><span class=k>end</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>imshow</span><span class=p>(</span><span class=n>I0</span><span class=p>);</span>
+</span></span><span class=line><span class=cl><span class=n>hold</span> <span class=n>on</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>pN</span> <span class=p>=</span> <span class=n>polyfit</span><span class=p>(</span><span class=n>xN</span><span class=p>,</span> <span class=n>yN</span><span class=p>,</span> <span class=mi>8</span><span class=p>);</span>
+</span></span><span class=line><span class=cl><span class=n>y1N</span> <span class=p>=</span> <span class=n>polyval</span><span class=p>(</span><span class=n>pN</span><span class=p>,</span> <span class=n>xN</span><span class=p>);</span>
+</span></span><span class=line><span class=cl><span class=n>xxN</span> <span class=p>=</span> <span class=nb>linspace</span><span class=p>(</span><span class=mi>1</span><span class=p>,</span> <span class=n>n</span><span class=p>);</span>
+</span></span><span class=line><span class=cl><span class=n>yyN</span> <span class=p>=</span> <span class=n>spline</span><span class=p>(</span><span class=n>xN</span><span class=p>,</span> <span class=n>y1N</span><span class=p>,</span> <span class=n>xxN</span><span class=p>);</span>
+</span></span><span class=line><span class=cl><span class=n>N</span> <span class=p>=</span> <span class=n>plot</span><span class=p>(</span><span class=n>xxN</span><span class=p>,</span> <span class=n>yyN</span><span class=p>,</span> <span class=s>&#39;-&#39;</span><span class=p>,</span> <span class=s>&#39;LineWidth&#39;</span><span class=p>,</span> <span class=mi>1</span><span class=p>,</span> <span class=s>&#39;color&#39;</span><span class=p>,</span> <span class=s>&#39;g&#39;</span><span class=p>);</span>
+</span></span><span class=line><span class=cl><span class=n>legend</span><span class=p>(</span><span class=s>&#39;NFL&#39;</span><span class=p>);</span>
+</span></span></code></pre></td></tr></table></div></div></div><p><img src=../../../images/retina-image-segmentation-19.png alt=retina-image-segmentation-19.png><span class=caption>※ 图 20：NFL 层结果（1）</span></p><p><img src=../../../images/retina-image-segmentation-20.png alt=retina-image-segmentation-20.png><span class=caption>※ 图 21：NFL 层结果（2）</span></p><p><img src=../../../images/retina-image-segmentation-21.png alt=retina-image-segmentation-21.png><span class=caption>※ 图 22：NFL 层结果（3）</span></p><p>由于图像的边界模糊，提取出来的边缘并不太连续，周围有很多杂散点，因此拟合出来的曲线在部分图中稍微有些偏离。不过曲线主体大部分是与 NFL 层吻合的。</p><h3 id=rpe-层><a href=#rpe-层 class=anchor-link aria-label=rpe-层><svg viewBox="0 0 512 512" class="icon anchor-icon"><path d="M326.612 185.391c59.747 59.809 58.927 155.698.36 214.59-.11.12-.24.25-.36.37l-67.2 67.2c-59.27 59.27-155.699 59.262-214.96.0-59.27-59.26-59.27-155.7.0-214.96l37.106-37.106c9.84-9.84 26.786-3.3 27.294 10.606.648 17.722 3.826 35.527 9.69 52.721 1.986 5.822.567 12.262-3.783 16.612l-13.087 13.087c-28.026 28.026-28.905 73.66-1.155 101.96 28.024 28.579 74.086 28.749 102.325.51l67.2-67.19c28.191-28.191 28.073-73.757.0-101.83-3.701-3.694-7.429-6.564-10.341-8.569a16.037 16.037.0 01-6.947-12.606c-.396-10.567 3.348-21.456 11.698-29.806l21.054-21.055c5.521-5.521 14.182-6.199 20.584-1.731a152.482 152.482.0 0120.522 17.197zM467.547 44.449c-59.261-59.262-155.69-59.27-214.96.0l-67.2 67.2c-.12.12-.25.25-.36.37-58.566 58.892-59.387 154.781.36 214.59a152.454 152.454.0 0020.521 17.196c6.402 4.468 15.064 3.789 20.584-1.731l21.054-21.055c8.35-8.35 12.094-19.239 11.698-29.806a16.037 16.037.0 00-6.947-12.606c-2.912-2.005-6.64-4.875-10.341-8.569-28.073-28.073-28.191-73.639.0-101.83l67.2-67.19c28.239-28.239 74.3-28.069 102.325.51 27.75 28.3 26.872 73.934-1.155 101.96l-13.087 13.087c-4.35 4.35-5.769 10.79-3.783 16.612 5.864 17.194 9.042 34.999 9.69 52.721.509 13.906 17.454 20.446 27.294 10.606l37.106-37.106c59.271-59.259 59.271-155.699.001-214.959z"/></svg></a><a href=#contents:rpe-层 class=headings>RPE 层</a></h3><p>RPE 层的分辨较 NFL 层容易很多，但是因为其与下方区域的边界灰度值较高，因此不太好确定具体的边界。直接进行二值化操作，图像的下方会出现很多杂散点。因此我先使用了伽马变换提高图像的灰度值，便于区分。然后使用上述同样的方法进行二值化操作，具体代码和处理后的图像如下。</p><div class=highlight><div class=chroma><div class=table-container><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-matlab data-lang=matlab><span class=line><span class=cl><span class=n>I0</span> <span class=p>=</span> <span class=n>imread</span><span class=p>(</span><span class=s>&#39;1.tif&#39;</span><span class=p>);</span>
+</span></span><span class=line><span class=cl><span class=n>I1</span> <span class=p>=</span> <span class=n>medfilt2</span><span class=p>(</span><span class=n>I0</span><span class=p>,[</span><span class=mi>5</span><span class=p>,</span> <span class=mi>5</span><span class=p>]);</span>
+</span></span><span class=line><span class=cl><span class=n>I1</span> <span class=p>=</span> <span class=n>imadjust</span><span class=p>(</span><span class=n>I1</span><span class=p>,[],[],</span><span class=mf>1.5</span><span class=p>);</span> <span class=c>% 伽马变换</span>
+</span></span><span class=line><span class=cl><span class=n>thresh</span> <span class=p>=</span> <span class=n>graythresh</span><span class=p>(</span><span class=n>I1</span><span class=p>);</span>
+</span></span><span class=line><span class=cl><span class=n>I2</span> <span class=p>=</span> <span class=n>imbinarize</span><span class=p>(</span><span class=n>I1</span><span class=p>,</span> <span class=n>thresh</span><span class=o>+</span><span class=mf>0.17</span><span class=p>);</span>
+</span></span></code></pre></td></tr></table></div></div></div><p><img src=../../../images/retina-image-segmentation-22.png alt=retina-image-segmentation-22.png><span class=caption>※ 图 23：RPE 层二值化（1）</span></p><p><img src=../../../images/retina-image-segmentation-23.png alt=retina-image-segmentation-23.png><span class=caption>※ 图 24：RPE 层二值化（2）</span></p><p><img src=../../../images/retina-image-segmentation-24.png alt=retina-image-segmentation-24.png><span class=caption>※ 图 25：RPE 层二值化（3）</span></p><p>然后考虑提取最下方边缘的曲线。由于是最下方的曲线，因此可以使用由下至上的遍历方法。保留同一列第一次出现的白点。但因为下方仍存在部分杂散点，曲线存在间断，拟合曲线的时候会在间断处发生明显的偏移，所以我使用了膨胀操作，然后保留连通的最大区域，再一次进行遍历，保留同一列第一次出现的白点，即为下边界。具体代码如下所示。</p><div class=highlight><div class=chroma><div class=table-container><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span><span class=lnt>33
+</span><span class=lnt>34
+</span><span class=lnt>35
+</span><span class=lnt>36
+</span><span class=lnt>37
+</span><span class=lnt>38
+</span><span class=lnt>39
+</span><span class=lnt>40
+</span><span class=lnt>41
+</span><span class=lnt>42
+</span><span class=lnt>43
+</span><span class=lnt>44
+</span><span class=lnt>45
+</span><span class=lnt>46
+</span><span class=lnt>47
+</span><span class=lnt>48
+</span><span class=lnt>49
+</span><span class=lnt>50
+</span><span class=lnt>51
+</span><span class=lnt>52
+</span><span class=lnt>53
+</span><span class=lnt>54
+</span><span class=lnt>55
+</span><span class=lnt>56
+</span><span class=lnt>57
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-matlab data-lang=matlab><span class=line><span class=cl><span class=n>I3</span> <span class=p>=</span> <span class=n>edge</span><span class=p>(</span><span class=n>I2</span><span class=p>,</span> <span class=s>&#39;canny&#39;</span><span class=p>);</span> 
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c>% 边界特征提取</span>
+</span></span><span class=line><span class=cl><span class=p>[</span><span class=n>m</span><span class=p>,</span> <span class=n>n</span><span class=p>]</span> <span class=p>=</span> <span class=nb>size</span><span class=p>(</span><span class=n>I0</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=k>for</span> <span class=nb>j</span> <span class=p>=</span> <span class=mi>1</span><span class=p>:</span><span class=n>n</span>
+</span></span><span class=line><span class=cl>    <span class=n>ymin</span><span class=p>(</span><span class=nb>j</span><span class=p>)</span> <span class=p>=</span> <span class=mi>1</span><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=k>end</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=k>for</span> <span class=nb>i</span> <span class=p>=</span> <span class=n>m</span><span class=p>:</span><span class=o>-</span><span class=mi>1</span><span class=p>:</span><span class=mi>1</span>
+</span></span><span class=line><span class=cl>    <span class=k>for</span> <span class=nb>j</span> <span class=p>=</span> <span class=mi>1</span><span class=p>:</span><span class=n>n</span>
+</span></span><span class=line><span class=cl>        <span class=k>if</span> <span class=n>I3</span><span class=p>(</span><span class=nb>i</span><span class=p>,</span> <span class=nb>j</span><span class=p>)</span> <span class=o>==</span> <span class=mi>1</span>
+</span></span><span class=line><span class=cl>            <span class=k>if</span> <span class=nb>i</span> <span class=o>&gt;</span> <span class=n>ymin</span><span class=p>(</span><span class=nb>j</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>                <span class=n>ymin</span><span class=p>(</span><span class=nb>j</span><span class=p>)</span> <span class=p>=</span> <span class=nb>i</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>            <span class=k>else</span>
+</span></span><span class=line><span class=cl>                <span class=n>I3</span><span class=p>(</span><span class=nb>i</span><span class=p>,</span><span class=nb>j</span><span class=p>)=</span><span class=mi>0</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>            <span class=k>end</span>
+</span></span><span class=line><span class=cl>        <span class=k>end</span>
+</span></span><span class=line><span class=cl>    <span class=k>end</span>
+</span></span><span class=line><span class=cl><span class=k>end</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c>%区域膨胀，连通边缘</span>
+</span></span><span class=line><span class=cl><span class=n>B1</span> <span class=p>=</span> <span class=p>[</span><span class=mi>0</span> <span class=mi>0</span> <span class=mi>0</span>
+</span></span><span class=line><span class=cl>      <span class=mi>1</span> <span class=mi>1</span> <span class=mi>1</span>
+</span></span><span class=line><span class=cl>      <span class=mi>0</span> <span class=mi>0</span> <span class=mi>0</span><span class=p>];</span>
+</span></span><span class=line><span class=cl><span class=k>for</span> <span class=nb>i</span> <span class=p>=</span> <span class=mi>1</span><span class=p>:</span><span class=mi>6</span>
+</span></span><span class=line><span class=cl>    <span class=n>I3</span> <span class=p>=</span> <span class=n>imdilate</span><span class=p>(</span><span class=n>I3</span><span class=p>,</span> <span class=n>B1</span><span class=p>);</span>
+</span></span><span class=line><span class=cl><span class=k>end</span>
+</span></span><span class=line><span class=cl><span class=n>B2</span> <span class=p>=</span> <span class=p>[</span><span class=mi>0</span> <span class=mi>1</span> <span class=mi>0</span>
+</span></span><span class=line><span class=cl>      <span class=mi>1</span> <span class=mi>1</span> <span class=mi>1</span>
+</span></span><span class=line><span class=cl>      <span class=mi>0</span> <span class=mi>1</span> <span class=mi>0</span><span class=p>];</span>
+</span></span><span class=line><span class=cl><span class=k>for</span> <span class=nb>i</span> <span class=p>=</span> <span class=mi>1</span><span class=p>:</span><span class=mi>4</span>
+</span></span><span class=line><span class=cl>    <span class=n>I3</span> <span class=p>=</span> <span class=n>imdilate</span><span class=p>(</span><span class=n>I3</span><span class=p>,</span> <span class=n>B2</span><span class=p>);</span>
+</span></span><span class=line><span class=cl><span class=k>end</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>imLabel</span> <span class=p>=</span> <span class=n>bwlabel</span><span class=p>(</span><span class=n>I3</span><span class=p>);</span> <span class=c>% 对各连通域进行标记</span>
+</span></span><span class=line><span class=cl><span class=n>stats</span> <span class=p>=</span> <span class=n>regionprops</span><span class=p>(</span><span class=n>imLabel</span><span class=p>,</span> <span class=s>&#39;Area&#39;</span><span class=p>);</span> <span class=c>% 求各连通域的大小</span>
+</span></span><span class=line><span class=cl><span class=n>area</span> <span class=p>=</span> <span class=nb>cat</span><span class=p>(</span><span class=mi>1</span><span class=p>,</span> <span class=n>stats</span><span class=p>.</span><span class=n>Area</span><span class=p>);</span>
+</span></span><span class=line><span class=cl><span class=n>index</span> <span class=p>=</span> <span class=nb>find</span><span class=p>(</span><span class=n>area</span> <span class=o>==</span> <span class=n>max</span><span class=p>(</span><span class=n>area</span><span class=p>));</span> <span class=c>% 求最大连通域的索引</span>
+</span></span><span class=line><span class=cl><span class=n>I3</span> <span class=p>=</span> <span class=n>ismember</span><span class=p>(</span><span class=n>imLabel</span><span class=p>,</span> <span class=n>index</span><span class=p>);</span> <span class=c>% 获取最大连通域图像</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c>% 提取下边界特征</span>
+</span></span><span class=line><span class=cl><span class=k>for</span> <span class=nb>j</span> <span class=p>=</span> <span class=mi>1</span><span class=p>:</span><span class=n>n</span>
+</span></span><span class=line><span class=cl>    <span class=n>ymin</span><span class=p>(</span><span class=nb>j</span><span class=p>)</span> <span class=p>=</span> <span class=mi>1</span><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=k>end</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=k>for</span> <span class=nb>i</span> <span class=p>=</span> <span class=n>m</span><span class=p>:</span><span class=o>-</span><span class=mi>1</span><span class=p>:</span><span class=mi>1</span>
+</span></span><span class=line><span class=cl>    <span class=k>for</span> <span class=nb>j</span> <span class=p>=</span> <span class=mi>1</span><span class=p>:</span><span class=n>n</span>
+</span></span><span class=line><span class=cl>        <span class=k>if</span> <span class=n>I3</span><span class=p>(</span><span class=nb>i</span><span class=p>,</span> <span class=nb>j</span><span class=p>)</span> <span class=o>==</span> <span class=mi>1</span>
+</span></span><span class=line><span class=cl>            <span class=k>if</span> <span class=nb>i</span> <span class=o>&gt;</span> <span class=n>ymin</span><span class=p>(</span><span class=nb>j</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>                <span class=n>ymin</span><span class=p>(</span><span class=nb>j</span><span class=p>)</span> <span class=p>=</span> <span class=nb>i</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>            <span class=k>else</span>
+</span></span><span class=line><span class=cl>                <span class=n>I3</span><span class=p>(</span><span class=nb>i</span><span class=p>,</span><span class=nb>j</span><span class=p>)=</span><span class=mi>0</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>            <span class=k>end</span>
+</span></span><span class=line><span class=cl>        <span class=k>end</span>
+</span></span><span class=line><span class=cl>    <span class=k>end</span>
+</span></span><span class=line><span class=cl><span class=k>end</span>
+</span></span></code></pre></td></tr></table></div></div></div><p>通过上述操作处理后的图像如下所示。因为进行了膨胀操作，在图像边缘部分，有些杂散点也与 RPE 层曲线连通，因此在一些图像的边缘部分，曲线并不太理想。不过进行膨胀操作，能够有效地避免了曲线的间断。</p><p><img src=../../../images/retina-image-segmentation-25.png alt=retina-image-segmentation-25.png><span class=caption>※ 图 26：RPE 层边缘提取（1）</span></p><p><img src=../../../images/retina-image-segmentation-26.png alt=retina-image-segmentation-26.png><span class=caption>※ 图 27：RPE 层边缘提取（2）</span></p><p><img src=../../../images/retina-image-segmentation-27.png alt=retina-image-segmentation-27.png><span class=caption>※ 图 28：RPE 层边缘提取（3）</span></p><p>最后同样是通过提取的边缘数据进行曲线拟合与绘制。</p><div class=highlight><div class=chroma><div class=table-container><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-matlab data-lang=matlab><span class=line><span class=cl><span class=n>k</span> <span class=p>=</span> <span class=mi>1</span><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=k>for</span> <span class=nb>i</span> <span class=p>=</span> <span class=mi>1</span><span class=p>:</span><span class=n>m</span>
+</span></span><span class=line><span class=cl>    <span class=k>for</span> <span class=nb>j</span> <span class=p>=</span> <span class=n>n</span><span class=p>:</span><span class=o>-</span><span class=mi>1</span><span class=p>:</span><span class=mi>1</span>
+</span></span><span class=line><span class=cl>        <span class=k>if</span> <span class=n>I3</span><span class=p>(</span><span class=nb>i</span><span class=p>,</span><span class=nb>j</span><span class=p>)</span> <span class=o>==</span> <span class=mi>1</span>
+</span></span><span class=line><span class=cl>            <span class=k>if</span> <span class=nb>i</span> <span class=o>==</span> <span class=n>ymin</span><span class=p>(</span><span class=nb>j</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>                <span class=n>yV</span><span class=p>(</span><span class=n>k</span><span class=p>)</span> <span class=p>=</span> <span class=nb>i</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>                <span class=n>xV</span><span class=p>(</span><span class=n>k</span><span class=p>)</span> <span class=p>=</span> <span class=nb>j</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>                <span class=n>k</span> <span class=p>=</span> <span class=n>k</span> <span class=o>+</span> <span class=mi>1</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>            <span class=k>end</span>
+</span></span><span class=line><span class=cl>        <span class=k>end</span>
+</span></span><span class=line><span class=cl>    <span class=k>end</span>
+</span></span><span class=line><span class=cl><span class=k>end</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>imshow</span><span class=p>(</span><span class=n>I0</span><span class=p>);</span>
+</span></span><span class=line><span class=cl><span class=n>hold</span> <span class=n>on</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c>%绘制边界</span>
+</span></span><span class=line><span class=cl><span class=n>pV</span> <span class=p>=</span> <span class=n>polyfit</span><span class=p>(</span><span class=n>xV</span><span class=p>,</span> <span class=n>yV</span><span class=p>,</span> <span class=mi>10</span><span class=p>);</span>
+</span></span><span class=line><span class=cl><span class=n>y1V</span> <span class=p>=</span> <span class=n>polyval</span><span class=p>(</span><span class=n>pV</span><span class=p>,</span> <span class=n>xV</span><span class=p>);</span>
+</span></span><span class=line><span class=cl><span class=n>xxV</span> <span class=p>=</span> <span class=nb>linspace</span><span class=p>(</span><span class=mi>1</span><span class=p>,</span> <span class=n>n</span><span class=p>,</span> <span class=mi>300</span><span class=p>);</span>
+</span></span><span class=line><span class=cl><span class=n>yyV</span> <span class=p>=</span> <span class=n>spline</span><span class=p>(</span><span class=n>xV</span><span class=p>,</span> <span class=n>y1V</span><span class=p>,</span> <span class=n>xxV</span><span class=p>)</span><span class=o>-</span><span class=mi>4</span><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=n>V</span> <span class=p>=</span> <span class=n>plot</span><span class=p>(</span><span class=n>xxV</span><span class=p>,</span> <span class=n>yyV</span><span class=p>,</span> <span class=s>&#39;-&#39;</span><span class=p>,</span> <span class=s>&#39;LineWidth&#39;</span><span class=p>,</span> <span class=mi>1</span><span class=p>,</span> <span class=s>&#39;color&#39;</span><span class=p>,</span> <span class=s>&#39;m&#39;</span><span class=p>);</span>
+</span></span><span class=line><span class=cl><span class=n>legend</span><span class=p>(</span><span class=s>&#39;RPE&#39;</span><span class=p>);</span>
+</span></span></code></pre></td></tr></table></div></div></div><p><img src=../../../images/retina-image-segmentation-28.png alt=retina-image-segmentation-28.png><span class=caption>※ 图 29：RPE 层结果（1）</span></p><p><img src=../../../images/retina-image-segmentation-29.png alt=retina-image-segmentation-29.png><span class=caption>※ 图 30：RPE 层结果（2）</span></p><p><img src=../../../images/retina-image-segmentation-30.png alt=retina-image-segmentation-30.png><span class=caption>※ 图 31：RPE 层结果（3）</span></p><h3 id=其他层><a href=#其他层 class=anchor-link aria-label=其他层><svg viewBox="0 0 512 512" class="icon anchor-icon"><path d="M326.612 185.391c59.747 59.809 58.927 155.698.36 214.59-.11.12-.24.25-.36.37l-67.2 67.2c-59.27 59.27-155.699 59.262-214.96.0-59.27-59.26-59.27-155.7.0-214.96l37.106-37.106c9.84-9.84 26.786-3.3 27.294 10.606.648 17.722 3.826 35.527 9.69 52.721 1.986 5.822.567 12.262-3.783 16.612l-13.087 13.087c-28.026 28.026-28.905 73.66-1.155 101.96 28.024 28.579 74.086 28.749 102.325.51l67.2-67.19c28.191-28.191 28.073-73.757.0-101.83-3.701-3.694-7.429-6.564-10.341-8.569a16.037 16.037.0 01-6.947-12.606c-.396-10.567 3.348-21.456 11.698-29.806l21.054-21.055c5.521-5.521 14.182-6.199 20.584-1.731a152.482 152.482.0 0120.522 17.197zM467.547 44.449c-59.261-59.262-155.69-59.27-214.96.0l-67.2 67.2c-.12.12-.25.25-.36.37-58.566 58.892-59.387 154.781.36 214.59a152.454 152.454.0 0020.521 17.196c6.402 4.468 15.064 3.789 20.584-1.731l21.054-21.055c8.35-8.35 12.094-19.239 11.698-29.806a16.037 16.037.0 00-6.947-12.606c-2.912-2.005-6.64-4.875-10.341-8.569-28.073-28.073-28.191-73.639.0-101.83l67.2-67.19c28.239-28.239 74.3-28.069 102.325.51 27.75 28.3 26.872 73.934-1.155 101.96l-13.087 13.087c-4.35 4.35-5.769 10.79-3.783 16.612 5.864 17.194 9.042 34.999 9.69 52.721.509 13.906 17.454 20.446 27.294 10.606l37.106-37.106c59.271-59.259 59.271-155.699.001-214.959z"/></svg></a><a href=#contents:其他层 class=headings>其他层</a></h3><p>对于其余的 5 条曲线的识别与绘制，方法与前三种类似。先确定合适的阈值做二值化处理，根据不同的阈值，二值化后保留的图像有所不同。然后根据所需要的结构对其余部分进行去除，接着进行遍历操作，上层的曲线就从上至下遍历，下层的曲线就从下至上遍历。最后根据保留的点进行曲线拟合与绘制即可。由于操作方法类似，这里就不再赘述，只对部分特殊情况进行分析。</p><p>在图像处理中，比较特殊的是提取 GCL 层。对于平滑的图像操作和提取其他曲线一样，能够直接得到想要保留的结构，但对于下凹的图像来说，进行二值化处理后，会得到如图 32 所示的图像。还需要对图 33 中红线圈出的区域进行去除。</p><div class=highlight><div class=chroma><div class=table-container><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-matlab data-lang=matlab><span class=line><span class=cl><span class=n>I0</span> <span class=p>=</span> <span class=n>imread</span><span class=p>(</span><span class=s>&#39;1.tif&#39;</span><span class=p>);</span>
+</span></span><span class=line><span class=cl><span class=p>[</span><span class=n>m</span><span class=p>,</span> <span class=n>n</span><span class=p>]</span> <span class=p>=</span> <span class=nb>size</span><span class=p>(</span><span class=n>I0</span><span class=p>);</span>
+</span></span><span class=line><span class=cl><span class=n>I1</span> <span class=p>=</span> <span class=n>medfilt2</span><span class=p>(</span><span class=n>I0</span><span class=p>,</span> <span class=p>[</span><span class=mi>5</span><span class=p>,</span> <span class=mi>5</span><span class=p>]);</span>
+</span></span><span class=line><span class=cl><span class=n>thresh</span> <span class=p>=</span> <span class=n>graythresh</span><span class=p>(</span><span class=n>I1</span><span class=p>);</span>
+</span></span><span class=line><span class=cl><span class=n>I2</span> <span class=p>=</span> <span class=n>imbinarize</span><span class=p>(</span><span class=n>I1</span><span class=p>,</span> <span class=n>thresh</span><span class=o>+</span><span class=mf>0.08</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>I3</span> <span class=p>=</span> <span class=n>imclose</span><span class=p>(</span><span class=n>I2</span><span class=p>,</span> <span class=nb>ones</span><span class=p>(</span><span class=mi>5</span><span class=p>));</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=k>for</span> <span class=nb>j</span> <span class=p>=</span> <span class=mi>1</span><span class=p>:</span><span class=n>n</span>
+</span></span><span class=line><span class=cl>    <span class=k>for</span> <span class=nb>i</span> <span class=p>=</span> <span class=mi>1</span><span class=p>:</span><span class=n>m</span>
+</span></span><span class=line><span class=cl>        <span class=k>if</span> <span class=n>I3</span><span class=p>(</span><span class=nb>i</span><span class=p>,</span> <span class=nb>j</span><span class=p>)</span> <span class=o>==</span> <span class=mi>1</span>
+</span></span><span class=line><span class=cl>            <span class=k>for</span> <span class=n>k</span> <span class=p>=</span> <span class=nb>i</span><span class=o>+</span><span class=mi>100</span><span class=p>:</span><span class=n>m</span>
+</span></span><span class=line><span class=cl>                <span class=n>I3</span><span class=p>(</span><span class=n>k</span><span class=p>,</span> <span class=nb>j</span><span class=p>)</span> <span class=p>=</span> <span class=mi>0</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>            <span class=k>end</span>
+</span></span><span class=line><span class=cl>        <span class=k>end</span>
+</span></span><span class=line><span class=cl>    <span class=k>end</span>
+</span></span><span class=line><span class=cl><span class=k>end</span>
+</span></span></code></pre></td></tr></table></div></div></div><p><img src=../../../images/retina-image-segmentation-31.png alt=retina-image-segmentation-31.png><span class=caption>※ 图 32：GCL 层二值化</span></p><p><img src=../../../images/retina-image-segmentation-32.png alt=retina-image-segmentation-32.png><span class=caption>※ 图 33：GCL 层待去除的部分</span></p><p>为此，我们需要对下凹的图像进行单独的处理，这就需要先检测出哪一幅图是下凹的。这里我使用的方法是，在边缘处由上至下遍历，找到第一个白点，作为最小值，在图像中间位置由上至下遍历，找到第一个白点，作为最大值，二者之差如果大于一定的数值，就表明上层下凹的程度大，是下凹图像。这样，就能分别对平滑图像和下凹图像分别处理。为了去除红线圈出区域的白点，因为线条的变化是不规则的，使用循环语句很容易将需要保留的白点去除，所以我对图像划分为五个区域分别去除。</p><div class=highlight><div class=chroma><div class=table-container><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span><span class=lnt>33
+</span><span class=lnt>34
+</span><span class=lnt>35
+</span><span class=lnt>36
+</span><span class=lnt>37
+</span><span class=lnt>38
+</span><span class=lnt>39
+</span><span class=lnt>40
+</span><span class=lnt>41
+</span><span class=lnt>42
+</span><span class=lnt>43
+</span><span class=lnt>44
+</span><span class=lnt>45
+</span><span class=lnt>46
+</span><span class=lnt>47
+</span><span class=lnt>48
+</span><span class=lnt>49
+</span><span class=lnt>50
+</span><span class=lnt>51
+</span><span class=lnt>52
+</span><span class=lnt>53
+</span><span class=lnt>54
+</span><span class=lnt>55
+</span><span class=lnt>56
+</span><span class=lnt>57
+</span><span class=lnt>58
+</span><span class=lnt>59
+</span><span class=lnt>60
+</span><span class=lnt>61
+</span><span class=lnt>62
+</span><span class=lnt>63
+</span><span class=lnt>64
+</span><span class=lnt>65
+</span><span class=lnt>66
+</span><span class=lnt>67
+</span><span class=lnt>68
+</span><span class=lnt>69
+</span><span class=lnt>70
+</span><span class=lnt>71
+</span><span class=lnt>72
+</span><span class=lnt>73
+</span><span class=lnt>74
+</span><span class=lnt>75
+</span><span class=lnt>76
+</span><span class=lnt>77
+</span><span class=lnt>78
+</span><span class=lnt>79
+</span><span class=lnt>80
+</span><span class=lnt>81
+</span><span class=lnt>82
+</span><span class=lnt>83
+</span><span class=lnt>84
+</span><span class=lnt>85
+</span><span class=lnt>86
+</span><span class=lnt>87
+</span><span class=lnt>88
+</span><span class=lnt>89
+</span><span class=lnt>90
+</span><span class=lnt>91
+</span><span class=lnt>92
+</span><span class=lnt>93
+</span><span class=lnt>94
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-matlab data-lang=matlab><span class=line><span class=cl><span class=c>% 判断是否下凹</span>
+</span></span><span class=line><span class=cl><span class=k>for</span> <span class=nb>i</span> <span class=p>=</span> <span class=mi>1</span><span class=p>:</span><span class=n>m</span>
+</span></span><span class=line><span class=cl>    <span class=k>if</span> <span class=n>I3</span><span class=p>(</span><span class=nb>i</span><span class=p>,</span> <span class=mi>50</span><span class=p>)</span> <span class=o>==</span> <span class=mi>1</span>
+</span></span><span class=line><span class=cl>        <span class=n>imin</span> <span class=p>=</span> <span class=nb>i</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>        <span class=k>break</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=k>end</span>
+</span></span><span class=line><span class=cl><span class=k>end</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=k>for</span> <span class=nb>i</span> <span class=p>=</span> <span class=mi>1</span><span class=p>:</span><span class=n>m</span>
+</span></span><span class=line><span class=cl>    <span class=k>if</span> <span class=n>I3</span><span class=p>(</span><span class=nb>i</span><span class=p>,</span> <span class=mi>150</span><span class=p>)</span> <span class=o>==</span> <span class=mi>1</span>
+</span></span><span class=line><span class=cl>        <span class=n>imax</span> <span class=p>=</span> <span class=nb>i</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>        <span class=k>break</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=k>end</span>
+</span></span><span class=line><span class=cl><span class=k>end</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=k>if</span> <span class=n>imax</span> <span class=o>-</span> <span class=n>imin</span> <span class=o>&gt;</span> <span class=mi>60</span>
+</span></span><span class=line><span class=cl>    <span class=c>% 去除凹形多余白色区域</span>
+</span></span><span class=line><span class=cl>    <span class=k>for</span> <span class=nb>j</span> <span class=p>=</span> <span class=mi>1</span><span class=p>:</span><span class=n>n</span>
+</span></span><span class=line><span class=cl>        <span class=k>for</span> <span class=n>k</span> <span class=p>=</span> <span class=n>imin</span><span class=o>+</span><span class=mi>120</span><span class=p>:</span><span class=n>m</span>
+</span></span><span class=line><span class=cl>            <span class=n>I3</span><span class=p>(</span><span class=n>k</span><span class=p>,</span> <span class=nb>j</span><span class=p>)</span> <span class=p>=</span> <span class=mi>0</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>        <span class=k>end</span>
+</span></span><span class=line><span class=cl>    <span class=k>end</span>
+</span></span><span class=line><span class=cl>    <span class=n>I3</span> <span class=p>=</span> <span class=n>medfilt2</span><span class=p>(</span><span class=n>I3</span><span class=p>,</span> <span class=p>[</span><span class=mi>2</span><span class=p>,</span> <span class=mi>2</span><span class=p>]);</span>
+</span></span><span class=line><span class=cl>    <span class=c>% 左 1</span>
+</span></span><span class=line><span class=cl>    <span class=k>for</span> <span class=nb>i</span> <span class=p>=</span> <span class=n>m</span><span class=p>:</span><span class=o>-</span><span class=mi>1</span><span class=p>:</span><span class=mi>1</span>
+</span></span><span class=line><span class=cl>        <span class=k>if</span> <span class=n>I3</span><span class=p>(</span><span class=nb>i</span><span class=p>,</span> <span class=mi>80</span><span class=p>)</span> <span class=o>==</span> <span class=mi>1</span>
+</span></span><span class=line><span class=cl>            <span class=n>del</span> <span class=p>=</span> <span class=nb>i</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>            <span class=k>break</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>        <span class=k>end</span>
+</span></span><span class=line><span class=cl>    <span class=k>end</span>
+</span></span><span class=line><span class=cl>    <span class=k>for</span> <span class=nb>j</span> <span class=p>=</span> <span class=mi>1</span><span class=p>:</span><span class=mi>80</span>
+</span></span><span class=line><span class=cl>        <span class=k>for</span> <span class=n>k</span> <span class=p>=</span> <span class=n>del</span><span class=o>-</span><span class=mi>30</span><span class=p>:</span><span class=n>del</span>
+</span></span><span class=line><span class=cl>            <span class=n>I3</span><span class=p>(</span><span class=n>k</span><span class=p>,</span> <span class=nb>j</span><span class=p>)</span> <span class=p>=</span> <span class=mi>0</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>        <span class=k>end</span>
+</span></span><span class=line><span class=cl>    <span class=k>end</span>
+</span></span><span class=line><span class=cl>    <span class=c>% 左 2</span>
+</span></span><span class=line><span class=cl>    <span class=k>for</span> <span class=nb>i</span> <span class=p>=</span> <span class=n>m</span><span class=p>:</span><span class=o>-</span><span class=mi>1</span><span class=p>:</span><span class=mi>1</span>
+</span></span><span class=line><span class=cl>        <span class=k>if</span> <span class=n>I3</span><span class=p>(</span><span class=nb>i</span><span class=p>,</span> <span class=mi>120</span><span class=p>)</span> <span class=o>==</span> <span class=mi>1</span>
+</span></span><span class=line><span class=cl>            <span class=n>del</span> <span class=p>=</span> <span class=nb>i</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>            <span class=k>break</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>        <span class=k>end</span>
+</span></span><span class=line><span class=cl>    <span class=k>end</span>
+</span></span><span class=line><span class=cl>    <span class=k>for</span> <span class=nb>j</span> <span class=p>=</span> <span class=mi>80</span><span class=p>:</span><span class=mi>140</span>
+</span></span><span class=line><span class=cl>        <span class=k>for</span> <span class=n>k</span> <span class=p>=</span> <span class=n>del</span><span class=o>-</span><span class=mi>15</span><span class=p>:</span><span class=n>del</span><span class=o>+</span><span class=mi>20</span>
+</span></span><span class=line><span class=cl>            <span class=n>I3</span><span class=p>(</span><span class=n>k</span><span class=p>,</span> <span class=nb>j</span><span class=p>)</span> <span class=p>=</span> <span class=mi>0</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>        <span class=k>end</span>
+</span></span><span class=line><span class=cl>    <span class=k>end</span>
+</span></span><span class=line><span class=cl>    <span class=c>% 右 1</span>
+</span></span><span class=line><span class=cl>    <span class=k>for</span> <span class=nb>i</span> <span class=p>=</span> <span class=n>m</span><span class=p>:</span><span class=o>-</span><span class=mi>1</span><span class=p>:</span><span class=mi>1</span>
+</span></span><span class=line><span class=cl>        <span class=k>if</span> <span class=n>I3</span><span class=p>(</span><span class=nb>i</span><span class=p>,</span> <span class=mi>160</span><span class=p>)</span> <span class=o>==</span> <span class=mi>1</span>
+</span></span><span class=line><span class=cl>            <span class=n>del</span> <span class=p>=</span> <span class=nb>i</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>            <span class=k>break</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>        <span class=k>end</span>
+</span></span><span class=line><span class=cl>    <span class=k>end</span>
+</span></span><span class=line><span class=cl>    <span class=k>for</span> <span class=nb>j</span> <span class=p>=</span> <span class=mi>180</span><span class=p>:</span><span class=mi>220</span>
+</span></span><span class=line><span class=cl>        <span class=k>for</span> <span class=n>k</span> <span class=p>=</span> <span class=n>del</span><span class=o>-</span><span class=mi>8</span><span class=p>:</span><span class=n>del</span><span class=o>+</span><span class=mi>20</span>
+</span></span><span class=line><span class=cl>            <span class=n>I3</span><span class=p>(</span><span class=n>k</span><span class=p>,</span> <span class=nb>j</span><span class=p>)</span> <span class=p>=</span> <span class=mi>0</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>        <span class=k>end</span>
+</span></span><span class=line><span class=cl>    <span class=k>end</span>
+</span></span><span class=line><span class=cl>    <span class=c>% 右 2</span>
+</span></span><span class=line><span class=cl>    <span class=k>for</span> <span class=nb>i</span> <span class=p>=</span> <span class=n>m</span><span class=p>:</span><span class=o>-</span><span class=mi>1</span><span class=p>:</span><span class=mi>1</span>
+</span></span><span class=line><span class=cl>        <span class=k>if</span> <span class=n>I3</span><span class=p>(</span><span class=nb>i</span><span class=p>,</span> <span class=mi>240</span><span class=p>)</span> <span class=o>==</span> <span class=mi>1</span>
+</span></span><span class=line><span class=cl>            <span class=n>del</span> <span class=p>=</span> <span class=nb>i</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>            <span class=k>break</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>        <span class=k>end</span>
+</span></span><span class=line><span class=cl>    <span class=k>end</span>
+</span></span><span class=line><span class=cl>    <span class=k>for</span> <span class=nb>j</span> <span class=p>=</span> <span class=mi>220</span><span class=p>:</span><span class=mi>260</span>
+</span></span><span class=line><span class=cl>        <span class=k>for</span> <span class=n>k</span> <span class=p>=</span> <span class=n>del</span><span class=o>-</span><span class=mi>20</span><span class=p>:</span><span class=n>del</span><span class=o>+</span><span class=mi>20</span>
+</span></span><span class=line><span class=cl>            <span class=n>I3</span><span class=p>(</span><span class=n>k</span><span class=p>,</span> <span class=nb>j</span><span class=p>)</span> <span class=p>=</span> <span class=mi>0</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>        <span class=k>end</span>
+</span></span><span class=line><span class=cl>    <span class=k>end</span>
+</span></span><span class=line><span class=cl>    <span class=c>% 右 3</span>
+</span></span><span class=line><span class=cl>    <span class=k>for</span> <span class=nb>j</span> <span class=p>=</span> <span class=mi>260</span><span class=p>:</span><span class=mi>300</span>
+</span></span><span class=line><span class=cl>        <span class=k>for</span> <span class=n>k</span> <span class=p>=</span> <span class=n>del</span><span class=o>-</span><span class=mi>30</span><span class=p>:</span><span class=n>del</span><span class=o>+</span><span class=mi>20</span>
+</span></span><span class=line><span class=cl>            <span class=n>I3</span><span class=p>(</span><span class=n>k</span><span class=p>,</span> <span class=nb>j</span><span class=p>)</span> <span class=p>=</span> <span class=mi>0</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>        <span class=k>end</span>
+</span></span><span class=line><span class=cl>    <span class=k>end</span>
+</span></span><span class=line><span class=cl><span class=k>else</span>
+</span></span><span class=line><span class=cl>    <span class=n>imLabel</span> <span class=p>=</span> <span class=n>bwlabel</span><span class=p>(</span><span class=n>I3</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>    <span class=n>stats</span> <span class=p>=</span> <span class=n>regionprops</span><span class=p>(</span><span class=n>imLabel</span><span class=p>,</span> <span class=s>&#39;Area&#39;</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>    <span class=n>area</span> <span class=p>=</span> <span class=nb>cat</span><span class=p>(</span><span class=mi>1</span><span class=p>,</span> <span class=n>stats</span><span class=p>.</span><span class=n>Area</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>    <span class=n>index</span> <span class=p>=</span> <span class=nb>find</span><span class=p>(</span><span class=n>area</span> <span class=o>==</span> <span class=n>max</span><span class=p>(</span><span class=n>area</span><span class=p>));</span>
+</span></span><span class=line><span class=cl>    <span class=n>I3</span> <span class=p>=</span> <span class=n>ismember</span><span class=p>(</span><span class=n>imLabel</span><span class=p>,</span> <span class=n>index</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>    <span class=c>% 针对第 10 幅图需要单独删除多余区域</span>
+</span></span><span class=line><span class=cl>    <span class=k>for</span> <span class=nb>j</span> <span class=p>=</span> <span class=mi>1</span><span class=p>:</span><span class=n>n</span>
+</span></span><span class=line><span class=cl>        <span class=k>for</span> <span class=nb>i</span> <span class=p>=</span> <span class=mi>1</span><span class=p>:</span><span class=n>m</span>
+</span></span><span class=line><span class=cl>            <span class=k>if</span> <span class=n>I3</span><span class=p>(</span><span class=nb>i</span><span class=p>,</span> <span class=nb>j</span><span class=p>)</span> <span class=o>==</span> <span class=mi>1</span>
+</span></span><span class=line><span class=cl>                <span class=k>for</span> <span class=n>k</span> <span class=p>=</span> <span class=nb>i</span><span class=o>+</span><span class=mi>70</span><span class=p>:</span><span class=n>m</span>
+</span></span><span class=line><span class=cl>                    <span class=n>I3</span><span class=p>(</span><span class=n>k</span><span class=p>,</span> <span class=nb>j</span><span class=p>)</span> <span class=p>=</span> <span class=mi>0</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>                <span class=k>end</span>
+</span></span><span class=line><span class=cl>            <span class=k>end</span>
+</span></span><span class=line><span class=cl>        <span class=k>end</span>
+</span></span><span class=line><span class=cl>    <span class=k>end</span>
+</span></span><span class=line><span class=cl><span class=k>end</span>
+</span></span></code></pre></td></tr></table></div></div></div><h2 id=结果讨论><a href=#结果讨论 class=anchor-link aria-label=结果讨论><svg viewBox="0 0 512 512" class="icon anchor-icon"><path d="M326.612 185.391c59.747 59.809 58.927 155.698.36 214.59-.11.12-.24.25-.36.37l-67.2 67.2c-59.27 59.27-155.699 59.262-214.96.0-59.27-59.26-59.27-155.7.0-214.96l37.106-37.106c9.84-9.84 26.786-3.3 27.294 10.606.648 17.722 3.826 35.527 9.69 52.721 1.986 5.822.567 12.262-3.783 16.612l-13.087 13.087c-28.026 28.026-28.905 73.66-1.155 101.96 28.024 28.579 74.086 28.749 102.325.51l67.2-67.19c28.191-28.191 28.073-73.757.0-101.83-3.701-3.694-7.429-6.564-10.341-8.569a16.037 16.037.0 01-6.947-12.606c-.396-10.567 3.348-21.456 11.698-29.806l21.054-21.055c5.521-5.521 14.182-6.199 20.584-1.731a152.482 152.482.0 0120.522 17.197zM467.547 44.449c-59.261-59.262-155.69-59.27-214.96.0l-67.2 67.2c-.12.12-.25.25-.36.37-58.566 58.892-59.387 154.781.36 214.59a152.454 152.454.0 0020.521 17.196c6.402 4.468 15.064 3.789 20.584-1.731l21.054-21.055c8.35-8.35 12.094-19.239 11.698-29.806a16.037 16.037.0 00-6.947-12.606c-2.912-2.005-6.64-4.875-10.341-8.569-28.073-28.073-28.191-73.639.0-101.83l67.2-67.19c28.239-28.239 74.3-28.069 102.325.51 27.75 28.3 26.872 73.934-1.155 101.96l-13.087 13.087c-4.35 4.35-5.769 10.79-3.783 16.612 5.864 17.194 9.042 34.999 9.69 52.721.509 13.906 17.454 20.446 27.294 10.606l37.106-37.106c59.271-59.259 59.271-155.699.001-214.959z"/></svg></a><a href=#contents:结果讨论 class=headings>结果讨论</a></h2><p>对三幅图（#1、#2、#11）进行处理，程序运行效果如下图所示。从图中可以看出，整体效果良好。如果是边缘较为平滑的图像，标注的结果精确度较高。然而如果是下凹较为明显以及图像灰度有间断的图像，其标注的结果在边缘部分和下凹的中心区域的偏差较大，部分曲线出现波动，也会发生交错的现象。对于以上问题，由于个人能力有限，目前还没有能够完美解决的方法。</p><p><img src=../../../images/retina-image-segmentation-33.png alt=retina-image-segmentation-33.png><span class=caption>※ 图 34：最终结果（1）</span></p><p><img src=../../../images/retina-image-segmentation-34.png alt=retina-image-segmentation-34.png><span class=caption>※ 图 35：最终结果（2）</span></p><p><img src=../../../images/retina-image-segmentation-35.png alt=retina-image-segmentation-35.png><span class=caption>※ 图 36：最终结果（3）</span></p><p>本文中所用的程序代码已经整理放在了 GitHub 仓库中，仅供个人参考。</p><div class=github><div class=logo><svg class="icon github-icon" viewBox="0 0 16 16"><path fill-rule="evenodd" clip-rule="evenodd" d="M2 2.5c0-.66304.26339-1.29893.73223-1.767767C3.20108.263392 3.83696.0 4.5.0h8.75c.1989.0.3897.0790176.5303.21967C13.921.360322 14 .551088 14 .75v12.5C14 13.4489 13.921 13.6397 13.7803 13.7803 13.6397 13.921 13.4489 14 13.25 14h-2.5C10.5511 14 10.3603 13.921 10.2197 13.7803 10.079 13.6397 10 13.4489 10 13.25S10.079 12.8603 10.2197 12.7197C10.3603 12.579 10.5511 12.5 10.75 12.5H12.5v-2h-8C4.30308 10.5 4.11056 10.5582 3.94657 10.6672 3.78257 10.7762 3.65442 10.9312 3.57816 11.1128 3.50191 11.2943 3.48096 11.4943 3.51793 11.6878 3.5549 11.8812 3.64816 12.0594 3.786 12.2c.13924.142200000000001.2163.3338.21424.5328C3.99818 12.9318 3.91716 13.1218 3.775 13.261 3.63285 13.4002 3.4412 13.4773 3.24222 13.4752 3.04325 13.4732 2.85324 13.3922 2.714 13.25c-.45829-.4671-.71471-1.0956-.714-1.75v-9zm10.5-1V9h-8C4.144 9 3.806 9.074 3.5 9.208V2.5c0-.26522.10536-.51957.29289-.70711C3.98043 1.60536 4.23478 1.5 4.5 1.5h8zM5 12.25V15.5C5 15.5464 5.01293 15.5919 5.03734 15.6314 5.06175 15.6709 5.09667 15.7028 5.1382 15.7236 5.17972 15.7444 5.22621 15.7532 5.27245 15.749 5.31869 15.7448 5.36286 15.7279 5.4 15.7l1.45-1.087C6.89328 14.5805 6.94591 14.563 7 14.563S7.10673 14.5805 7.15 14.613L8.6 15.7C8.63714 15.7279 8.68131 15.7448 8.72755 15.749 8.77379 15.7532 8.82028 15.7444 8.8618 15.7236 8.90333 15.7028 8.93826 15.6709 8.96266 15.6314 8.98707 15.5919 9 15.5464 9 15.5V12.25C9 12.1837 8.97366 12.1201 8.92678 12.0732 8.87989 12.0263 8.81631 12 8.75 12H5.25C5.1837 12 5.12011 12.0263 5.07322 12.0732 5.02634 12.1201 5 12.1837 5 12.25z"/></svg>
+<a class=name href=https://github.com/guanqr/Retina-Image-Segmentation target=_blank>Retina-Image-Segmentation</a></div><div class=description>Image segmentation of retinal analysis with optical coherence tomography. OCT 视网膜断层图的图像分割程序。</div><div class=language><span class=language-color style=background-color:#e16737></span>
+<span class=language-name>MATLAB</span></div></div><div class=footnotes role=doc-endnotes><hr><ol><li id=fn:1><p>参考：<a href=https://en.wikipedia.org/wiki/Optical_coherence_tomography target=_blank rel=noopener>Optical coherence tomography | Wikipedia</a>&#160;<a href=#fnref:1 class=footnote-backref role=doc-backlink><svg viewBox="0 0 320 512" class="icon footnote-icon"><path d="M177 159.7l136 136c9.4 9.4 9.4 24.6.0 33.9l-22.6 22.6c-9.4 9.4-24.6 9.4-33.9.0L160 255.9l-96.4 96.4c-9.4 9.4-24.6 9.4-33.9.0L7 329.7c-9.4-9.4-9.4-24.6.0-33.9l136-136c9.4-9.5 24.6-9.5 34-.1z"/></svg></a></p></li></ol></div></div></article><div class=related-posts><h2 class=related-title>相关文章：<svg viewBox="0 0 512 512" class="icon related-icon"><path d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8zm144 276c0 6.6-5.4 12-12 12h-92v92c0 6.6-5.4 12-12 12h-56c-6.6.0-12-5.4-12-12v-92h-92c-6.6.0-12-5.4-12-12v-56c0-6.6 5.4-12 12-12h92v-92c0-6.6 5.4-12 12-12h56c6.6.0 12 5.4 12 12v92h92c6.6.0 12 5.4 12 12v56z"/></svg></h2><ul class=related-list><li class=related-item><a href=../../../tech/optics/digital-image-processing-practice/ class=related-link>数字图像处理基础练习</a></li><li class=related-item><a href=../../../tech/optics/signal-processing-based-on-matlab/ class=related-link>基于 MATLAB 的信号处理</a></li><li class=related-item><a href=../../../tech/optics/process-raw-data-using-matlab-and-dcraw/ class=related-link>使用 MATLAB 和 Dcraw 处理 RAW 图像文件</a></li><li class=related-item><a href=../../../tech/optics/preliminary-image-quality-evaluation/ class=related-link>初识成像系统的像质评价</a></li><li class=related-item><a href=../../../tech/optics/optoelectronic-design-competition-2020/ class=related-link>第八届光电设计竞赛校赛总结</a></li></ul></div><div class=post-tags><a href=../../../tags/image-processing/ rel=tag class=post-tags-link><svg viewBox="0 0 512 512" class="icon tag-icon"><path d="M0 252.118V48C0 21.49 21.49.0 48 0h204.118a48 48 0 0133.941 14.059l211.882 211.882c18.745 18.745 18.745 49.137.0 67.882L293.823 497.941c-18.745 18.745-49.137 18.745-67.882.0L14.059 286.059A48 48 0 010 252.118zM112 64c-26.51.0-48 21.49-48 48s21.49 48 48 48 48-21.49 48-48-21.49-48-48-48z"/></svg>图像处理</a>
+<a href=../../../tags/matlab/ rel=tag class=post-tags-link><svg viewBox="0 0 512 512" class="icon tag-icon"><path d="M0 252.118V48C0 21.49 21.49.0 48 0h204.118a48 48 0 0133.941 14.059l211.882 211.882c18.745 18.745 18.745 49.137.0 67.882L293.823 497.941c-18.745 18.745-49.137 18.745-67.882.0L14.059 286.059A48 48 0 010 252.118zM112 64c-26.51.0-48 21.49-48 48s21.49 48 48 48 48-21.49 48-48-21.49-48-48-48z"/></svg>MATLAB</a></div><div class=load-comments><div id=load-comments>加载评论</div></div><div id=waline></div></div></main><div id=back-to-top class=back-to-top><a href=#top aria-label=回到顶部><svg viewBox="0 0 448 512" class="icon arrow-up"><path d="M34.9 289.5l-22.2-22.2c-9.4-9.4-9.4-24.6.0-33.9L207 39c9.4-9.4 24.6-9.4 33.9.0l194.3 194.3c9.4 9.4 9.4 24.6.0 33.9L413 289.4c-9.5 9.5-25 9.3-34.3-.4L264 168.6V456c0 13.3-10.7 24-24 24h-32c-13.3.0-24-10.7-24-24V168.6L69.2 289.1c-9.3 9.8-24.8 10-34.3.4z"/></svg></a></div><footer id=footer class=footer><div class=footer-inner><div class=site-info>©&nbsp;2019–2026&nbsp;<svg viewBox="0 0 512 512" class="icon footer-icon"><path d="M462.3 62.6C407.5 15.9 326 24.3 275.7 76.2L256 96.5l-19.7-20.3C186.1 24.3 104.5 15.9 49.7 62.6c-62.8 53.6-66.1 149.8-9.9 207.9l193.5 199.8c12.5 12.9 32.8 12.9 45.3.0l193.5-199.8c56.3-58.1 53-154.3-9.8-207.9z"/></svg>&nbsp;Guan Qirui</div></div></footer></div><div class=app-refresh id=app-refresh><div class=app-refresh-wrap onclick=location.reload()><label>已更新最新版本</label>
+<span>点击刷新</span></div></div><script>"serviceWorker"in navigator&&(navigator.serviceWorker.controller&&navigator.serviceWorker.addEventListener("controllerchange",function(){showNotification()}),window.addEventListener("load",function(){navigator.serviceWorker.register("../../../sw.js")}));function showNotification(){document.querySelector("meta[name=theme-color]").content="#000",document.getElementById("app-refresh").className+=" app-refresh-show"}</script><script src=https://cdn.jsdelivr.net/npm/medium-zoom@latest/dist/medium-zoom.min.js></script><script>let imgNodes=document.querySelectorAll("div.post-body img");imgNodes=Array.from(imgNodes).filter(e=>e.parentNode.tagName!=="A"),mediumZoom(imgNodes,{background:"hsla(var(--color-bg-h), var(--color-bg-s), var(--color-bg-l), 0.95)"})</script><script src=https://cdn.jsdelivr.net/npm/instant.page@5.1.0/instantpage.min.js type=module defer></script><script>navigator.userAgent.includes("Safari")&&!navigator.userAgent.includes("Chrome")&&document.body.classList.add("safari-only")</script><link rel=stylesheet href=https://unpkg.com/@waline/client@2.15.8/dist/waline.css><script>function loadComments(){if(!document.getElementById("waline"))return;if(typeof init=="undefined"){const e=e=>{const t=document.createElement("script");t.defer=!0,t.crossOrigin="anonymous",Object.keys(e).forEach(n=>{t[n]=e[n]}),document.body.appendChild(t)};e({src:"https://unpkg.com/@waline/client@2.15.8/dist/waline.js",onload:()=>{newWaline()}})}else newWaline()}function newWaline(){const e={nick:"昵称*",mail:"邮箱*",placeholder:"请填写正确的昵称和邮箱，方便接收评论回复信息。若随意填写邮箱地址，发布包括但不限于广告、攻击性、无意义等内容文字，将会作删除处理。"};Waline.init({el:"#waline",serverURL:"https://waline.guanqr.com/",lang:"zh-CN",locale:e,emoji:["https://unpkg.com/@waline/emojis@1.4.0/weibo","https://unpkg.com/@waline/emojis@1.4.0/bilibili"],dark:'html[data-theme="dark"]',commentSorting:"latest",meta:["nick","mail","link"],requiredMeta:["nick","mail"],login:"enabled",wordLimit:0,pageSize:10,imageUploader:!1,highlighter:!0,search:!1,copyright:!0})}</script></body></html>

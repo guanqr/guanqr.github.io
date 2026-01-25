@@ -1,0 +1,1384 @@
+<!doctype html><html lang=zh-cn><head prefix="og: http://ogp.me/ns# article: http://ogp.me/ns/article#"><meta charset=UTF-8><meta name=generator content="Hugo 0.148.2"><meta name=theme-color content="#fff"><meta name=color-scheme content="light dark"><meta name=viewport content="width=device-width,initial-scale=1"><meta name=format-detection content="telephone=no, date=no, address=no, email=no"><meta http-equiv=Cache-Control content="no-transform"><meta http-equiv=Cache-Control content="no-siteapp"><title>微信小程序课程后记 | 荷戟獨彷徨</title><link rel=stylesheet href=../../../css/meme.min.css><script src=../../../js/meme.min.js></script><link rel=preconnect href=https://fonts.gstatic.com crossorigin><link rel=stylesheet href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@700&amp;family=Noto+Serif+SC:wght@700&amp;display=swap" media=print onload='this.media="all"'><noscript><link rel=stylesheet href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@700&amp;family=Noto+Serif+SC:wght@700&amp;display=swap"></noscript><meta name=author content="Guan Qirui"><meta name=description content="「微信小程序开发实践」课程总结，微信小程序「生活工具箱」设计"><link rel="shortcut icon" type=image/x-icon href=../../../favicon.ico><link rel=icon type=image/svg+xml href=../../../icons/favicon.svg><link rel=icon type=image/png href=../../../icons/favicon-96x96.png sizes=96x96><link rel=apple-touch-icon href=../../../icons/apple-touch-icon.png sizes=180x180><meta name=apple-mobile-web-app-capable content="yes"><meta name=apple-mobile-web-app-title content="荷戟獨彷徨"><meta name=apple-mobile-web-app-status-bar-style content="black"><meta name=mobile-web-app-capable content="yes"><meta name=application-name content="荷戟獨彷徨"><link rel=manifest href=../../../manifest.json><link rel=canonical href=https://guanqr.com/tech/computer/wechat-mini-app-development-toolbox/><script type=application/ld+json>{"@context":"https://schema.org","@type":"BlogPosting","datePublished":"2020-01-18T19:52:44+08:00","dateModified":"2020-01-19T19:52:44+08:00","url":"https://guanqr.com/tech/computer/wechat-mini-app-development-toolbox/","headline":"\n微信小程序课程后记","description":"「微信小程序开发实践」课程总结，微信小程序「生活工具箱」设计","inLanguage":"zh-cn","articleSection":"tech","wordCount":6574,"image":["https://guanqr.com/images/wechat-mini-app.png","https://guanqr.com/images/wechat-mini-app-toolbox.png","https://guanqr.com/images/wechat-mini-app-page-0.png","https://guanqr.com/images/wechat-mini-app-page-1.png","https://guanqr.com/images/wechat-mini-app-page-2.png","https://guanqr.com/images/wechat-mini-app-page-3.png","https://guanqr.com/images/wechat-mini-app-cloud.png","https://guanqr.com/images/wechat-mini-app-page-4.png"],"author":{"@type":"Person","description":"爱光学，爱生活，爱创造","email":"guanqirui@zju.edu.cn","image":"https://guanqr.com/icons/apple-touch-icon.png","url":"https://guanqr.com/","name":"Guan Qirui"},"license":"本文采用 [CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh) 许可协议，转载请注明出处。","publisher":{"@type":"Organization","name":"荷戟獨彷徨","logo":{"@type":"ImageObject","url":"https://guanqr.com/icons/apple-touch-icon.png"},"url":"https://guanqr.com/"},"mainEntityOfPage":{"@type":"WebSite","@id":"https://guanqr.com/"}}</script><meta name=twitter:card content="summary_large_image"><meta property="og:title" content="
+微信小程序课程后记"><meta property="og:description" content="「微信小程序开发实践」课程总结，微信小程序「生活工具箱」设计"><meta property="og:url" content="https://guanqr.com/tech/computer/wechat-mini-app-development-toolbox/"><meta property="og:site_name" content="荷戟獨彷徨"><meta property="og:locale" content="zh-cn"><meta property="og:image" content="https://guanqr.com/images/wechat-mini-app.png"><meta property="og:type" content="article"><meta property="article:published_time" content="2020-01-18T19:52:44+08:00"><meta property="article:modified_time" content="2020-01-19T19:52:44+08:00"><meta property="article:section" content="tech"><link rel=preconnect href=https://www.google-analytics.com crossorigin><script async src="https://www.googletagmanager.com/gtag/js?id=UA-140800645-1"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","UA-140800645-1")</script><link rel=preconnect href=https://cdn.jsdelivr.net crossorigin><link rel=stylesheet href=https://cdn.jsdelivr.net/gh/guanqr/fonts@build/css/fonts.min.css media=print onload='this.media="all"'></head><body><div class=container><header class=header><div class=header-wrapper><div class="header-inner single"><div class=site-brand><a href=../../../ class=brand>荷戟獨彷徨</a></div><nav class=nav><ul class=menu id=menu><li class=menu-item><a href=../../../archives/><svg viewBox="0 0 512 512" class="icon archives"><path d="M32 448c0 17.7 14.3 32 32 32h384c17.7.0 32-14.3 32-32V160H32v288zm160-212c0-6.6 5.4-12 12-12h104c6.6.0 12 5.4 12 12v8c0 6.6-5.4 12-12 12H204c-6.6.0-12-5.4-12-12v-8zM480 32H32C14.3 32 0 46.3.0 64v48c0 8.8 7.2 16 16 16h480c8.8.0 16-7.2 16-16V64c0-17.7-14.3-32-32-32z"/></svg><span class=menu-item-name>文章</span></a></li><li class=menu-item><a href=../../../tags/><svg viewBox="0 0 640 512" class="icon tags"><path d="M497.941 225.941 286.059 14.059A48 48 0 00252.118.0H48C21.49.0.0 21.49.0 48v204.118a48 48 0 0014.059 33.941l211.882 211.882c18.744 18.745 49.136 18.746 67.882.0l204.118-204.118c18.745-18.745 18.745-49.137.0-67.882zM112 160c-26.51.0-48-21.49-48-48s21.49-48 48-48 48 21.49 48 48-21.49 48-48 48zm513.941 133.823L421.823 497.941c-18.745 18.745-49.137 18.745-67.882.0l-.36-.36L527.64 323.522c16.999-16.999 26.36-39.6 26.36-63.64s-9.362-46.641-26.36-63.64L331.397.0h48.721a48 48 0 0133.941 14.059l211.882 211.882c18.745 18.745 18.745 49.137.0 67.882z"/></svg><span class=menu-item-name>标签</span></a></li><li class=menu-item><a href=../../../blogroll/><svg viewBox="0 0 384 512" class="icon friends"><path d="M384 312.7c-55.1 136.7-187.1 54-187.1 54-40.5 81.8-107.4 134.4-184.6 134.7-16.1.0-16.6-24.4.0-24.4 64.4-.3 120.5-42.7 157.2-110.1-41.1 15.9-118.6 27.9-161.6-82.2 109-44.9 159.1 11.2 178.3 45.5 9.9-24.4 17-50.9 21.6-79.7.0.0-139.7 21.9-149.5-98.1 119.1-47.9 152.6 76.7 152.6 76.7 1.6-16.7 3.3-52.6 3.3-53.4.0.0-106.3-73.7-38.1-165.2 124.6 43 61.4 162.4 61.4 162.4.5 1.6.5 23.8.0 33.4.0.0 45.2-89 136.4-57.5-4.2 134-141.9 106.4-141.9 106.4-4.4 27.4-11.2 53.4-20 77.5.0.0 83-91.8 172-20z"/></svg><span class=menu-item-name>友链</span></a></li><li class=menu-item><a href=../../../about/><svg viewBox="0 0 496 512" class="icon about"><path d="M248 8C111 8 0 119 0 256s111 248 248 248 248-111 248-248S385 8 248 8zm0 96c48.6.0 88 39.4 88 88s-39.4 88-88 88-88-39.4-88-88 39.4-88 88-88zm0 344c-58.7.0-111.3-26.6-146.5-68.2 18.8-35.4 55.6-59.8 98.5-59.8 2.4.0 4.8.4 7.1 1.1 13 4.2 26.6 6.9 40.9 6.9s28-2.7 40.9-6.9c2.3-.7 4.7-1.1 7.1-1.1 42.9.0 79.7 24.4 98.5 59.8C359.3 421.4 306.7 448 248 448z"/></svg><span class=menu-item-name>关于</span></a></li><li class=menu-item><button id=theme-switcher type=button aria-label=切换主题><svg viewBox="0 0 512 512" class="icon theme-icon-light"><path d="M193.2 104.5 242 7a18 18 0 0128 0l48.8 97.5L422.2 70A18 18 0 01442 89.8l-34.5 103.4L505 242a18 18 0 010 28l-97.5 48.8L442 422.2A18 18 0 01422.2 442l-103.4-34.5L270 505a18 18 0 01-28 0l-48.8-97.5L89.8 442A18 18 0 0170 422.2l34.5-103.4-97.5-48.8a18 18 0 010-28l97.5-48.8L70 89.8A18 18 0 0189.8 70zM256 128a128 128 0 10.01.0M256 160a96 96 0 10.01.0"/></svg><svg viewBox="0 0 512 512" class="icon theme-icon-dark"><path d="M27 412A256 256 0 10181 5a11.5 11.5.0 00-5 20A201.5 201.5.0 0142 399a11.5 11.5.0 00-15 13"/></svg><svg viewBox="0 0 576 512" class="icon theme-icon-system"><path d="M528 0H48C21.5.0.0 21.5.0 48v320c0 26.5 21.5 48 48 48h192l-16 48h-72c-13.3.0-24 10.7-24 24s10.7 24 24 24h272c13.3.0 24-10.7 24-24s-10.7-24-24-24h-72l-16-48h192c26.5.0 48-21.5 48-48V48c0-26.5-21.5-48-48-48zm-16 352H64V64h448v288z"/></svg></button></li></ul></nav></div></div><input type=checkbox id=nav-toggle aria-hidden=true>
+<label for=nav-toggle class=nav-toggle></label><label for=nav-toggle class=nav-curtain></label></header><main class="main single" id=main><div class=main-inner><article class="content post h-entry" data-align=justify data-type=tech data-toc-num=true><h1 class="post-title p-name">微信小程序课程后记</h1><div class="post-description p-summary">「微信小程序开发实践」课程总结，微信小程序「生活工具箱」设计</div><div class=post-meta><time datetime=2020-01-18T19:52:44+08:00 class="post-meta-item published dt-published"><svg viewBox="0 0 448 512" class="icon post-meta-icon"><path d="M148 288h-40c-6.6.0-12-5.4-12-12v-40c0-6.6 5.4-12 12-12h40c6.6.0 12 5.4 12 12v40c0 6.6-5.4 12-12 12zm108-12v-40c0-6.6-5.4-12-12-12h-40c-6.6.0-12 5.4-12 12v40c0 6.6 5.4 12 12 12h40c6.6.0 12-5.4 12-12zm96 0v-40c0-6.6-5.4-12-12-12h-40c-6.6.0-12 5.4-12 12v40c0 6.6 5.4 12 12 12h40c6.6.0 12-5.4 12-12zm-96 96v-40c0-6.6-5.4-12-12-12h-40c-6.6.0-12 5.4-12 12v40c0 6.6 5.4 12 12 12h40c6.6.0 12-5.4 12-12zm-96 0v-40c0-6.6-5.4-12-12-12h-40c-6.6.0-12 5.4-12 12v40c0 6.6 5.4 12 12 12h40c6.6.0 12-5.4 12-12zm192 0v-40c0-6.6-5.4-12-12-12h-40c-6.6.0-12 5.4-12 12v40c0 6.6 5.4 12 12 12h40c6.6.0 12-5.4 12-12zm96-260v352c0 26.5-21.5 48-48 48H48c-26.5.0-48-21.5-48-48V112c0-26.5 21.5-48 48-48h48V12c0-6.6 5.4-12 12-12h40c6.6.0 12 5.4 12 12v52h128V12c0-6.6 5.4-12 12-12h40c6.6.0 12 5.4 12 12v52h48c26.5.0 48 21.5 48 48zm-48 346V160H48v298c0 3.3 2.7 6 6 6h340c3.3.0 6-2.7 6-6z"/></svg>&nbsp;2020-01-18</time>
+<span class="post-meta-item category"><svg viewBox="0 0 512 512" class="icon post-meta-icon"><path d="M464 128H272l-54.63-54.63c-6-6-14.14-9.37-22.63-9.37H48C21.49 64 0 85.49.0 112v288c0 26.51 21.49 48 48 48h416c26.51.0 48-21.49 48-48V176c0-26.51-21.49-48-48-48zm0 272H48V112h140.12l54.63 54.63c6 6 14.14 9.37 22.63 9.37H464v224z"/></svg>&nbsp;<a href=../../../tech/ class="category-link p-category">科学技术</a>·<a href=../../../tech/computer/ class="category-link p-category">电子信息</a></span><div id=expiredTip>本文已超过一年未更新。随着版本迭代，文中所述信息可能已失效，仅供参考。</div></div><div class="post-body e-content"><p><img src=../../../images/wechat-mini-app.png alt=wechat-mini-app.png></p><p style=text-indent:0><span class=drop-cap>据</span>说微信小程序的开发是计算机学院暑假短学期的一门课程，因为我并非计算机专业的学生，所以无法选修该门课程。不过在 2019 年秋冬学期的选课中，我竟发现计算机学院开设了一门名叫「微信小程序开发实践」的通识课程。这门课程的上课地点在紫金港，虽然我已搬到玉泉，不过既然有这样一门开发微信小程序的课程，为何不抓住这一机会呢？在几乎十比一的选中概率下，我这样一个「选课非酋」居然幸运地选上了这门课程。</p><h2 id=课程介绍><a href=#课程介绍 class=anchor-link aria-label=课程介绍><svg viewBox="0 0 512 512" class="icon anchor-icon"><path d="M326.612 185.391c59.747 59.809 58.927 155.698.36 214.59-.11.12-.24.25-.36.37l-67.2 67.2c-59.27 59.27-155.699 59.262-214.96.0-59.27-59.26-59.27-155.7.0-214.96l37.106-37.106c9.84-9.84 26.786-3.3 27.294 10.606.648 17.722 3.826 35.527 9.69 52.721 1.986 5.822.567 12.262-3.783 16.612l-13.087 13.087c-28.026 28.026-28.905 73.66-1.155 101.96 28.024 28.579 74.086 28.749 102.325.51l67.2-67.19c28.191-28.191 28.073-73.757.0-101.83-3.701-3.694-7.429-6.564-10.341-8.569a16.037 16.037.0 01-6.947-12.606c-.396-10.567 3.348-21.456 11.698-29.806l21.054-21.055c5.521-5.521 14.182-6.199 20.584-1.731a152.482 152.482.0 0120.522 17.197zM467.547 44.449c-59.261-59.262-155.69-59.27-214.96.0l-67.2 67.2c-.12.12-.25.25-.36.37-58.566 58.892-59.387 154.781.36 214.59a152.454 152.454.0 0020.521 17.196c6.402 4.468 15.064 3.789 20.584-1.731l21.054-21.055c8.35-8.35 12.094-19.239 11.698-29.806a16.037 16.037.0 00-6.947-12.606c-2.912-2.005-6.64-4.875-10.341-8.569-28.073-28.073-28.191-73.639.0-101.83l67.2-67.19c28.239-28.239 74.3-28.069 102.325.51 27.75 28.3 26.872 73.934-1.155 101.96l-13.087 13.087c-4.35 4.35-5.769 10.79-3.783 16.612 5.864 17.194 9.042 34.999 9.69 52.721.509 13.906 17.454 20.446 27.294 10.606l37.106-37.106c59.271-59.259 59.271-155.699.001-214.959z"/></svg></a>课程介绍</h2><p>首先需要说明的一点是，这门课程虽然属于学校的通识选修课程，面向对象也是全校各专业的学生，但是对于非工科类学生以及大一新生等没有学过编程的学生极不友好。不过我看在 2020 年的选课系统中并没有这门课程，想必是因为上述原因外加授课教师时间不充足导致课程停开。</p><p>由于这门课程是横跨秋冬两个学期的课程，在教学安排上面，秋学期主要讲解网页设计前端的基础（HTML，CSS，JavaScript），冬学期则是使用微信小程序的开发工具进行小程序的开发，总共分为六次实验，最后的考核是三人一组完成一个大作业项目。我对这门课程并不是很满意，原因如下：</p><ol><li>选课的时候，在课程介绍上，我看到这门课程会讲一些后端开发的内容，但实际上并没有怎么涉及到。</li><li>授课教师是计算机学院一位学生评分很高的教授，但是他对讲授这门课的态度不太认真。课堂上有一半的时间都是让助教上台讲课，自己下台休息。</li><li>前端基础知识的讲解耗费了很长时间，教师并没有对当天课程的授课内容进行合理规划，完全是想到哪里讲哪里，对知识点没有进行系统性地讲解。</li><li>课程的重点应该是小程序的开发，但是在冬学期时，对小程序开发的讲解只花费了一节课的时间，剩下的时间全部是让学生依照实验指导书进行上机实验，对于小程序开发的很多问题都得不到解决。</li><li>六次实验已经耗费了很多精力，最后仍需要三人一组完成一个项目设计并进行答辩，不符合通识课程的定位。以至于在期末复习阶段，在复习专业课程知识的同时，还需要操该门课程的任务。</li><li>和我同一组的组员缺少上进心，全程划水，我作为组长分配给每个人的任务，上交的时候只能完成目标的三分之一。我要求每个人完成一个页面的设计，数据单独存放，页面内的元素单独构成组件（component），使用 JavaScript 对数据进行传递，但这些工作都是由我一人完成的，他们均以不会为由偷工减料。</li></ol><p>我对于这门课程的分数高低并不太关心，早已修够了通识课程的学分，选这一门课程只是为了对前端知识进行巩固和学习如何开发小程序。我们制作的小程序只能处于全班的中下等水平。因为别的组三个人都能为了自己的项目呕心沥血，但我们组的成员毫不放在心上，完全依靠我一个人。但恰好我正是那个没有时间肝项目的人，毕竟在这段时间里，我一直在为 SRTP 发愁。</p><p><img src=../../../images/wechat-mini-app-toolbox.png alt=wechat-mini-app-toolbox.png><span class=caption>※ 利用假期时间开发的小程序</span></p><p>由于我们组设计的程序我很不满意，所以就不展示出来献丑了。放假回到家后，我再次回顾了这门课程的学习过程。在课堂展示上，我很欣赏一个小组的设计，他们组设计的是一个工具箱，具备亲戚关系的计算、BMI 的计算、家庭记账等功能。我利用两天的时间将这个工具箱复刻了出来，我将完整的程序放在了 GitHub 的仓库中。</p><div class=github><div class=logo><svg class="icon github-icon" viewBox="0 0 16 16"><path fill-rule="evenodd" clip-rule="evenodd" d="M2 2.5c0-.66304.26339-1.29893.73223-1.767767C3.20108.263392 3.83696.0 4.5.0h8.75c.1989.0.3897.0790176.5303.21967C13.921.360322 14 .551088 14 .75v12.5C14 13.4489 13.921 13.6397 13.7803 13.7803 13.6397 13.921 13.4489 14 13.25 14h-2.5C10.5511 14 10.3603 13.921 10.2197 13.7803 10.079 13.6397 10 13.4489 10 13.25S10.079 12.8603 10.2197 12.7197C10.3603 12.579 10.5511 12.5 10.75 12.5H12.5v-2h-8C4.30308 10.5 4.11056 10.5582 3.94657 10.6672 3.78257 10.7762 3.65442 10.9312 3.57816 11.1128 3.50191 11.2943 3.48096 11.4943 3.51793 11.6878 3.5549 11.8812 3.64816 12.0594 3.786 12.2c.13924.142200000000001.2163.3338.21424.5328C3.99818 12.9318 3.91716 13.1218 3.775 13.261 3.63285 13.4002 3.4412 13.4773 3.24222 13.4752 3.04325 13.4732 2.85324 13.3922 2.714 13.25c-.45829-.4671-.71471-1.0956-.714-1.75v-9zm10.5-1V9h-8C4.144 9 3.806 9.074 3.5 9.208V2.5c0-.26522.10536-.51957.29289-.70711C3.98043 1.60536 4.23478 1.5 4.5 1.5h8zM5 12.25V15.5C5 15.5464 5.01293 15.5919 5.03734 15.6314 5.06175 15.6709 5.09667 15.7028 5.1382 15.7236 5.17972 15.7444 5.22621 15.7532 5.27245 15.749 5.31869 15.7448 5.36286 15.7279 5.4 15.7l1.45-1.087C6.89328 14.5805 6.94591 14.563 7 14.563S7.10673 14.5805 7.15 14.613L8.6 15.7C8.63714 15.7279 8.68131 15.7448 8.72755 15.749 8.77379 15.7532 8.82028 15.7444 8.8618 15.7236 8.90333 15.7028 8.93826 15.6709 8.96266 15.6314 8.98707 15.5919 9 15.5464 9 15.5V12.25C9 12.1837 8.97366 12.1201 8.92678 12.0732 8.87989 12.0263 8.81631 12 8.75 12H5.25C5.1837 12 5.12011 12.0263 5.07322 12.0732 5.02634 12.1201 5 12.1837 5 12.25z"/></svg>
+<a class=name href=https://github.com/guanqr/WeApp-Toolbox target=_blank>WeApp-Toolbox</a></div><div class=description>WeChat MiniApp: Toolbox. 微信小程序：一个健康管理主题的生活工具箱。</div><div class=language><span class=language-color style=background-color:#f1e05a></span>
+<span class=language-name>JavaScript</span></div></div><h2 id=程序设计><a href=#程序设计 class=anchor-link aria-label=程序设计><svg viewBox="0 0 512 512" class="icon anchor-icon"><path d="M326.612 185.391c59.747 59.809 58.927 155.698.36 214.59-.11.12-.24.25-.36.37l-67.2 67.2c-59.27 59.27-155.699 59.262-214.96.0-59.27-59.26-59.27-155.7.0-214.96l37.106-37.106c9.84-9.84 26.786-3.3 27.294 10.606.648 17.722 3.826 35.527 9.69 52.721 1.986 5.822.567 12.262-3.783 16.612l-13.087 13.087c-28.026 28.026-28.905 73.66-1.155 101.96 28.024 28.579 74.086 28.749 102.325.51l67.2-67.19c28.191-28.191 28.073-73.757.0-101.83-3.701-3.694-7.429-6.564-10.341-8.569a16.037 16.037.0 01-6.947-12.606c-.396-10.567 3.348-21.456 11.698-29.806l21.054-21.055c5.521-5.521 14.182-6.199 20.584-1.731a152.482 152.482.0 0120.522 17.197zM467.547 44.449c-59.261-59.262-155.69-59.27-214.96.0l-67.2 67.2c-.12.12-.25.25-.36.37-58.566 58.892-59.387 154.781.36 214.59a152.454 152.454.0 0020.521 17.196c6.402 4.468 15.064 3.789 20.584-1.731l21.054-21.055c8.35-8.35 12.094-19.239 11.698-29.806a16.037 16.037.0 00-6.947-12.606c-2.912-2.005-6.64-4.875-10.341-8.569-28.073-28.073-28.191-73.639.0-101.83l67.2-67.19c28.239-28.239 74.3-28.069 102.325.51 27.75 28.3 26.872 73.934-1.155 101.96l-13.087 13.087c-4.35 4.35-5.769 10.79-3.783 16.612 5.864 17.194 9.042 34.999 9.69 52.721.509 13.906 17.454 20.446 27.294 10.606l37.106-37.106c59.271-59.259 59.271-155.699.001-214.959z"/></svg></a>程序设计</h2><p><img src=../../../images/wechat-mini-app-page-0.png alt=wechat-mini-app-page-3.png><span class=caption>※ 生活工具箱</span></p><p>目前「生活工具箱」实现了「亲戚计算器」、「BMI 计算器」、「家庭记账本」这三个功能。其实在 GitHub 上有很多相关的程序，一些函数直接搬运现成的就能使用，节省了许多时间。</p><h3 id=亲戚计算器><a href=#亲戚计算器 class=anchor-link aria-label=亲戚计算器><svg viewBox="0 0 512 512" class="icon anchor-icon"><path d="M326.612 185.391c59.747 59.809 58.927 155.698.36 214.59-.11.12-.24.25-.36.37l-67.2 67.2c-59.27 59.27-155.699 59.262-214.96.0-59.27-59.26-59.27-155.7.0-214.96l37.106-37.106c9.84-9.84 26.786-3.3 27.294 10.606.648 17.722 3.826 35.527 9.69 52.721 1.986 5.822.567 12.262-3.783 16.612l-13.087 13.087c-28.026 28.026-28.905 73.66-1.155 101.96 28.024 28.579 74.086 28.749 102.325.51l67.2-67.19c28.191-28.191 28.073-73.757.0-101.83-3.701-3.694-7.429-6.564-10.341-8.569a16.037 16.037.0 01-6.947-12.606c-.396-10.567 3.348-21.456 11.698-29.806l21.054-21.055c5.521-5.521 14.182-6.199 20.584-1.731a152.482 152.482.0 0120.522 17.197zM467.547 44.449c-59.261-59.262-155.69-59.27-214.96.0l-67.2 67.2c-.12.12-.25.25-.36.37-58.566 58.892-59.387 154.781.36 214.59a152.454 152.454.0 0020.521 17.196c6.402 4.468 15.064 3.789 20.584-1.731l21.054-21.055c8.35-8.35 12.094-19.239 11.698-29.806a16.037 16.037.0 00-6.947-12.606c-2.912-2.005-6.64-4.875-10.341-8.569-28.073-28.073-28.191-73.639.0-101.83l67.2-67.19c28.239-28.239 74.3-28.069 102.325.51 27.75 28.3 26.872 73.934-1.155 101.96l-13.087 13.087c-4.35 4.35-5.769 10.79-3.783 16.612 5.864 17.194 9.042 34.999 9.69 52.721.509 13.906 17.454 20.446 27.294 10.606l37.106-37.106c59.271-59.259 59.271-155.699.001-214.959z"/></svg></a>亲戚计算器</h3><p><img src=../../../images/wechat-mini-app-page-1.png alt=wechat-mini-app-page-4.png><span class=caption>※ 亲戚计算器</span></p><p>亲戚计算器的核心就是能够区分人与人之间的关系，这里我使用的是 mumuy 写的 <a href=https://github.com/mumuy/relationship/blob/master/dist/relationship.js target=_blank rel=noopener>Javascript 库</a>。首先需要用户确认自己的性别，不同性别对亲戚的称谓也不同。然后再进行按键按下的方法处理，核心函数如下所示：</p><div class=highlight><div class=chroma><div class=table-container><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>  1
+</span><span class=lnt>  2
+</span><span class=lnt>  3
+</span><span class=lnt>  4
+</span><span class=lnt>  5
+</span><span class=lnt>  6
+</span><span class=lnt>  7
+</span><span class=lnt>  8
+</span><span class=lnt>  9
+</span><span class=lnt> 10
+</span><span class=lnt> 11
+</span><span class=lnt> 12
+</span><span class=lnt> 13
+</span><span class=lnt> 14
+</span><span class=lnt> 15
+</span><span class=lnt> 16
+</span><span class=lnt> 17
+</span><span class=lnt> 18
+</span><span class=lnt> 19
+</span><span class=lnt> 20
+</span><span class=lnt> 21
+</span><span class=lnt> 22
+</span><span class=lnt> 23
+</span><span class=lnt> 24
+</span><span class=lnt> 25
+</span><span class=lnt> 26
+</span><span class=lnt> 27
+</span><span class=lnt> 28
+</span><span class=lnt> 29
+</span><span class=lnt> 30
+</span><span class=lnt> 31
+</span><span class=lnt> 32
+</span><span class=lnt> 33
+</span><span class=lnt> 34
+</span><span class=lnt> 35
+</span><span class=lnt> 36
+</span><span class=lnt> 37
+</span><span class=lnt> 38
+</span><span class=lnt> 39
+</span><span class=lnt> 40
+</span><span class=lnt> 41
+</span><span class=lnt> 42
+</span><span class=lnt> 43
+</span><span class=lnt> 44
+</span><span class=lnt> 45
+</span><span class=lnt> 46
+</span><span class=lnt> 47
+</span><span class=lnt> 48
+</span><span class=lnt> 49
+</span><span class=lnt> 50
+</span><span class=lnt> 51
+</span><span class=lnt> 52
+</span><span class=lnt> 53
+</span><span class=lnt> 54
+</span><span class=lnt> 55
+</span><span class=lnt> 56
+</span><span class=lnt> 57
+</span><span class=lnt> 58
+</span><span class=lnt> 59
+</span><span class=lnt> 60
+</span><span class=lnt> 61
+</span><span class=lnt> 62
+</span><span class=lnt> 63
+</span><span class=lnt> 64
+</span><span class=lnt> 65
+</span><span class=lnt> 66
+</span><span class=lnt> 67
+</span><span class=lnt> 68
+</span><span class=lnt> 69
+</span><span class=lnt> 70
+</span><span class=lnt> 71
+</span><span class=lnt> 72
+</span><span class=lnt> 73
+</span><span class=lnt> 74
+</span><span class=lnt> 75
+</span><span class=lnt> 76
+</span><span class=lnt> 77
+</span><span class=lnt> 78
+</span><span class=lnt> 79
+</span><span class=lnt> 80
+</span><span class=lnt> 81
+</span><span class=lnt> 82
+</span><span class=lnt> 83
+</span><span class=lnt> 84
+</span><span class=lnt> 85
+</span><span class=lnt> 86
+</span><span class=lnt> 87
+</span><span class=lnt> 88
+</span><span class=lnt> 89
+</span><span class=lnt> 90
+</span><span class=lnt> 91
+</span><span class=lnt> 92
+</span><span class=lnt> 93
+</span><span class=lnt> 94
+</span><span class=lnt> 95
+</span><span class=lnt> 96
+</span><span class=lnt> 97
+</span><span class=lnt> 98
+</span><span class=lnt> 99
+</span><span class=lnt>100
+</span><span class=lnt>101
+</span><span class=lnt>102
+</span><span class=lnt>103
+</span><span class=lnt>104
+</span><span class=lnt>105
+</span><span class=lnt>106
+</span><span class=lnt>107
+</span><span class=lnt>108
+</span><span class=lnt>109
+</span><span class=lnt>110
+</span><span class=lnt>111
+</span><span class=lnt>112
+</span><span class=lnt>113
+</span><span class=lnt>114
+</span><span class=lnt>115
+</span><span class=lnt>116
+</span><span class=lnt>117
+</span><span class=lnt>118
+</span><span class=lnt>119
+</span><span class=lnt>120
+</span><span class=lnt>121
+</span><span class=lnt>122
+</span><span class=lnt>123
+</span><span class=lnt>124
+</span><span class=lnt>125
+</span><span class=lnt>126
+</span><span class=lnt>127
+</span><span class=lnt>128
+</span><span class=lnt>129
+</span><span class=lnt>130
+</span><span class=lnt>131
+</span><span class=lnt>132
+</span><span class=lnt>133
+</span><span class=lnt>134
+</span><span class=lnt>135
+</span><span class=lnt>136
+</span><span class=lnt>137
+</span><span class=lnt>138
+</span><span class=lnt>139
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-javascript data-lang=javascript><span class=line><span class=cl><span class=c1>// pages/relationship-calculator/relationship-calculator.js
+</span></span></span><span class=line><span class=cl><span class=c1></span>
+</span></span><span class=line><span class=cl><span class=kd>var</span> <span class=nx>relationship</span> <span class=o>=</span> <span class=nx>require</span><span class=p>(</span><span class=s2>&#34;../../datas/relationship.js&#34;</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=nx>Page</span><span class=p>({</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>  <span class=cm>/**
+</span></span></span><span class=line><span class=cl><span class=cm>   * 页面的初始数据
+</span></span></span><span class=line><span class=cl><span class=cm>   */</span>
+</span></span><span class=line><span class=cl>  <span class=nx>data</span><span class=o>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=nx>second_height</span><span class=o>:</span> <span class=mi>0</span><span class=p>,</span> <span class=c1>// 第二部分的高度
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=nx>screenData</span><span class=o>:</span> <span class=s2>&#34;我&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=nx>result</span><span class=o>:</span> <span class=s2>&#34;&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=nx>id1</span><span class=o>:</span> <span class=s2>&#34;丈夫&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=nx>id2</span><span class=o>:</span> <span class=s2>&#34;妻子&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=nx>id3</span><span class=o>:</span> <span class=s2>&#34;back&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=nx>id4</span><span class=o>:</span> <span class=s2>&#34;clean&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=nx>id5</span><span class=o>:</span> <span class=s2>&#34;爸爸&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=nx>id6</span><span class=o>:</span> <span class=s2>&#34;妈妈&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=nx>id7</span><span class=o>:</span> <span class=s2>&#34;哥哥&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=nx>id8</span><span class=o>:</span> <span class=s2>&#34;弟弟&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=nx>id9</span><span class=o>:</span> <span class=s2>&#34;姐姐&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=nx>id10</span><span class=o>:</span> <span class=s2>&#34;妹妹&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=nx>id11</span><span class=o>:</span> <span class=s2>&#34;儿子&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=nx>id12</span><span class=o>:</span> <span class=s2>&#34;女儿&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=nx>id13</span><span class=o>:</span> <span class=s2>&#34;each&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=nx>isTrue</span><span class=o>:</span> <span class=kc>false</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=nx>sex</span><span class=o>:</span> <span class=mi>1</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=nx>wantHelp</span><span class=o>:</span> <span class=kc>true</span>
+</span></span><span class=line><span class=cl>  <span class=p>},</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>  <span class=cm>/**
+</span></span></span><span class=line><span class=cl><span class=cm>   * 点击开关男|女
+</span></span></span><span class=line><span class=cl><span class=cm>   */</span>
+</span></span><span class=line><span class=cl>  <span class=nx>switchChange</span><span class=o>:</span> <span class=kd>function</span> <span class=p>(</span><span class=nx>e</span><span class=p>)</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=c1>// 通过判断 true or false
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=k>if</span> <span class=p>(</span><span class=nx>e</span><span class=p>.</span><span class=nx>detail</span><span class=p>.</span><span class=nx>value</span><span class=p>)</span> <span class=p>{</span> <span class=c1>// true时为女
+</span></span></span><span class=line><span class=cl><span class=c1></span>      <span class=c1>// 设置数据为选中
+</span></span></span><span class=line><span class=cl><span class=c1></span>      <span class=k>this</span><span class=p>.</span><span class=nx>setData</span><span class=p>({</span>
+</span></span><span class=line><span class=cl>        <span class=nx>sex</span><span class=o>:</span> <span class=mi>0</span>
+</span></span><span class=line><span class=cl>      <span class=p>})</span>
+</span></span><span class=line><span class=cl>    <span class=p>}</span> <span class=k>else</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>      <span class=c1>// 设置数据为选中
+</span></span></span><span class=line><span class=cl><span class=c1></span>      <span class=k>this</span><span class=p>.</span><span class=nx>setData</span><span class=p>({</span>
+</span></span><span class=line><span class=cl>        <span class=nx>sex</span><span class=o>:</span> <span class=mi>1</span>
+</span></span><span class=line><span class=cl>      <span class=p>})</span>
+</span></span><span class=line><span class=cl>    <span class=p>}</span>
+</span></span><span class=line><span class=cl>  <span class=p>},</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>  <span class=cm>/**
+</span></span></span><span class=line><span class=cl><span class=cm>   * 点击按钮事件
+</span></span></span><span class=line><span class=cl><span class=cm>   */</span>
+</span></span><span class=line><span class=cl>  <span class=nx>clickButton</span><span class=o>:</span> <span class=kd>function</span> <span class=p>(</span><span class=nx>event</span><span class=p>)</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=c1>// 获取屏幕内容
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=kd>var</span> <span class=nx>data</span> <span class=o>=</span> <span class=k>this</span><span class=p>.</span><span class=nx>data</span><span class=p>.</span><span class=nx>screenData</span><span class=p>.</span><span class=nx>toString</span><span class=p>();</span>
+</span></span><span class=line><span class=cl>    <span class=c1>// 获取屏幕结果内容
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=kd>var</span> <span class=nx>dataResult</span> <span class=o>=</span> <span class=k>this</span><span class=p>.</span><span class=nx>data</span><span class=p>.</span><span class=nx>result</span><span class=p>.</span><span class=nx>toString</span><span class=p>();</span>
+</span></span><span class=line><span class=cl>    <span class=c1>// 获取点击的 id
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=kd>var</span> <span class=nx>id</span> <span class=o>=</span> <span class=nx>event</span><span class=p>.</span><span class=nx>target</span><span class=p>.</span><span class=nx>id</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=k>if</span> <span class=p>(</span><span class=nx>id</span> <span class=o>==</span> <span class=k>this</span><span class=p>.</span><span class=nx>data</span><span class=p>.</span><span class=nx>id3</span><span class=p>)</span> <span class=p>{</span> <span class=c1>// 如果是 X 后退则清除两个字符
+</span></span></span><span class=line><span class=cl><span class=c1></span>      <span class=c1>// 如果屏幕只有 我 则不处理
+</span></span></span><span class=line><span class=cl><span class=c1></span>      <span class=k>if</span> <span class=p>(</span><span class=nx>data</span> <span class=o>==</span> <span class=s2>&#34;我&#34;</span><span class=p>)</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>        <span class=k>return</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>      <span class=p>}</span> <span class=k>else</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>        <span class=kd>var</span> <span class=nx>data</span> <span class=o>=</span> <span class=nx>data</span><span class=p>.</span><span class=nx>substring</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=nx>data</span><span class=p>.</span><span class=nx>length</span> <span class=o>-</span> <span class=mi>3</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>        <span class=c1>// 需要重新计算关系
+</span></span></span><span class=line><span class=cl><span class=c1></span>        <span class=kd>var</span> <span class=nx>result</span> <span class=o>=</span> <span class=nx>relationship</span><span class=p>({</span> <span class=nx>text</span><span class=o>:</span> <span class=nx>data</span><span class=p>,</span> <span class=nx>sex</span><span class=o>:</span> <span class=k>this</span><span class=p>.</span><span class=nx>data</span><span class=p>.</span><span class=nx>sex</span><span class=p>,</span> <span class=nx>reverse</span><span class=o>:</span> <span class=kc>false</span><span class=p>,</span> <span class=nx>type</span><span class=o>:</span> <span class=s1>&#39;default&#39;</span> <span class=p>});</span>
+</span></span><span class=line><span class=cl>        <span class=nx>dataResult</span> <span class=o>=</span> <span class=nx>result</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>      <span class=p>}</span>
+</span></span><span class=line><span class=cl>    <span class=p>}</span> <span class=k>else</span> <span class=k>if</span> <span class=p>(</span><span class=nx>id</span> <span class=o>==</span> <span class=k>this</span><span class=p>.</span><span class=nx>data</span><span class=p>.</span><span class=nx>id4</span><span class=p>)</span> <span class=p>{</span> <span class=c1>// AC 操作 清空屏幕
+</span></span></span><span class=line><span class=cl><span class=c1></span>      <span class=nx>data</span> <span class=o>=</span> <span class=s2>&#34;我&#34;</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>      <span class=nx>dataResult</span> <span class=o>=</span> <span class=s2>&#34;&#34;</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=p>}</span> <span class=k>else</span> <span class=p>{</span> <span class=c1>// 点击其他操作
+</span></span></span><span class=line><span class=cl><span class=c1></span>      <span class=kd>var</span> <span class=nx>data</span> <span class=o>=</span> <span class=nx>data</span><span class=p>.</span><span class=nx>substring</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=nx>data</span><span class=p>.</span><span class=nx>length</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>      <span class=kd>var</span> <span class=nx>result</span> <span class=o>=</span> <span class=nx>relationship</span><span class=p>({</span> <span class=nx>text</span><span class=o>:</span> <span class=nx>data</span><span class=p>,</span> <span class=nx>sex</span><span class=o>:</span> <span class=k>this</span><span class=p>.</span><span class=nx>data</span><span class=p>.</span><span class=nx>sex</span><span class=p>,</span> <span class=nx>reverse</span><span class=o>:</span> <span class=kc>false</span><span class=p>,</span> <span class=nx>type</span><span class=o>:</span> <span class=s1>&#39;default&#39;</span> <span class=p>});</span>
+</span></span><span class=line><span class=cl>      <span class=k>if</span> <span class=p>(</span><span class=nx>id</span> <span class=o>==</span> <span class=k>this</span><span class=p>.</span><span class=nx>data</span><span class=p>.</span><span class=nx>id13</span><span class=p>)</span> <span class=p>{</span> <span class=c1>// 互查操作 Ta 称呼我
+</span></span></span><span class=line><span class=cl><span class=c1></span>        <span class=c1>// 如果字数大于 22 个则不要增加 and 提示关系态复杂啦
+</span></span></span><span class=line><span class=cl><span class=c1></span>        <span class=k>if</span> <span class=p>(</span><span class=nx>data</span><span class=p>.</span><span class=nx>length</span> <span class=o>&gt;=</span> <span class=mi>22</span><span class=p>)</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>          <span class=nx>dataResult</span> <span class=o>=</span> <span class=s2>&#34;关系有点远，年长就叫老祖宗吧~&#34;</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>          <span class=k>return</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>        <span class=p>}</span>
+</span></span><span class=line><span class=cl>        <span class=k>if</span> <span class=p>(</span><span class=k>this</span><span class=p>.</span><span class=nx>data</span><span class=p>.</span><span class=nx>isTrue</span><span class=p>)</span> <span class=p>{</span> <span class=c1>// 一开始为 false
+</span></span></span><span class=line><span class=cl><span class=c1></span>          <span class=nx>result</span> <span class=o>=</span> <span class=nx>relationship</span><span class=p>({</span> <span class=nx>text</span><span class=o>:</span> <span class=nx>data</span><span class=p>,</span> <span class=nx>sex</span><span class=o>:</span> <span class=k>this</span><span class=p>.</span><span class=nx>data</span><span class=p>.</span><span class=nx>sex</span><span class=p>,</span> <span class=nx>reverse</span><span class=o>:</span> <span class=kc>false</span><span class=p>,</span> <span class=nx>type</span><span class=o>:</span> <span class=s1>&#39;default&#39;</span> <span class=p>});</span>
+</span></span><span class=line><span class=cl>          <span class=c1>// 设置数据
+</span></span></span><span class=line><span class=cl><span class=c1></span>          <span class=k>this</span><span class=p>.</span><span class=nx>setData</span><span class=p>({</span>
+</span></span><span class=line><span class=cl>            <span class=nx>isTrue</span><span class=o>:</span> <span class=kc>false</span>
+</span></span><span class=line><span class=cl>          <span class=p>})</span>
+</span></span><span class=line><span class=cl>        <span class=p>}</span> <span class=k>else</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>          <span class=nx>result</span> <span class=o>=</span> <span class=nx>relationship</span><span class=p>({</span> <span class=nx>text</span><span class=o>:</span> <span class=nx>data</span><span class=p>,</span> <span class=nx>sex</span><span class=o>:</span> <span class=k>this</span><span class=p>.</span><span class=nx>data</span><span class=p>.</span><span class=nx>sex</span><span class=p>,</span> <span class=nx>reverse</span><span class=o>:</span> <span class=kc>true</span><span class=p>,</span> <span class=nx>type</span><span class=o>:</span> <span class=s1>&#39;default&#39;</span> <span class=p>});</span>
+</span></span><span class=line><span class=cl>          <span class=c1>// 设置数据
+</span></span></span><span class=line><span class=cl><span class=c1></span>          <span class=k>this</span><span class=p>.</span><span class=nx>setData</span><span class=p>({</span>
+</span></span><span class=line><span class=cl>            <span class=nx>isTrue</span><span class=o>:</span> <span class=kc>true</span>
+</span></span><span class=line><span class=cl>          <span class=p>})</span>
+</span></span><span class=line><span class=cl>        <span class=p>}</span>
+</span></span><span class=line><span class=cl>        <span class=c1>// 修改屏幕结果为 result
+</span></span></span><span class=line><span class=cl><span class=c1></span>        <span class=nx>dataResult</span> <span class=o>=</span> <span class=nx>result</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>      <span class=p>}</span> <span class=k>else</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>        <span class=c1>// 如果字数大于 22 个则不要增加 and 提示关系态复杂啦
+</span></span></span><span class=line><span class=cl><span class=c1></span>        <span class=k>if</span> <span class=p>(</span><span class=nx>data</span><span class=p>.</span><span class=nx>length</span> <span class=o>&gt;=</span> <span class=mi>22</span><span class=p>)</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>          <span class=nx>dataResult</span> <span class=o>=</span> <span class=s2>&#34;关系有点远，年长就叫老祖宗~\n同龄人就叫帅哥美女吧&#34;</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>        <span class=p>}</span> <span class=k>else</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>          <span class=c1>// 同性关系处理 当为男性时，一开始点击不做处理
+</span></span></span><span class=line><span class=cl><span class=c1></span>          <span class=k>if</span> <span class=p>((</span><span class=k>this</span><span class=p>.</span><span class=nx>data</span><span class=p>.</span><span class=nx>sex</span> <span class=o>==</span> <span class=mi>1</span> <span class=o>&amp;&amp;</span> <span class=nx>id</span> <span class=o>==</span> <span class=k>this</span><span class=p>.</span><span class=nx>data</span><span class=p>.</span><span class=nx>id1</span> <span class=o>&amp;&amp;</span> <span class=nx>data</span> <span class=o>==</span> <span class=s1>&#39;我&#39;</span><span class=p>)</span> <span class=o>||</span> <span class=p>(</span><span class=k>this</span><span class=p>.</span><span class=nx>data</span><span class=p>.</span><span class=nx>sex</span> <span class=o>==</span> <span class=mi>0</span> <span class=o>&amp;&amp;</span> <span class=nx>id</span> <span class=o>==</span> <span class=k>this</span><span class=p>.</span><span class=nx>data</span><span class=p>.</span><span class=nx>id2</span> <span class=o>&amp;&amp;</span> <span class=nx>data</span> <span class=o>==</span> <span class=s1>&#39;我&#39;</span><span class=p>))</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>          <span class=p>}</span> <span class=k>else</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>            <span class=nx>data</span> <span class=o>=</span> <span class=nx>data</span> <span class=o>+</span> <span class=s2>&#34;的&#34;</span> <span class=o>+</span> <span class=nx>id</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>            <span class=c1>// 需要重新计算关系
+</span></span></span><span class=line><span class=cl><span class=c1></span>            <span class=nx>result</span> <span class=o>=</span> <span class=nx>relationship</span><span class=p>({</span> <span class=nx>text</span><span class=o>:</span> <span class=nx>data</span><span class=p>,</span> <span class=nx>sex</span><span class=o>:</span> <span class=k>this</span><span class=p>.</span><span class=nx>data</span><span class=p>.</span><span class=nx>sex</span><span class=p>,</span> <span class=nx>reverse</span><span class=o>:</span> <span class=kc>false</span><span class=p>,</span> <span class=nx>type</span><span class=o>:</span> <span class=s1>&#39;default&#39;</span> <span class=p>});</span>
+</span></span><span class=line><span class=cl>            <span class=k>if</span> <span class=p>(</span><span class=k>this</span><span class=p>.</span><span class=nx>isNull</span><span class=p>(</span><span class=nx>result</span><span class=p>))</span> <span class=p>{</span> <span class=c1>// 结果为空
+</span></span></span><span class=line><span class=cl><span class=c1></span>              <span class=nx>result</span> <span class=o>=</span> <span class=s2>&#34;哎呀，关系太复杂了啊，我算不出来&#34;</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>            <span class=p>}</span>
+</span></span><span class=line><span class=cl>            <span class=nx>dataResult</span> <span class=o>=</span> <span class=nx>result</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>          <span class=p>}</span>
+</span></span><span class=line><span class=cl>        <span class=p>}</span>
+</span></span><span class=line><span class=cl>      <span class=p>}</span>
+</span></span><span class=line><span class=cl>    <span class=p>}</span>
+</span></span><span class=line><span class=cl>    <span class=c1>// 设置数据
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=k>this</span><span class=p>.</span><span class=nx>setData</span><span class=p>({</span>
+</span></span><span class=line><span class=cl>      <span class=nx>screenData</span><span class=o>:</span> <span class=nx>data</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>      <span class=nx>result</span><span class=o>:</span> <span class=nx>dataResult</span>
+</span></span><span class=line><span class=cl>    <span class=p>})</span>
+</span></span><span class=line><span class=cl>  <span class=p>},</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>  <span class=c1>// 判断结果是否为空，若是则输出关系太复杂了
+</span></span></span><span class=line><span class=cl><span class=c1></span>  <span class=nx>isNull</span><span class=o>:</span> <span class=kd>function</span> <span class=p>(</span><span class=nx>result</span><span class=p>)</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=k>if</span> <span class=p>(</span><span class=nx>result</span><span class=p>.</span><span class=nx>length</span> <span class=o>==</span> <span class=mi>0</span><span class=p>)</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>      <span class=k>return</span> <span class=kc>true</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=p>}</span>
+</span></span><span class=line><span class=cl>    <span class=k>return</span> <span class=kc>false</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>  <span class=p>},</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>  <span class=nx>wantHelp</span><span class=o>:</span> <span class=kd>function</span> <span class=p>()</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=nx>setTimeout</span><span class=p>(</span><span class=kd>function</span> <span class=p>()</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>      <span class=nx>wx</span><span class=p>.</span><span class=nx>showModal</span><span class=p>({</span>
+</span></span><span class=line><span class=cl>        <span class=nx>title</span><span class=o>:</span> <span class=s2>&#34;温馨提示&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>        <span class=nx>content</span><span class=o>:</span> <span class=s2>&#34;请先选择你的性别，使用屏幕下方按键输入亲戚和你之间的关系，屏幕上方即可显示亲戚对你的称谓。点击交换按钮可以查看你对亲戚的称谓。&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>      <span class=p>})</span>
+</span></span><span class=line><span class=cl>    <span class=p>},</span> <span class=mi>50</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>  <span class=p>},</span>
+</span></span><span class=line><span class=cl><span class=p>})</span>
+</span></span></code></pre></td></tr></table></div></div></div><p><code>relationship-calculator.wxml</code>：</p><div class=highlight><div class=chroma><div class=table-container><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span><span class=lnt>33
+</span><span class=lnt>34
+</span><span class=lnt>35
+</span><span class=lnt>36
+</span><span class=lnt>37
+</span><span class=lnt>38
+</span><span class=lnt>39
+</span><span class=lnt>40
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-html data-lang=html><span class=line><span class=cl><span class=c>&lt;!--pages/relationship-calculator/relationship-calculator.wxml--&gt;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=p>&lt;</span><span class=nt>view</span> <span class=na>class</span><span class=o>=</span><span class=s>&#34;head-view&#34;</span>  <span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>    男<span class=p>&lt;</span><span class=nt>switch</span> <span class=na>class</span><span class=o>=</span><span class=s>&#34;switchClass&#34;</span> <span class=na>bindchange</span><span class=o>=</span><span class=s>&#34;switchChange&#34;</span> <span class=p>/&gt;</span>女
+</span></span><span class=line><span class=cl>    <span class=p>&lt;</span><span class=nt>image</span> <span class=na>class</span><span class=o>=</span><span class=s>&#34;exchange&#34;</span> <span class=na>bindtap</span><span class=o>=</span><span class=s>&#34;clickButton&#34;</span> <span class=na>id</span><span class=o>=</span><span class=s>&#34;{{id13}}&#34;</span> <span class=na>src</span><span class=o>=</span><span class=s>&#34;/images/exchange.png&#34;</span><span class=p>&gt;&lt;/</span><span class=nt>image</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=p>&lt;</span><span class=nt>image</span> <span class=na>class</span><span class=o>=</span><span class=s>&#34;help&#34;</span> <span class=na>catchtap</span><span class=o>=</span><span class=s>&#39;wantHelp&#39;</span> <span class=na>src</span><span class=o>=</span><span class=s>&#34;/images/help.png&#34;</span><span class=p>&gt;&lt;/</span><span class=nt>image</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl><span class=p>&lt;/</span><span class=nt>view</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl><span class=p>&lt;</span><span class=nt>view</span> <span class=na>class</span><span class=o>=</span><span class=s>&#34;body-view&#34;</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>  <span class=p>&lt;</span><span class=nt>textarea</span>  <span class=na>class</span><span class=o>=</span><span class=s>&#34;textstyle&#34;</span> <span class=na>value</span><span class=o>=</span><span class=s>&#39;{{screenData}}&#39;</span> <span class=na>disabled</span><span class=o>=</span><span class=s>&#39;true&#39;</span> <span class=na>maxlength</span><span class=o>=</span><span class=s>&#34;34&#34;</span>  <span class=p>/&gt;</span>
+</span></span><span class=line><span class=cl><span class=p>&lt;/</span><span class=nt>view</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl><span class=p>&lt;</span><span class=nt>view</span> <span class=na>class</span><span class=o>=</span><span class=s>&#34;body-view&#34;</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>  <span class=p>&lt;</span><span class=nt>textarea</span>  <span class=na>class</span><span class=o>=</span><span class=s>&#34;result-style&#34;</span> <span class=na>value</span><span class=o>=</span><span class=s>&#39;{{result}}&#39;</span> <span class=na>disabled</span><span class=o>=</span><span class=s>&#39;true&#39;</span> <span class=na>style</span><span class=o>=</span><span class=s>&#34;text-align:right&#34;</span>  <span class=p>/&gt;</span>
+</span></span><span class=line><span class=cl><span class=p>&lt;/</span><span class=nt>view</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>  <span class=p>&lt;</span><span class=nt>view</span> <span class=na>class</span><span class=o>=</span><span class=s>&#34;family&#34;</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=p>&lt;</span><span class=nt>image</span> <span class=na>class</span><span class=o>=</span><span class=s>&#34;family-image&#34;</span> <span class=na>src</span><span class=o>=</span><span class=s>&#34;/images/family.png&#34;</span><span class=p>&gt;&lt;/</span><span class=nt>image</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>  <span class=p>&lt;/</span><span class=nt>view</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=p>&lt;</span><span class=nt>view</span> <span class=na>class</span><span class=o>=</span><span class=s>&#34;keyboard&#34;</span> <span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>  <span class=p>&lt;</span><span class=nt>view</span> <span class=na>class</span><span class=o>=</span><span class=s>&#34;btnGroup&#34;</span>  <span class=p>&gt;</span>       
+</span></span><span class=line><span class=cl>    <span class=p>&lt;</span><span class=nt>view</span> <span class=na>class</span><span class=o>=</span><span class=s>&#34;item normal&#34;</span> <span class=na>bindtap</span><span class=o>=</span><span class=s>&#34;clickButton&#34;</span> <span class=na>id</span><span class=o>=</span><span class=s>&#34;{{id1}}&#34;</span><span class=p>&gt;</span>夫<span class=p>&lt;/</span><span class=nt>view</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=p>&lt;</span><span class=nt>view</span> <span class=na>class</span><span class=o>=</span><span class=s>&#34;item normal&#34;</span> <span class=na>bindtap</span><span class=o>=</span><span class=s>&#34;clickButton&#34;</span> <span class=na>id</span><span class=o>=</span><span class=s>&#34;{{id2}}&#34;</span><span class=p>&gt;</span>妻<span class=p>&lt;/</span><span class=nt>view</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=p>&lt;</span><span class=nt>view</span> <span class=na>class</span><span class=o>=</span><span class=s>&#34;item normal&#34;</span> <span class=na>bindtap</span><span class=o>=</span><span class=s>&#34;clickButton&#34;</span> <span class=na>id</span><span class=o>=</span><span class=s>&#34;{{id3}}&#34;</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>      <span class=p>&lt;</span><span class=nt>image</span> <span class=na>class</span><span class=o>=</span><span class=s>&#34;delate-icon&#34;</span> <span class=na>bindtap</span><span class=o>=</span><span class=s>&#34;clickButton&#34;</span> <span class=na>id</span><span class=o>=</span><span class=s>&#34;{{id3}}&#34;</span> <span class=na>src</span><span class=o>=</span><span class=s>&#34;/images/delate.png&#34;</span><span class=p>&gt;&lt;/</span><span class=nt>image</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=p>&lt;/</span><span class=nt>view</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=p>&lt;</span><span class=nt>view</span> <span class=na>class</span><span class=o>=</span><span class=s>&#34;item normal-color&#34;</span> <span class=na>bindtap</span><span class=o>=</span><span class=s>&#34;clickButton&#34;</span> <span class=na>id</span><span class=o>=</span><span class=s>&#34;{{id4}}&#34;</span><span class=p>&gt;</span>AC<span class=p>&lt;/</span><span class=nt>view</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>  <span class=p>&lt;/</span><span class=nt>view</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>  <span class=p>&lt;</span><span class=nt>view</span> <span class=na>class</span><span class=o>=</span><span class=s>&#34;btnGroup&#34;</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=p>&lt;</span><span class=nt>view</span> <span class=na>class</span><span class=o>=</span><span class=s>&#34;item normal&#34;</span> <span class=na>bindtap</span><span class=o>=</span><span class=s>&#34;clickButton&#34;</span> <span class=na>id</span><span class=o>=</span><span class=s>&#34;{{id5}}&#34;</span><span class=p>&gt;</span>父<span class=p>&lt;/</span><span class=nt>view</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=p>&lt;</span><span class=nt>view</span> <span class=na>class</span><span class=o>=</span><span class=s>&#34;item normal&#34;</span> <span class=na>bindtap</span><span class=o>=</span><span class=s>&#34;clickButton&#34;</span> <span class=na>id</span><span class=o>=</span><span class=s>&#34;{{id6}}&#34;</span><span class=p>&gt;</span>母<span class=p>&lt;/</span><span class=nt>view</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=p>&lt;</span><span class=nt>view</span> <span class=na>class</span><span class=o>=</span><span class=s>&#34;item normal&#34;</span> <span class=na>bindtap</span><span class=o>=</span><span class=s>&#34;clickButton&#34;</span> <span class=na>id</span><span class=o>=</span><span class=s>&#34;{{id7}}&#34;</span><span class=p>&gt;</span>兄<span class=p>&lt;/</span><span class=nt>view</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=p>&lt;</span><span class=nt>view</span> <span class=na>class</span><span class=o>=</span><span class=s>&#34;item normal&#34;</span> <span class=na>bindtap</span><span class=o>=</span><span class=s>&#34;clickButton&#34;</span> <span class=na>id</span><span class=o>=</span><span class=s>&#34;{{id8}}&#34;</span><span class=p>&gt;</span>弟<span class=p>&lt;/</span><span class=nt>view</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>  <span class=p>&lt;/</span><span class=nt>view</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>  <span class=p>&lt;</span><span class=nt>view</span> <span class=na>class</span><span class=o>=</span><span class=s>&#34;btnGroup&#34;</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=p>&lt;</span><span class=nt>view</span> <span class=na>class</span><span class=o>=</span><span class=s>&#34;item normal&#34;</span> <span class=na>bindtap</span><span class=o>=</span><span class=s>&#34;clickButton&#34;</span> <span class=na>id</span><span class=o>=</span><span class=s>&#34;{{id9}}&#34;</span><span class=p>&gt;</span>姐<span class=p>&lt;/</span><span class=nt>view</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=p>&lt;</span><span class=nt>view</span> <span class=na>class</span><span class=o>=</span><span class=s>&#34;item normal&#34;</span> <span class=na>bindtap</span><span class=o>=</span><span class=s>&#34;clickButton&#34;</span> <span class=na>id</span><span class=o>=</span><span class=s>&#34;{{id10}}&#34;</span><span class=p>&gt;</span>妹<span class=p>&lt;/</span><span class=nt>view</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=p>&lt;</span><span class=nt>view</span> <span class=na>class</span><span class=o>=</span><span class=s>&#34;item normal&#34;</span> <span class=na>bindtap</span><span class=o>=</span><span class=s>&#34;clickButton&#34;</span> <span class=na>id</span><span class=o>=</span><span class=s>&#34;{{id11}}&#34;</span><span class=p>&gt;</span>子<span class=p>&lt;/</span><span class=nt>view</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=p>&lt;</span><span class=nt>view</span> <span class=na>class</span><span class=o>=</span><span class=s>&#34;item normal&#34;</span> <span class=na>bindtap</span><span class=o>=</span><span class=s>&#34;clickButton&#34;</span> <span class=na>id</span><span class=o>=</span><span class=s>&#34;{{id12}}&#34;</span><span class=p>&gt;</span>女<span class=p>&lt;/</span><span class=nt>view</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>  <span class=p>&lt;/</span><span class=nt>view</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl><span class=p>&lt;/</span><span class=nt>view</span><span class=p>&gt;</span>
+</span></span></code></pre></td></tr></table></div></div></div><p><code>relationship-calculator.wxss</code>：</p><div class=highlight><div class=chroma><div class=table-container><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>  1
+</span><span class=lnt>  2
+</span><span class=lnt>  3
+</span><span class=lnt>  4
+</span><span class=lnt>  5
+</span><span class=lnt>  6
+</span><span class=lnt>  7
+</span><span class=lnt>  8
+</span><span class=lnt>  9
+</span><span class=lnt> 10
+</span><span class=lnt> 11
+</span><span class=lnt> 12
+</span><span class=lnt> 13
+</span><span class=lnt> 14
+</span><span class=lnt> 15
+</span><span class=lnt> 16
+</span><span class=lnt> 17
+</span><span class=lnt> 18
+</span><span class=lnt> 19
+</span><span class=lnt> 20
+</span><span class=lnt> 21
+</span><span class=lnt> 22
+</span><span class=lnt> 23
+</span><span class=lnt> 24
+</span><span class=lnt> 25
+</span><span class=lnt> 26
+</span><span class=lnt> 27
+</span><span class=lnt> 28
+</span><span class=lnt> 29
+</span><span class=lnt> 30
+</span><span class=lnt> 31
+</span><span class=lnt> 32
+</span><span class=lnt> 33
+</span><span class=lnt> 34
+</span><span class=lnt> 35
+</span><span class=lnt> 36
+</span><span class=lnt> 37
+</span><span class=lnt> 38
+</span><span class=lnt> 39
+</span><span class=lnt> 40
+</span><span class=lnt> 41
+</span><span class=lnt> 42
+</span><span class=lnt> 43
+</span><span class=lnt> 44
+</span><span class=lnt> 45
+</span><span class=lnt> 46
+</span><span class=lnt> 47
+</span><span class=lnt> 48
+</span><span class=lnt> 49
+</span><span class=lnt> 50
+</span><span class=lnt> 51
+</span><span class=lnt> 52
+</span><span class=lnt> 53
+</span><span class=lnt> 54
+</span><span class=lnt> 55
+</span><span class=lnt> 56
+</span><span class=lnt> 57
+</span><span class=lnt> 58
+</span><span class=lnt> 59
+</span><span class=lnt> 60
+</span><span class=lnt> 61
+</span><span class=lnt> 62
+</span><span class=lnt> 63
+</span><span class=lnt> 64
+</span><span class=lnt> 65
+</span><span class=lnt> 66
+</span><span class=lnt> 67
+</span><span class=lnt> 68
+</span><span class=lnt> 69
+</span><span class=lnt> 70
+</span><span class=lnt> 71
+</span><span class=lnt> 72
+</span><span class=lnt> 73
+</span><span class=lnt> 74
+</span><span class=lnt> 75
+</span><span class=lnt> 76
+</span><span class=lnt> 77
+</span><span class=lnt> 78
+</span><span class=lnt> 79
+</span><span class=lnt> 80
+</span><span class=lnt> 81
+</span><span class=lnt> 82
+</span><span class=lnt> 83
+</span><span class=lnt> 84
+</span><span class=lnt> 85
+</span><span class=lnt> 86
+</span><span class=lnt> 87
+</span><span class=lnt> 88
+</span><span class=lnt> 89
+</span><span class=lnt> 90
+</span><span class=lnt> 91
+</span><span class=lnt> 92
+</span><span class=lnt> 93
+</span><span class=lnt> 94
+</span><span class=lnt> 95
+</span><span class=lnt> 96
+</span><span class=lnt> 97
+</span><span class=lnt> 98
+</span><span class=lnt> 99
+</span><span class=lnt>100
+</span><span class=lnt>101
+</span><span class=lnt>102
+</span><span class=lnt>103
+</span><span class=lnt>104
+</span><span class=lnt>105
+</span><span class=lnt>106
+</span><span class=lnt>107
+</span><span class=lnt>108
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-css data-lang=css><span class=line><span class=cl><span class=c>/* pages/relationship-calculator/relationship-calculator.wxss */</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=nt>page</span><span class=p>{</span>
+</span></span><span class=line><span class=cl>  <span class=k>height</span><span class=p>:</span> <span class=mi>100</span><span class=kt>%</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>  <span class=k>background</span><span class=p>:</span> <span class=mh>#f7f7f7</span><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span><span class=line><span class=cl><span class=p>.</span><span class=nc>head-view</span> <span class=p>.</span><span class=nc>wx-switch-input</span><span class=p>{</span>
+</span></span><span class=line><span class=cl>  <span class=k>background</span><span class=p>:</span> <span class=mh>#7DB9DE</span> <span class=cp>!important</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>  <span class=k>border</span><span class=p>:</span> <span class=mh>#7DB9DE</span> <span class=cp>!important</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>  <span class=k>height</span><span class=p>:</span> <span class=mi>40</span><span class=n>rpx</span> <span class=cp>!important</span><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span><span class=line><span class=cl><span class=c>/*白色样式（false的样式）*/</span>
+</span></span><span class=line><span class=cl><span class=p>.</span><span class=nc>head-view</span> <span class=p>.</span><span class=nc>wx-switch-input</span><span class=p>::</span><span class=nd>before</span><span class=p>{</span>
+</span></span><span class=line><span class=cl>  <span class=k>height</span><span class=p>:</span> <span class=mi>36</span><span class=n>rpx</span> <span class=cp>!important</span><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span><span class=line><span class=cl><span class=c>/*绿色样式（true的样式）*/</span>
+</span></span><span class=line><span class=cl><span class=p>.</span><span class=nc>head-view</span> <span class=p>.</span><span class=nc>wx-switch-input</span><span class=p>::</span><span class=nd>after</span><span class=p>{</span>
+</span></span><span class=line><span class=cl>  <span class=k>height</span><span class=p>:</span> <span class=mi>36</span><span class=n>rpx</span> <span class=cp>!important</span><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span><span class=line><span class=cl><span class=p>.</span><span class=nc>keyboard</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>  <span class=k>background</span><span class=p>:</span> <span class=mh>#e5e5e5</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>  <span class=k>color</span><span class=p>:</span> <span class=mh>#FFFFFF</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>  <span class=k>border</span><span class=p>:</span><span class=kc>solid</span> <span class=mf>0.25</span><span class=n>rpx</span> <span class=mh>#c0c0c0</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>  <span class=k>position</span><span class=p>:</span> <span class=kc>fixed</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>  <span class=k>bottom</span><span class=p>:</span> <span class=mi>0</span><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span><span class=line><span class=cl><span class=p>.</span><span class=nc>head-view</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>  <span class=k>height</span><span class=p>:</span> <span class=mi>84</span><span class=n>rpx</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>  <span class=k>background-color</span><span class=p>:</span> <span class=mh>#f7f7f7</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>  <span class=k>border-bottom</span><span class=p>:</span> <span class=kc>solid</span> <span class=mf>0.5</span><span class=n>rpx</span> <span class=mh>#d9d9d9</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>  <span class=k>color</span><span class=p>:</span> <span class=mh>#313131</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>  <span class=k>padding-left</span><span class=p>:</span> <span class=mf>37.5</span><span class=n>rpx</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>  <span class=k>font-size</span><span class=p>:</span> <span class=mi>32</span><span class=n>rpx</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>  <span class=k>display</span><span class=p>:</span> <span class=kc>flex</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>  <span class=k>align-items</span><span class=p>:</span> <span class=kc>center</span><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span><span class=line><span class=cl><span class=p>.</span><span class=nc>gender</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>  <span class=k>width</span><span class=p>:</span> <span class=mi>200</span><span class=n>rpx</span><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span><span class=line><span class=cl><span class=p>.</span><span class=nc>exchange</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>  <span class=k>position</span><span class=p>:</span> <span class=kc>absolute</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>  <span class=k>width</span><span class=p>:</span> <span class=mi>48</span><span class=n>rpx</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>  <span class=k>height</span><span class=p>:</span> <span class=mi>48</span><span class=n>rpx</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>  <span class=k>right</span><span class=p>:</span> <span class=mi>120</span><span class=n>rpx</span><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span><span class=line><span class=cl><span class=p>.</span><span class=nc>help</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>  <span class=k>position</span><span class=p>:</span> <span class=kc>absolute</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>  <span class=k>width</span><span class=p>:</span> <span class=mi>48</span><span class=n>rpx</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>  <span class=k>height</span><span class=p>:</span> <span class=mi>48</span><span class=n>rpx</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>  <span class=k>right</span><span class=p>:</span> <span class=mf>37.5</span><span class=n>rpx</span><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span><span class=line><span class=cl><span class=p>.</span><span class=nc>body-view</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>  <span class=k>background-color</span><span class=p>:</span> <span class=mh>#f7f7f7</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>  <span class=k>padding</span><span class=p>:</span> <span class=mi>0</span> <span class=mf>37.5</span><span class=n>rpx</span><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span><span class=line><span class=cl><span class=p>.</span><span class=nc>textstyle</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>  <span class=k>font-size</span><span class=p>:</span> <span class=mi>32</span><span class=n>rpx</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>  <span class=k>width</span><span class=p>:</span> <span class=mi>100</span><span class=kt>%</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>  <span class=k>height</span><span class=p>:</span> <span class=mi>120</span><span class=n>rpx</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>  <span class=k>color</span><span class=p>:</span> <span class=mh>#313131</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>  <span class=k>padding-top</span><span class=p>:</span> <span class=mi>36</span><span class=n>rpx</span><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span><span class=line><span class=cl><span class=p>.</span><span class=nc>result-style</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>  <span class=k>font-size</span><span class=p>:</span> <span class=mi>42</span><span class=n>rpx</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>  <span class=k>width</span><span class=p>:</span> <span class=mi>100</span><span class=kt>%</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>  <span class=k>height</span><span class=p>:</span> <span class=mi>120</span><span class=n>rpx</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>  <span class=k>color</span><span class=p>:</span> <span class=mh>#313131</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>  <span class=k>border-color</span><span class=p>:</span> <span class=mh>#f7f7f7</span><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span><span class=line><span class=cl><span class=p>.</span><span class=nc>family-image</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>  <span class=k>position</span><span class=p>:</span> <span class=kc>absolute</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>  <span class=k>width</span><span class=p>:</span> <span class=mi>100</span><span class=kt>%</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>  <span class=k>height</span><span class=p>:</span> <span class=nb>calc</span><span class=p>(</span><span class=mf>0.4</span><span class=o>*</span><span class=mi>100</span><span class=kt>vw</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>  <span class=k>top</span><span class=p>:</span> <span class=mi>32</span><span class=kt>vh</span><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span><span class=line><span class=cl><span class=p>.</span><span class=nc>btnGroup</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>  <span class=k>display</span><span class=p>:</span> <span class=kc>flex</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>  <span class=k>flex-direction</span><span class=p>:</span> <span class=kc>row</span><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span><span class=line><span class=cl><span class=p>.</span><span class=nc>item</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>  <span class=k>width</span><span class=p>:</span> <span class=mf>187.5</span><span class=n>rpx</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>  <span class=k>min-height</span><span class=p>:</span> <span class=mi>10</span><span class=n>rpx</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>  <span class=k>margin</span><span class=p>:</span> <span class=mi>0</span><span class=n>rpx</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>  <span class=k>border-radius</span><span class=p>:</span> <span class=mi>0</span><span class=kt>px</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>  <span class=k>text-align</span><span class=p>:</span> <span class=kc>center</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>  <span class=k>line-height</span><span class=p>:</span> <span class=mi>15</span><span class=kt>vh</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>  <span class=k>display</span><span class=p>:</span> <span class=kc>inline-block</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>  <span class=k>font-size</span><span class=p>:</span> <span class=mi>40</span><span class=n>rpx</span><span class=p>;</span> 
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span><span class=line><span class=cl><span class=p>.</span><span class=nc>delate-icon</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>  <span class=k>width</span><span class=p>:</span> <span class=mi>40</span><span class=n>rpx</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>  <span class=k>height</span><span class=p>:</span> <span class=mi>40</span><span class=n>rpx</span><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span><span class=line><span class=cl><span class=p>.</span><span class=nc>color</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>  <span class=k>color</span><span class=p>:</span> <span class=mh>#ebebeb</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>  <span class=k>border</span><span class=p>:</span><span class=kc>solid</span> <span class=mi>0</span><span class=n>rpx</span> <span class=mh>#d9d9d9</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>  <span class=k>background</span><span class=p>:</span><span class=mh>#7DB9DE</span><span class=p>;</span>  
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span><span class=line><span class=cl><span class=p>.</span><span class=nc>normal</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>  <span class=k>color</span><span class=p>:</span> <span class=mh>#313131</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>  <span class=k>border</span><span class=p>:</span><span class=kc>solid</span> <span class=mf>0.5</span><span class=n>rpx</span> <span class=mh>#d9d9d9</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>  <span class=k>background-color</span><span class=p>:</span> <span class=mh>#f7f7f7</span><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span><span class=line><span class=cl><span class=p>.</span><span class=nc>normal-color</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>  <span class=k>color</span><span class=p>:</span><span class=mh>#7DB9DE</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>  <span class=k>border</span><span class=p>:</span><span class=kc>solid</span> <span class=mf>0.5</span><span class=n>rpx</span> <span class=mh>#d9d9d9</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>  <span class=k>background-color</span><span class=p>:</span> <span class=mh>#f7f7f7</span><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span></code></pre></td></tr></table></div></div></div><h3 id=bmi-计算器><a href=#bmi-计算器 class=anchor-link aria-label=bmi-计算器><svg viewBox="0 0 512 512" class="icon anchor-icon"><path d="M326.612 185.391c59.747 59.809 58.927 155.698.36 214.59-.11.12-.24.25-.36.37l-67.2 67.2c-59.27 59.27-155.699 59.262-214.96.0-59.27-59.26-59.27-155.7.0-214.96l37.106-37.106c9.84-9.84 26.786-3.3 27.294 10.606.648 17.722 3.826 35.527 9.69 52.721 1.986 5.822.567 12.262-3.783 16.612l-13.087 13.087c-28.026 28.026-28.905 73.66-1.155 101.96 28.024 28.579 74.086 28.749 102.325.51l67.2-67.19c28.191-28.191 28.073-73.757.0-101.83-3.701-3.694-7.429-6.564-10.341-8.569a16.037 16.037.0 01-6.947-12.606c-.396-10.567 3.348-21.456 11.698-29.806l21.054-21.055c5.521-5.521 14.182-6.199 20.584-1.731a152.482 152.482.0 0120.522 17.197zM467.547 44.449c-59.261-59.262-155.69-59.27-214.96.0l-67.2 67.2c-.12.12-.25.25-.36.37-58.566 58.892-59.387 154.781.36 214.59a152.454 152.454.0 0020.521 17.196c6.402 4.468 15.064 3.789 20.584-1.731l21.054-21.055c8.35-8.35 12.094-19.239 11.698-29.806a16.037 16.037.0 00-6.947-12.606c-2.912-2.005-6.64-4.875-10.341-8.569-28.073-28.073-28.191-73.639.0-101.83l67.2-67.19c28.239-28.239 74.3-28.069 102.325.51 27.75 28.3 26.872 73.934-1.155 101.96l-13.087 13.087c-4.35 4.35-5.769 10.79-3.783 16.612 5.864 17.194 9.042 34.999 9.69 52.721.509 13.906 17.454 20.446 27.294 10.606l37.106-37.106c59.271-59.259 59.271-155.699.001-214.959z"/></svg></a>BMI 计算器</h3><p><img src=../../../images/wechat-mini-app-page-2.png alt=wechat-mini-app-page-5.png><span class=caption>※ BMI 计算器</span></p><p>BMI 计算器也是一个很简单的设计，调整好身高和体重的数据就能够计算出你的 BMI 得分和在该身高下正常的体重。因为国内和国际 BMI 标准有一定的区别，在函数中可以做修改。核心函数如下：</p><div class=highlight><div class=chroma><div class=table-container><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span><span class=lnt>33
+</span><span class=lnt>34
+</span><span class=lnt>35
+</span><span class=lnt>36
+</span><span class=lnt>37
+</span><span class=lnt>38
+</span><span class=lnt>39
+</span><span class=lnt>40
+</span><span class=lnt>41
+</span><span class=lnt>42
+</span><span class=lnt>43
+</span><span class=lnt>44
+</span><span class=lnt>45
+</span><span class=lnt>46
+</span><span class=lnt>47
+</span><span class=lnt>48
+</span><span class=lnt>49
+</span><span class=lnt>50
+</span><span class=lnt>51
+</span><span class=lnt>52
+</span><span class=lnt>53
+</span><span class=lnt>54
+</span><span class=lnt>55
+</span><span class=lnt>56
+</span><span class=lnt>57
+</span><span class=lnt>58
+</span><span class=lnt>59
+</span><span class=lnt>60
+</span><span class=lnt>61
+</span><span class=lnt>62
+</span><span class=lnt>63
+</span><span class=lnt>64
+</span><span class=lnt>65
+</span><span class=lnt>66
+</span><span class=lnt>67
+</span><span class=lnt>68
+</span><span class=lnt>69
+</span><span class=lnt>70
+</span><span class=lnt>71
+</span><span class=lnt>72
+</span><span class=lnt>73
+</span><span class=lnt>74
+</span><span class=lnt>75
+</span><span class=lnt>76
+</span><span class=lnt>77
+</span><span class=lnt>78
+</span><span class=lnt>79
+</span><span class=lnt>80
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-javascript data-lang=javascript><span class=line><span class=cl><span class=c1>// pages/bmi-calculator/bmi-calculator.js
+</span></span></span><span class=line><span class=cl><span class=c1></span>
+</span></span><span class=line><span class=cl><span class=nx>Page</span><span class=p>({</span>
+</span></span><span class=line><span class=cl>  <span class=nx>STANDARD</span><span class=o>:</span> <span class=mi>22</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>  <span class=nx>rules</span><span class=o>:</span> <span class=p>[</span>
+</span></span><span class=line><span class=cl>    <span class=p>[</span><span class=mf>18.5</span><span class=p>,</span> <span class=mi>24</span><span class=p>,</span> <span class=mi>28</span><span class=p>],</span>
+</span></span><span class=line><span class=cl>    <span class=p>[</span><span class=mf>18.5</span><span class=p>,</span> <span class=mi>25</span><span class=p>,</span> <span class=mi>30</span><span class=p>,</span> <span class=mi>35</span><span class=p>,</span> <span class=mi>40</span><span class=p>],</span>
+</span></span><span class=line><span class=cl>    <span class=p>[</span><span class=mf>18.5</span><span class=p>,</span> <span class=mi>23</span><span class=p>,</span> <span class=mi>25</span><span class=p>,</span> <span class=mi>30</span><span class=p>]</span>
+</span></span><span class=line><span class=cl>  <span class=p>],</span>
+</span></span><span class=line><span class=cl>  <span class=nx>ruleConfig</span><span class=o>:</span> <span class=p>[</span><span class=s1>&#39;偏瘦&#39;</span><span class=p>,</span> <span class=s1>&#39;正常&#39;</span><span class=p>,</span> <span class=s1>&#39;偏胖&#39;</span><span class=p>,</span> <span class=s1>&#39;肥胖&#39;</span><span class=p>,</span> <span class=s1>&#39;重度肥胖&#39;</span><span class=p>,</span> <span class=s1>&#39;极重度肥胖&#39;</span><span class=p>],</span>
+</span></span><span class=line><span class=cl>  <span class=cm>/**
+</span></span></span><span class=line><span class=cl><span class=cm>   * 页面的初始数据
+</span></span></span><span class=line><span class=cl><span class=cm>   */</span>
+</span></span><span class=line><span class=cl>  <span class=nx>data</span><span class=o>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=nx>bmi</span><span class=o>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>      <span class=nx>height</span><span class=o>:</span> <span class=mi>170</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>      <span class=nx>weight</span><span class=o>:</span> <span class=mi>60</span>
+</span></span><span class=line><span class=cl>    <span class=p>},</span>
+</span></span><span class=line><span class=cl>    <span class=nx>score</span><span class=o>:</span> <span class=mf>20.8</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=nx>height</span><span class=o>:</span> <span class=mi>0</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=nx>weight</span><span class=o>:</span> <span class=mi>0</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=nx>index</span><span class=o>:</span> <span class=mi>0</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=nx>weightStandard</span><span class=o>:</span> <span class=mf>63.6</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=nx>physicalCondition</span><span class=o>:</span> <span class=s1>&#39;正常&#39;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>  <span class=p>},</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>  <span class=nx>changeHeight</span><span class=o>:</span> <span class=kd>function</span> <span class=p>(</span><span class=nx>e</span><span class=p>)</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=k>this</span><span class=p>.</span><span class=nx>data</span><span class=p>.</span><span class=nx>bmi</span><span class=p>.</span><span class=nx>height</span> <span class=o>=</span> <span class=nx>e</span><span class=p>.</span><span class=nx>detail</span><span class=p>.</span><span class=nx>value</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=k>this</span><span class=p>.</span><span class=nx>setData</span><span class=p>(</span><span class=k>this</span><span class=p>.</span><span class=nx>data</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>  <span class=p>},</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>  <span class=nx>changeWeight</span><span class=o>:</span> <span class=kd>function</span> <span class=p>(</span><span class=nx>e</span><span class=p>)</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=k>this</span><span class=p>.</span><span class=nx>data</span><span class=p>.</span><span class=nx>bmi</span><span class=p>.</span><span class=nx>weight</span> <span class=o>=</span> <span class=nx>e</span><span class=p>.</span><span class=nx>detail</span><span class=p>.</span><span class=nx>value</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=k>this</span><span class=p>.</span><span class=nx>setData</span><span class=p>(</span><span class=k>this</span><span class=p>.</span><span class=nx>data</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>  <span class=p>},</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>  <span class=nx>calculateBtn</span><span class=o>:</span> <span class=kd>function</span> <span class=p>(</span><span class=nx>e</span><span class=p>)</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=k>this</span><span class=p>.</span><span class=nx>calculate</span><span class=p>();</span>
+</span></span><span class=line><span class=cl>    <span class=k>this</span><span class=p>.</span><span class=nx>weightStandardCalculate</span><span class=p>();</span>
+</span></span><span class=line><span class=cl>    <span class=k>this</span><span class=p>.</span><span class=nx>physicalConditionCalculate</span><span class=p>();</span>
+</span></span><span class=line><span class=cl>  <span class=p>},</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>  <span class=nx>calculate</span><span class=o>:</span> <span class=kd>function</span> <span class=p>()</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=kd>let</span> <span class=nx>score</span> <span class=o>=</span> <span class=mi>0</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=kd>let</span> <span class=nx>height</span> <span class=o>=</span> <span class=k>this</span><span class=p>.</span><span class=nx>data</span><span class=p>.</span><span class=nx>bmi</span><span class=p>.</span><span class=nx>height</span> <span class=o>/</span> <span class=mi>100</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=kd>let</span> <span class=nx>weight</span> <span class=o>=</span> <span class=k>this</span><span class=p>.</span><span class=nx>data</span><span class=p>.</span><span class=nx>bmi</span><span class=p>.</span><span class=nx>weight</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=nx>score</span> <span class=o>=</span> <span class=p>(</span><span class=nx>weight</span> <span class=o>/</span> <span class=p>(</span><span class=nx>height</span> <span class=o>*</span> <span class=nx>height</span><span class=p>)).</span><span class=nx>toFixed</span><span class=p>(</span><span class=mi>1</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>    <span class=k>this</span><span class=p>.</span><span class=nx>setData</span><span class=p>({</span>
+</span></span><span class=line><span class=cl>      <span class=nx>score</span><span class=o>:</span> <span class=nx>score</span>
+</span></span><span class=line><span class=cl>    <span class=p>})</span>
+</span></span><span class=line><span class=cl>  <span class=p>},</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>  <span class=nx>weightStandardCalculate</span><span class=o>:</span> <span class=kd>function</span> <span class=p>()</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=kd>let</span> <span class=nx>weight</span> <span class=o>=</span> <span class=mi>0</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=kd>let</span> <span class=nx>height</span> <span class=o>=</span> <span class=k>this</span><span class=p>.</span><span class=nx>data</span><span class=p>.</span><span class=nx>bmi</span><span class=p>.</span><span class=nx>height</span> <span class=o>/</span> <span class=mi>100</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=nx>weight</span> <span class=o>=</span> <span class=p>(</span><span class=k>this</span><span class=p>.</span><span class=nx>STANDARD</span> <span class=o>*</span> <span class=p>(</span><span class=nx>height</span> <span class=o>*</span> <span class=nx>height</span><span class=p>)).</span><span class=nx>toFixed</span><span class=p>(</span><span class=mi>1</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>    <span class=k>this</span><span class=p>.</span><span class=nx>setData</span><span class=p>({</span>
+</span></span><span class=line><span class=cl>      <span class=nx>weightStandard</span><span class=o>:</span> <span class=nx>weight</span>
+</span></span><span class=line><span class=cl>    <span class=p>})</span>
+</span></span><span class=line><span class=cl>  <span class=p>},</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>  <span class=c1>//身体状况计算
+</span></span></span><span class=line><span class=cl><span class=c1></span>  <span class=nx>physicalConditionCalculate</span><span class=o>:</span> <span class=kd>function</span> <span class=p>()</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=kd>let</span> <span class=nx>rule</span> <span class=o>=</span> <span class=k>this</span><span class=p>.</span><span class=nx>rules</span><span class=p>[</span><span class=mi>0</span><span class=p>];</span>
+</span></span><span class=line><span class=cl>    <span class=kd>let</span> <span class=nx>value</span> <span class=o>=</span> <span class=mi>0</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=kd>let</span> <span class=nx>score</span> <span class=o>=</span> <span class=o>+</span> <span class=k>this</span><span class=p>.</span><span class=nx>data</span><span class=p>.</span><span class=nx>score</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=kd>let</span> <span class=nx>length</span> <span class=o>=</span> <span class=nx>rule</span><span class=p>.</span><span class=nx>length</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=k>if</span> <span class=p>(</span><span class=nx>score</span> <span class=o>&gt;=</span> <span class=nx>rule</span><span class=p>[</span><span class=nx>length</span> <span class=o>-</span> <span class=mi>1</span><span class=p>])</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>      <span class=nx>value</span> <span class=o>=</span> <span class=nx>length</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=p>}</span> <span class=k>else</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>      <span class=k>for</span> <span class=p>(</span><span class=kd>let</span> <span class=nx>length</span> <span class=o>=</span> <span class=nx>rule</span><span class=p>.</span><span class=nx>length</span><span class=p>,</span> <span class=nx>i</span> <span class=o>=</span> <span class=nx>length</span><span class=p>;</span> <span class=nx>i</span> <span class=o>&gt;=</span> <span class=mi>1</span><span class=p>;</span> <span class=o>--</span><span class=nx>i</span><span class=p>)</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>        <span class=k>if</span> <span class=p>(</span><span class=nx>score</span> <span class=o>&lt;</span> <span class=nx>rule</span><span class=p>[</span><span class=nx>i</span><span class=p>]</span> <span class=o>&amp;&amp;</span> <span class=nx>score</span> <span class=o>&gt;=</span> <span class=nx>rule</span><span class=p>[</span><span class=nx>i</span> <span class=o>-</span> <span class=mi>1</span><span class=p>])</span>
+</span></span><span class=line><span class=cl>          <span class=nx>value</span> <span class=o>=</span> <span class=nx>i</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>      <span class=p>}</span>
+</span></span><span class=line><span class=cl>    <span class=p>}</span>
+</span></span><span class=line><span class=cl>    <span class=k>this</span><span class=p>.</span><span class=nx>setData</span><span class=p>({</span>
+</span></span><span class=line><span class=cl>      <span class=nx>physicalCondition</span><span class=o>:</span> <span class=k>this</span><span class=p>.</span><span class=nx>ruleConfig</span><span class=p>[</span><span class=nx>value</span><span class=p>]</span>
+</span></span><span class=line><span class=cl>    <span class=p>})</span>
+</span></span><span class=line><span class=cl>  <span class=p>}</span>
+</span></span><span class=line><span class=cl><span class=p>})</span>
+</span></span></code></pre></td></tr></table></div></div></div><p><code>bmi-calculator.wxml</code>：</p><div class=highlight><div class=chroma><div class=table-container><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span><span class=lnt>33
+</span><span class=lnt>34
+</span><span class=lnt>35
+</span><span class=lnt>36
+</span><span class=lnt>37
+</span><span class=lnt>38
+</span><span class=lnt>39
+</span><span class=lnt>40
+</span><span class=lnt>41
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-html data-lang=html><span class=line><span class=cl><span class=c>&lt;!--pages/bmi-calculator/bmi-calculator.wxml--&gt;</span>
+</span></span><span class=line><span class=cl><span class=p>&lt;</span><span class=nt>view</span> <span class=na>class</span><span class=o>=</span><span class=s>&#34;head&#34;</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>  <span class=p>&lt;</span><span class=nt>view</span> <span class=na>class</span><span class=o>=</span><span class=s>&#34;bmi&#34;</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=p>&lt;</span><span class=nt>view</span> <span class=na>class</span><span class=o>=</span><span class=s>&#34;bmi-head&#34;</span><span class=p>&gt;</span>你的 BMI 值<span class=p>&lt;/</span><span class=nt>view</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=p>&lt;</span><span class=nt>view</span> <span class=na>class</span><span class=o>=</span><span class=s>&#34;bmi-index&#34;</span><span class=p>&gt;</span>{{score}}<span class=p>&lt;/</span><span class=nt>view</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>  <span class=p>&lt;/</span><span class=nt>view</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>  <span class=p>&lt;</span><span class=nt>view</span> <span class=na>class</span><span class=o>=</span><span class=s>&#34;bmi-description&#34;</span><span class=p>&gt;</span>BMI，即身体质量指数，是国际上常用的衡量人体肥胖程度和健康程度的重要标准。BMI=体重/身高平方 (kg/㎡)<span class=p>&lt;/</span><span class=nt>view</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>  <span class=p>&lt;</span><span class=nt>view</span> <span class=na>class</span><span class=o>=</span><span class=s>&#34;result&#34;</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=p>&lt;</span><span class=nt>view</span> <span class=na>class</span><span class=o>=</span><span class=s>&#34;overview&#34;</span><span class=p>&gt;</span>身体状况：{{physicalCondition}}<span class=p>&lt;/</span><span class=nt>view</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=p>&lt;</span><span class=nt>view</span> <span class=na>class</span><span class=o>=</span><span class=s>&#34;overview&#34;</span><span class=p>&gt;</span>标准体重：{{weightStandard}}kg<span class=p>&lt;/</span><span class=nt>view</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>  <span class=p>&lt;/</span><span class=nt>view</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl><span class=p>&lt;/</span><span class=nt>view</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl><span class=p>&lt;</span><span class=nt>view</span> <span class=na>class</span><span class=o>=</span><span class=s>&#34;height&#34;</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>  <span class=p>&lt;</span><span class=nt>view</span> <span class=na>class</span><span class=o>=</span><span class=s>&#34;slider-description&#34;</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=p>&lt;</span><span class=nt>view</span> <span class=na>class</span><span class=o>=</span><span class=s>&#34;icon&#34;</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>      <span class=p>&lt;</span><span class=nt>image</span> <span class=na>class</span><span class=o>=</span><span class=s>&#34;slider-icon&#34;</span> <span class=na>src</span><span class=o>=</span><span class=s>&#34;/images/height.png&#34;</span><span class=p>&gt;&lt;/</span><span class=nt>image</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=p>&lt;/</span><span class=nt>view</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=p>&lt;</span><span class=nt>view</span> <span class=na>class</span><span class=o>=</span><span class=s>&#34;data&#34;</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>      <span class=p>&lt;</span><span class=nt>view</span> <span class=na>class</span><span class=o>=</span><span class=s>&#34;slider-head&#34;</span><span class=p>&gt;</span>身高<span class=p>&lt;/</span><span class=nt>view</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>      <span class=p>&lt;</span><span class=nt>view</span> <span class=na>class</span><span class=o>=</span><span class=s>&#34;slider-index&#34;</span><span class=p>&gt;</span>{{bmi.height}}cm<span class=p>&lt;/</span><span class=nt>view</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=p>&lt;/</span><span class=nt>view</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>  <span class=p>&lt;/</span><span class=nt>view</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>  <span class=p>&lt;</span><span class=nt>view</span> <span class=na>class</span><span class=o>=</span><span class=s>&#34;body-view&#34;</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=p>&lt;</span><span class=nt>slider</span> <span class=na>max</span><span class=o>=</span><span class=s>&#34;220&#34;</span> <span class=na>min</span><span class=o>=</span><span class=s>&#34;80&#34;</span> <span class=na>step</span><span class=o>=</span><span class=s>&#34;1&#34;</span> <span class=na>value</span><span class=o>=</span><span class=s>&#34;{{bmi.height}}&#34;</span> <span class=na>bindchanging</span><span class=o>=</span><span class=s>&#34;changeHeight&#34;</span> <span class=na>block-color</span><span class=o>=</span><span class=s>&#34;#7DB9DE&#34;</span> <span class=na>block-size</span><span class=o>=</span><span class=s>&#34;16&#34;</span> <span class=na>activeColor</span><span class=o>=</span><span class=s>&#34;#7DB9DE&#34;</span><span class=p>/&gt;</span>
+</span></span><span class=line><span class=cl>  <span class=p>&lt;/</span><span class=nt>view</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl><span class=p>&lt;/</span><span class=nt>view</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl><span class=p>&lt;</span><span class=nt>view</span> <span class=na>class</span><span class=o>=</span><span class=s>&#34;weight&#34;</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>  <span class=p>&lt;</span><span class=nt>view</span> <span class=na>class</span><span class=o>=</span><span class=s>&#34;slider-description&#34;</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=p>&lt;</span><span class=nt>view</span> <span class=na>class</span><span class=o>=</span><span class=s>&#34;icon&#34;</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>      <span class=p>&lt;</span><span class=nt>image</span> <span class=na>class</span><span class=o>=</span><span class=s>&#34;slider-icon&#34;</span> <span class=na>src</span><span class=o>=</span><span class=s>&#34;/images/weight.png&#34;</span><span class=p>&gt;&lt;/</span><span class=nt>image</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=p>&lt;/</span><span class=nt>view</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=p>&lt;</span><span class=nt>view</span> <span class=na>class</span><span class=o>=</span><span class=s>&#34;data&#34;</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>      <span class=p>&lt;</span><span class=nt>view</span> <span class=na>class</span><span class=o>=</span><span class=s>&#34;slider-head&#34;</span><span class=p>&gt;</span>体重<span class=p>&lt;/</span><span class=nt>view</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>      <span class=p>&lt;</span><span class=nt>view</span> <span class=na>class</span><span class=o>=</span><span class=s>&#34;slider-index&#34;</span><span class=p>&gt;</span>{{bmi.weight}}kg<span class=p>&lt;/</span><span class=nt>view</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=p>&lt;/</span><span class=nt>view</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>  <span class=p>&lt;/</span><span class=nt>view</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>  <span class=p>&lt;</span><span class=nt>view</span> <span class=na>class</span><span class=o>=</span><span class=s>&#34;body-view&#34;</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=p>&lt;</span><span class=nt>slider</span> <span class=na>max</span><span class=o>=</span><span class=s>&#34;100&#34;</span> <span class=na>min</span><span class=o>=</span><span class=s>&#34;10&#34;</span> <span class=na>step</span><span class=o>=</span><span class=s>&#34;1&#34;</span> <span class=na>value</span><span class=o>=</span><span class=s>&#34;{{bmi.weight}}&#34;</span> <span class=na>bindchanging</span><span class=o>=</span><span class=s>&#34;changeWeight&#34;</span> <span class=na>block-color</span><span class=o>=</span><span class=s>&#34;#7DB9DE&#34;</span> <span class=na>block-size</span><span class=o>=</span><span class=s>&#34;16&#34;</span> <span class=na>activeColor</span><span class=o>=</span><span class=s>&#34;#7DB9DE&#34;</span><span class=p>/&gt;</span>
+</span></span><span class=line><span class=cl>  <span class=p>&lt;/</span><span class=nt>view</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl><span class=p>&lt;/</span><span class=nt>view</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl><span class=p>&lt;</span><span class=nt>button</span> <span class=na>hover-class</span><span class=o>=</span><span class=s>&#34;btn-hover&#34;</span> <span class=na>bindtap</span><span class=o>=</span><span class=s>&#34;calculateBtn&#34;</span><span class=p>&gt;</span>计算<span class=p>&lt;/</span><span class=nt>button</span><span class=p>&gt;</span>
+</span></span></code></pre></td></tr></table></div></div></div><p><code>bmi-calculator.wxss</code>：</p><div class=highlight><div class=chroma><div class=table-container><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span><span class=lnt>33
+</span><span class=lnt>34
+</span><span class=lnt>35
+</span><span class=lnt>36
+</span><span class=lnt>37
+</span><span class=lnt>38
+</span><span class=lnt>39
+</span><span class=lnt>40
+</span><span class=lnt>41
+</span><span class=lnt>42
+</span><span class=lnt>43
+</span><span class=lnt>44
+</span><span class=lnt>45
+</span><span class=lnt>46
+</span><span class=lnt>47
+</span><span class=lnt>48
+</span><span class=lnt>49
+</span><span class=lnt>50
+</span><span class=lnt>51
+</span><span class=lnt>52
+</span><span class=lnt>53
+</span><span class=lnt>54
+</span><span class=lnt>55
+</span><span class=lnt>56
+</span><span class=lnt>57
+</span><span class=lnt>58
+</span><span class=lnt>59
+</span><span class=lnt>60
+</span><span class=lnt>61
+</span><span class=lnt>62
+</span><span class=lnt>63
+</span><span class=lnt>64
+</span><span class=lnt>65
+</span><span class=lnt>66
+</span><span class=lnt>67
+</span><span class=lnt>68
+</span><span class=lnt>69
+</span><span class=lnt>70
+</span><span class=lnt>71
+</span><span class=lnt>72
+</span><span class=lnt>73
+</span><span class=lnt>74
+</span><span class=lnt>75
+</span><span class=lnt>76
+</span><span class=lnt>77
+</span><span class=lnt>78
+</span><span class=lnt>79
+</span><span class=lnt>80
+</span><span class=lnt>81
+</span><span class=lnt>82
+</span><span class=lnt>83
+</span><span class=lnt>84
+</span><span class=lnt>85
+</span><span class=lnt>86
+</span><span class=lnt>87
+</span><span class=lnt>88
+</span><span class=lnt>89
+</span><span class=lnt>90
+</span><span class=lnt>91
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-css data-lang=css><span class=line><span class=cl><span class=c>/* pages/bmi-calculator/bmi-calculator.wxss */</span>
+</span></span><span class=line><span class=cl><span class=nt>page</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>  <span class=k>background</span><span class=p>:</span> <span class=kp>-webkit-</span><span class=nb>linear-gradient</span><span class=p>(</span><span class=kc>bottom</span><span class=p>,</span><span class=kc>white</span><span class=p>,</span><span class=mh>#cef3ff</span><span class=p>,</span><span class=mh>#7DB9DE</span><span class=p>);</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span><span class=line><span class=cl><span class=p>.</span><span class=nc>head</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>  <span class=k>background-color</span><span class=p>:</span> <span class=mh>#eff2f5</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>  <span class=k>height</span><span class=p>:</span> <span class=mi>440</span><span class=n>rpx</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>  <span class=k>width</span><span class=p>:</span> <span class=mi>90</span><span class=kt>%</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>  <span class=k>margin-left</span><span class=p>:</span> <span class=mf>37.5</span><span class=n>rpx</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>  <span class=k>margin-top</span><span class=p>:</span> <span class=mi>42</span><span class=n>rpx</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>  <span class=k>border-radius</span><span class=p>:</span> <span class=mi>25</span><span class=n>rpx</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>  <span class=k>align-items</span><span class=p>:</span> <span class=kc>center</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>  <span class=k>box-shadow</span><span class=p>:</span> <span class=mi>0</span><span class=n>rpx</span> <span class=mi>0</span><span class=n>rpx</span> <span class=mi>16</span><span class=n>rpx</span> <span class=mi>1</span><span class=n>rpx</span> <span class=mh>#7da0c0</span><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span><span class=line><span class=cl><span class=p>.</span><span class=nc>bmi</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>  <span class=k>text-align</span><span class=p>:</span> <span class=kc>center</span><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span><span class=line><span class=cl><span class=p>.</span><span class=nc>bmi-head</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>  <span class=k>padding</span><span class=p>:</span> <span class=mi>32</span><span class=n>rpx</span> <span class=mi>0</span> <span class=mi>0</span> <span class=mi>0</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>  <span class=k>font-size</span><span class=p>:</span> <span class=mi>32</span><span class=n>rpx</span><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span><span class=line><span class=cl><span class=p>.</span><span class=nc>bmi-index</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>  <span class=k>padding-bottom</span><span class=p>:</span> <span class=mi>0</span><span class=n>rpx</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>  <span class=k>font-size</span><span class=p>:</span> <span class=mi>120</span><span class=n>rpx</span><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span><span class=line><span class=cl><span class=p>.</span><span class=nc>bmi-description</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>  <span class=k>padding</span><span class=p>:</span> <span class=mi>0</span> <span class=mi>32</span><span class=n>rpx</span> <span class=mi>24</span><span class=n>rpx</span> <span class=mi>32</span><span class=n>rpx</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>  <span class=k>font-size</span><span class=p>:</span> <span class=mi>24</span><span class=n>rpx</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>  <span class=k>text-indent</span><span class=p>:</span> <span class=mi>2</span><span class=kt>em</span><span class=p>;</span> 
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span><span class=line><span class=cl><span class=p>.</span><span class=nc>result</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>  <span class=k>display</span><span class=p>:</span> <span class=kc>flex</span><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span><span class=line><span class=cl><span class=p>.</span><span class=nc>overview</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>  <span class=k>width</span><span class=p>:</span> <span class=mi>40</span><span class=kt>%</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>  <span class=k>font-size</span><span class=p>:</span> <span class=mi>26</span><span class=n>rpx</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>  <span class=k>text-align</span><span class=p>:</span> <span class=kc>center</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>  <span class=k>padding</span><span class=p>:</span> <span class=mi>24</span><span class=n>rpx</span> <span class=mi>0</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>  <span class=k>margin</span><span class=p>:</span> <span class=mi>0</span> <span class=mi>34</span><span class=n>rpx</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>  <span class=k>border-top</span><span class=p>:</span> <span class=mi>1</span><span class=n>rpx</span> <span class=kc>solid</span><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span><span class=line><span class=cl><span class=p>.</span><span class=nc>height</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>  <span class=k>background-color</span><span class=p>:</span> <span class=mh>#eff2f5</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>  <span class=k>height</span><span class=p>:</span> <span class=mi>210</span><span class=n>rpx</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>  <span class=k>width</span><span class=p>:</span> <span class=mi>90</span><span class=kt>%</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>  <span class=k>margin-left</span><span class=p>:</span> <span class=mf>37.5</span><span class=n>rpx</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>  <span class=k>margin-top</span><span class=p>:</span> <span class=mi>42</span><span class=n>rpx</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>  <span class=k>border-radius</span><span class=p>:</span> <span class=mi>25</span><span class=n>rpx</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>  <span class=k>align-items</span><span class=p>:</span> <span class=kc>center</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>  <span class=k>box-shadow</span><span class=p>:</span> <span class=mi>0</span><span class=n>rpx</span> <span class=mi>0</span><span class=n>rpx</span> <span class=mi>16</span><span class=n>rpx</span> <span class=mi>1</span><span class=n>rpx</span> <span class=mh>#7da0c0</span><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span><span class=line><span class=cl><span class=p>.</span><span class=nc>weight</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>  <span class=k>background-color</span><span class=p>:</span> <span class=mh>#eff2f5</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>  <span class=k>height</span><span class=p>:</span> <span class=mi>210</span><span class=n>rpx</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>  <span class=k>width</span><span class=p>:</span> <span class=mi>90</span><span class=kt>%</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>  <span class=k>margin-left</span><span class=p>:</span> <span class=mf>37.5</span><span class=n>rpx</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>  <span class=k>margin-top</span><span class=p>:</span> <span class=mi>42</span><span class=n>rpx</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>  <span class=k>border-radius</span><span class=p>:</span> <span class=mi>25</span><span class=n>rpx</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>  <span class=k>align-items</span><span class=p>:</span> <span class=kc>center</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>  <span class=k>box-shadow</span><span class=p>:</span> <span class=mi>0</span><span class=n>rpx</span> <span class=mi>0</span><span class=n>rpx</span> <span class=mi>16</span><span class=n>rpx</span> <span class=mi>1</span><span class=n>rpx</span> <span class=mh>#7da0c0</span><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span><span class=line><span class=cl><span class=p>.</span><span class=nc>slider-description</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>  <span class=k>padding-top</span><span class=p>:</span> <span class=mi>12</span><span class=n>rpx</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>  <span class=k>display</span><span class=p>:</span> <span class=kc>flex</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>  <span class=k>margin-bottom</span><span class=p>:</span> <span class=mi>-24</span><span class=n>rpx</span><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span><span class=line><span class=cl><span class=p>.</span><span class=nc>icon</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>  <span class=k>margin</span><span class=p>:</span> <span class=mi>24</span><span class=n>rpx</span> <span class=mi>12</span><span class=n>rpx</span> <span class=mi>12</span><span class=n>rpx</span> <span class=mi>24</span><span class=n>rpx</span><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span><span class=line><span class=cl><span class=p>.</span><span class=nc>slider-icon</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>  <span class=k>height</span><span class=p>:</span> <span class=mi>100</span><span class=n>rpx</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>  <span class=k>width</span><span class=p>:</span> <span class=mi>100</span><span class=n>rpx</span><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span><span class=line><span class=cl><span class=p>.</span><span class=nc>data</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>  <span class=k>margin</span><span class=p>:</span> <span class=mi>24</span><span class=n>rpx</span> <span class=mi>12</span><span class=n>rpx</span> <span class=mi>12</span><span class=n>rpx</span> <span class=mi>12</span><span class=n>rpx</span><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span><span class=line><span class=cl><span class=p>.</span><span class=nc>slider-head</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>  <span class=k>padding</span><span class=p>:</span> <span class=mi>8</span><span class=n>rpx</span> <span class=mi>10</span><span class=n>rpx</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>  <span class=k>font-size</span><span class=p>:</span> <span class=mi>26</span><span class=n>rpx</span><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span><span class=line><span class=cl><span class=p>.</span><span class=nc>slider-index</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>  <span class=k>padding</span><span class=p>:</span> <span class=mi>0</span> <span class=mi>8</span><span class=n>rpx</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>  <span class=k>font-size</span><span class=p>:</span> <span class=mi>32</span><span class=n>rpx</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>  <span class=k>font-weight</span><span class=p>:</span> <span class=kc>bold</span><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span><span class=line><span class=cl><span class=nt>wx-button</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>  <span class=k>color</span><span class=p>:</span> <span class=mh>#eff2f5</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>  <span class=k>background-color</span><span class=p>:</span> <span class=mh>#7DB9DE</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>  <span class=k>border-color</span><span class=p>:</span> <span class=mh>#7DB9DE</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>  <span class=k>margin-top</span><span class=p>:</span> <span class=mi>64</span><span class=n>rpx</span><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span></code></pre></td></tr></table></div></div></div><h3 id=家庭记账本><a href=#家庭记账本 class=anchor-link aria-label=家庭记账本><svg viewBox="0 0 512 512" class="icon anchor-icon"><path d="M326.612 185.391c59.747 59.809 58.927 155.698.36 214.59-.11.12-.24.25-.36.37l-67.2 67.2c-59.27 59.27-155.699 59.262-214.96.0-59.27-59.26-59.27-155.7.0-214.96l37.106-37.106c9.84-9.84 26.786-3.3 27.294 10.606.648 17.722 3.826 35.527 9.69 52.721 1.986 5.822.567 12.262-3.783 16.612l-13.087 13.087c-28.026 28.026-28.905 73.66-1.155 101.96 28.024 28.579 74.086 28.749 102.325.51l67.2-67.19c28.191-28.191 28.073-73.757.0-101.83-3.701-3.694-7.429-6.564-10.341-8.569a16.037 16.037.0 01-6.947-12.606c-.396-10.567 3.348-21.456 11.698-29.806l21.054-21.055c5.521-5.521 14.182-6.199 20.584-1.731a152.482 152.482.0 0120.522 17.197zM467.547 44.449c-59.261-59.262-155.69-59.27-214.96.0l-67.2 67.2c-.12.12-.25.25-.36.37-58.566 58.892-59.387 154.781.36 214.59a152.454 152.454.0 0020.521 17.196c6.402 4.468 15.064 3.789 20.584-1.731l21.054-21.055c8.35-8.35 12.094-19.239 11.698-29.806a16.037 16.037.0 00-6.947-12.606c-2.912-2.005-6.64-4.875-10.341-8.569-28.073-28.073-28.191-73.639.0-101.83l67.2-67.19c28.239-28.239 74.3-28.069 102.325.51 27.75 28.3 26.872 73.934-1.155 101.96l-13.087 13.087c-4.35 4.35-5.769 10.79-3.783 16.612 5.864 17.194 9.042 34.999 9.69 52.721.509 13.906 17.454 20.446 27.294 10.606l37.106-37.106c59.271-59.259 59.271-155.699.001-214.959z"/></svg></a>家庭记账本</h3><p><img src=../../../images/wechat-mini-app-page-3.png alt=wechat-mini-app-page-6.png><span class=caption>※ 家庭记账本</span></p><p>记账本因为需要存储用户数据，这里使用到了微信小程序的云开发功能。云开发数据的储存和调用其实不算难，关键是要理清数据存储的结构。这里我将讲述一下云开发的基本使用方法，不再展示记账本的 <code>wxml</code> 和 <code>wxss</code> 的内容。</p><p>使用微信小程序云开发，则需要使用自己的 AppID，进入云开发控制台，创建数据库，添加一个集合。这里我创建的数据库环境为 <code>guanqr-01</code>，集合名称为 <code>cashbook</code>。</p><p>在小程序所在目录中，将除了 <code>project.config.json</code> 外的全部文件存放在 <code>miniprogram</code> 文件夹内，然后再新建一个名为 <code>cloudfunctions</code> 文件夹，用来存放云函数，不过目前并未涉及到云函数的使用。以上步骤完成后，在 <code>project.config.json</code> 文件的开头添加：</p><div class=highlight><div class=chroma><div class=table-container><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span><span class=lnt>8
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-diff data-lang=diff><span class=line><span class=cl>{
+</span></span><span class=line><span class=cl><span class=gi>+ &#34;miniprogramRoot&#34;: &#34;miniprogram/&#34;,
+</span></span></span><span class=line><span class=cl><span class=gi>+ &#34;cloudfunctionRoot&#34;: &#34;cloudfunctions/&#34;,
+</span></span></span><span class=line><span class=cl><span class=gi></span>  &#34;description&#34;: &#34;项目配置文件&#34;,
+</span></span><span class=line><span class=cl>  &#34;packOptions&#34;: {
+</span></span><span class=line><span class=cl>    &#34;ignore&#34;: []
+</span></span><span class=line><span class=cl>  }
+</span></span><span class=line><span class=cl>}
+</span></span></code></pre></td></tr></table></div></div></div><p>然后进入 <code>app.js</code>，添加：</p><div class=highlight><div class=chroma><div class=table-container><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-diff data-lang=diff><span class=line><span class=cl>App({
+</span></span><span class=line><span class=cl>  onLaunch: function () {
+</span></span><span class=line><span class=cl><span class=gi>+   if (!wx.cloud) {
+</span></span></span><span class=line><span class=cl><span class=gi>+     console.error(&#39;请使用 2.2.3 或以上的基础库以使用云能力&#39;)
+</span></span></span><span class=line><span class=cl><span class=gi>+   } else {
+</span></span></span><span class=line><span class=cl><span class=gi>+     wx.cloud.init ({
+</span></span></span><span class=line><span class=cl><span class=gi>+       env: &#39;guanqr-01&#39;,
+</span></span></span><span class=line><span class=cl><span class=gi>+       traceUser: true,
+</span></span></span><span class=line><span class=cl><span class=gi>+     })
+</span></span></span><span class=line><span class=cl><span class=gi>+   }
+</span></span></span><span class=line><span class=cl><span class=gi></span>  }
+</span></span><span class=line><span class=cl>})
+</span></span></code></pre></td></tr></table></div></div></div><p><code>env</code> 这里需要填写你配置云开发的时候填写的数据库环境。上述步骤完成后，云开发的基本配置就完成了。如果你需要上传数据到云端，可以设置一个函数，比如名为 <code>addData</code>，在 <code>js</code> 文件中添加：</p><div class=highlight><div class=chroma><div class=table-container><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-javascript data-lang=javascript><span class=line><span class=cl><span class=nx>addBtn</span><span class=o>:</span> <span class=kd>function</span><span class=p>(){</span>
+</span></span><span class=line><span class=cl>  <span class=kr>const</span> <span class=nx>db</span> <span class=o>=</span> <span class=nx>wx</span><span class=p>.</span><span class=nx>cloud</span><span class=p>.</span><span class=nx>database</span><span class=p>()</span>
+</span></span><span class=line><span class=cl>  <span class=nx>db</span><span class=p>.</span><span class=nx>collection</span><span class=p>(</span><span class=s1>&#39;cashbook&#39;</span><span class=p>).</span><span class=nx>add</span> <span class=p>({</span>
+</span></span><span class=line><span class=cl>    <span class=nx>data</span><span class=o>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>      <span class=c1>// 这里是需要上传的数据，以下面的六组数据为例
+</span></span></span><span class=line><span class=cl><span class=c1></span>      <span class=nx>title</span><span class=o>:</span> <span class=k>this</span><span class=p>.</span><span class=nx>data</span><span class=p>.</span><span class=nx>title</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>      <span class=nx>incomeOrPay</span><span class=o>:</span> <span class=k>this</span><span class=p>.</span><span class=nx>data</span><span class=p>.</span><span class=nx>incomeOrPay</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>      <span class=nx>fontColor</span><span class=o>:</span> <span class=k>this</span><span class=p>.</span><span class=nx>data</span><span class=p>.</span><span class=nx>fontColor</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>      <span class=nx>mark</span><span class=o>:</span> <span class=k>this</span><span class=p>.</span><span class=nx>data</span><span class=p>.</span><span class=nx>mark</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>      <span class=nx>money</span><span class=o>:</span> <span class=k>this</span><span class=p>.</span><span class=nx>data</span><span class=p>.</span><span class=nx>money</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>      <span class=nx>date</span><span class=o>:</span> <span class=k>this</span><span class=p>.</span><span class=nx>data</span><span class=p>.</span><span class=nx>date</span>
+</span></span><span class=line><span class=cl>    <span class=p>},</span>
+</span></span><span class=line><span class=cl>    <span class=nx>success</span><span class=o>:</span> <span class=nx>res</span> <span class=p>=&gt;</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>      <span class=k>this</span><span class=p>.</span><span class=nx>setData</span> <span class=p>({</span>
+</span></span><span class=line><span class=cl>        <span class=c1>// 这里填写上传成功后的运行的函数
+</span></span></span><span class=line><span class=cl><span class=c1></span>      <span class=p>})</span>
+</span></span><span class=line><span class=cl>      <span class=nx>wx</span><span class=p>.</span><span class=nx>showToast</span> <span class=p>({</span>
+</span></span><span class=line><span class=cl>        <span class=nx>title</span><span class=o>:</span> <span class=s1>&#39;添加成功&#39;</span>
+</span></span><span class=line><span class=cl>      <span class=p>})</span>
+</span></span><span class=line><span class=cl>      <span class=c1>//console.log(&#39;添加成功，记录 _id:&#39;, res._id)
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=p>},</span>
+</span></span><span class=line><span class=cl>    <span class=nx>fail</span><span class=o>:</span> <span class=nx>err</span> <span class=p>=&gt;</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>      <span class=nx>wx</span><span class=p>.</span><span class=nx>showToast</span> <span class=p>({</span>
+</span></span><span class=line><span class=cl>        <span class=nx>icon</span><span class=o>:</span> <span class=s1>&#39;none&#39;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>        <span class=nx>title</span><span class=o>:</span> <span class=s1>&#39;添加失败&#39;</span>
+</span></span><span class=line><span class=cl>      <span class=p>})</span>
+</span></span><span class=line><span class=cl>      <span class=c1>//concole.error(&#39;添加失败&#39;, err)
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=p>}</span>
+</span></span><span class=line><span class=cl>  <span class=p>})</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span></code></pre></td></tr></table></div></div></div><p>运行该函数将数据上传后，即可在控制台中看到存储的数据。</p><p><img src=../../../images/wechat-mini-app-cloud.png alt=wechat-mini-app-cloud.png><span class=caption>※ 云开发控制台</span></p><p>每一组数据具有唯一的 <code>_id</code>，因此可以借助 <code>_id</code> 查找并修改特定的数据类型。</p><p>对于数据库中的数据读取操作也很简单：</p><div class=highlight><div class=chroma><div class=table-container><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-javascript data-lang=javascript><span class=line><span class=cl><span class=nx>Page</span><span class=p>({</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>  <span class=cm>/**
+</span></span></span><span class=line><span class=cl><span class=cm>   * 页面的初始数据
+</span></span></span><span class=line><span class=cl><span class=cm>   */</span>
+</span></span><span class=line><span class=cl>  <span class=nx>data</span><span class=o>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=nx>cashbook</span><span class=o>:</span> <span class=p>[]</span>
+</span></span><span class=line><span class=cl>  <span class=p>},</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>  <span class=cm>/**
+</span></span></span><span class=line><span class=cl><span class=cm>   * 生命周期函数--监听页面显示
+</span></span></span><span class=line><span class=cl><span class=cm>   */</span>
+</span></span><span class=line><span class=cl>  <span class=nx>onShow</span><span class=o>:</span> <span class=kd>function</span> <span class=p>()</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=kr>const</span> <span class=nx>db</span> <span class=o>=</span> <span class=nx>wx</span><span class=p>.</span><span class=nx>cloud</span><span class=p>.</span><span class=nx>database</span><span class=p>()</span>
+</span></span><span class=line><span class=cl>    <span class=nx>db</span><span class=p>.</span><span class=nx>collection</span><span class=p>(</span><span class=s1>&#39;cashbook&#39;</span><span class=p>).</span><span class=nx>get</span><span class=p>({</span>
+</span></span><span class=line><span class=cl>      <span class=nx>success</span><span class=o>:</span> <span class=nx>res</span> <span class=p>=&gt;</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>        <span class=c1>//console.log(res.data)
+</span></span></span><span class=line><span class=cl><span class=c1></span>        <span class=k>this</span><span class=p>.</span><span class=nx>setData</span><span class=p>({</span>
+</span></span><span class=line><span class=cl>          <span class=nx>cashbook</span><span class=o>:</span> <span class=nx>res</span><span class=p>.</span><span class=nx>data</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>        <span class=p>})</span>
+</span></span><span class=line><span class=cl>      <span class=p>}</span>
+</span></span><span class=line><span class=cl>    <span class=p>})</span>
+</span></span><span class=line><span class=cl>  <span class=p>}</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span></code></pre></td></tr></table></div></div></div><p>至于数据的删除，我觉得当前很多应用都是向左滑动删除当前一栏数据，因此我对此进行了模仿。</p><p><img src=../../../images/wechat-mini-app-page-4.png alt=wechat-mini-app-page-4.png><span class=caption>※ 向左滑动删除数据</span></p><p>首先对 <code>wxml</code> 文件进行改写：</p><div class=highlight><div class=chroma><div class=table-container><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-html data-lang=html><span class=line><span class=cl><span class=c>&lt;!--pages/cashbook/cashbook.wxml--&gt;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=p>&lt;</span><span class=nt>view</span> <span class=na>class</span><span class=o>=</span><span class=s>&#34;body&#34;</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>  <span class=p>&lt;</span><span class=nt>view</span> <span class=na>class</span><span class=o>=</span><span class=s>&#34;cashbook {{item.isTouchMove ? &#39;touch-move-active&#39; : &#39;&#39;}}&#34;</span> <span class=na>data-index</span><span class=o>=</span><span class=s>&#34;{{index}}&#34;</span> <span class=na>bindtouchstart</span><span class=o>=</span><span class=s>&#34;touchstart&#34;</span> <span class=na>bindtouchmove</span><span class=o>=</span><span class=s>&#34;touchmove&#34;</span> <span class=na>wx:for</span><span class=o>=</span><span class=s>&#34;{{cashbook}}&#34;</span> <span class=na>wx:key</span><span class=o>=</span> <span class=s>&#34;index&#34;</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=p>&lt;</span><span class=nt>view</span> <span class=na>class</span><span class=o>=</span><span class=s>&#34;content&#34;</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>      <span class=p>&lt;</span><span class=nt>view</span> <span class=na>class</span><span class=o>=</span><span class=s>&#34;title&#34;</span><span class=p>&gt;</span>{{item.title}}<span class=p>&lt;/</span><span class=nt>view</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>      <span class=p>&lt;</span><span class=nt>view</span> <span class=na>class</span><span class=o>=</span><span class=s>&#34;details&#34;</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>        <span class=p>&lt;</span><span class=nt>view</span> <span class=na>class</span><span class=o>=</span><span class=s>&#34;money&#34;</span> <span class=na>style</span><span class=o>=</span><span class=s>&#34;color:{{item.fontColor}};&#34;</span><span class=p>&gt;</span>{{item.mark}}{{item.money}} 元<span class=p>&lt;/</span><span class=nt>view</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>        <span class=p>&lt;</span><span class=nt>view</span> <span class=na>class</span><span class=o>=</span><span class=s>&#34;date&#34;</span><span class=p>&gt;</span>{{item.date}}<span class=p>&lt;/</span><span class=nt>view</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>      <span class=p>&lt;/</span><span class=nt>view</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=p>&lt;/</span><span class=nt>view</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=p>&lt;</span><span class=nt>view</span> <span class=na>class</span><span class=o>=</span><span class=s>&#34;del&#34;</span> <span class=na>catchtap</span><span class=o>=</span><span class=s>&#34;del&#34;</span> <span class=na>data-index</span><span class=o>=</span><span class=s>&#34;{{index}}&#34;</span> <span class=na>id</span><span class=o>=</span><span class=s>&#39;{{item._id}}&#39;</span><span class=p>&gt;</span>删除<span class=p>&lt;/</span><span class=nt>view</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>  <span class=p>&lt;/</span><span class=nt>view</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl><span class=p>&lt;/</span><span class=nt>view</span><span class=p>&gt;</span>
+</span></span></code></pre></td></tr></table></div></div></div><p>再编写 JavaScript 函数实现滑动删除：</p><div class=highlight><div class=chroma><div class=table-container><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>  1
+</span><span class=lnt>  2
+</span><span class=lnt>  3
+</span><span class=lnt>  4
+</span><span class=lnt>  5
+</span><span class=lnt>  6
+</span><span class=lnt>  7
+</span><span class=lnt>  8
+</span><span class=lnt>  9
+</span><span class=lnt> 10
+</span><span class=lnt> 11
+</span><span class=lnt> 12
+</span><span class=lnt> 13
+</span><span class=lnt> 14
+</span><span class=lnt> 15
+</span><span class=lnt> 16
+</span><span class=lnt> 17
+</span><span class=lnt> 18
+</span><span class=lnt> 19
+</span><span class=lnt> 20
+</span><span class=lnt> 21
+</span><span class=lnt> 22
+</span><span class=lnt> 23
+</span><span class=lnt> 24
+</span><span class=lnt> 25
+</span><span class=lnt> 26
+</span><span class=lnt> 27
+</span><span class=lnt> 28
+</span><span class=lnt> 29
+</span><span class=lnt> 30
+</span><span class=lnt> 31
+</span><span class=lnt> 32
+</span><span class=lnt> 33
+</span><span class=lnt> 34
+</span><span class=lnt> 35
+</span><span class=lnt> 36
+</span><span class=lnt> 37
+</span><span class=lnt> 38
+</span><span class=lnt> 39
+</span><span class=lnt> 40
+</span><span class=lnt> 41
+</span><span class=lnt> 42
+</span><span class=lnt> 43
+</span><span class=lnt> 44
+</span><span class=lnt> 45
+</span><span class=lnt> 46
+</span><span class=lnt> 47
+</span><span class=lnt> 48
+</span><span class=lnt> 49
+</span><span class=lnt> 50
+</span><span class=lnt> 51
+</span><span class=lnt> 52
+</span><span class=lnt> 53
+</span><span class=lnt> 54
+</span><span class=lnt> 55
+</span><span class=lnt> 56
+</span><span class=lnt> 57
+</span><span class=lnt> 58
+</span><span class=lnt> 59
+</span><span class=lnt> 60
+</span><span class=lnt> 61
+</span><span class=lnt> 62
+</span><span class=lnt> 63
+</span><span class=lnt> 64
+</span><span class=lnt> 65
+</span><span class=lnt> 66
+</span><span class=lnt> 67
+</span><span class=lnt> 68
+</span><span class=lnt> 69
+</span><span class=lnt> 70
+</span><span class=lnt> 71
+</span><span class=lnt> 72
+</span><span class=lnt> 73
+</span><span class=lnt> 74
+</span><span class=lnt> 75
+</span><span class=lnt> 76
+</span><span class=lnt> 77
+</span><span class=lnt> 78
+</span><span class=lnt> 79
+</span><span class=lnt> 80
+</span><span class=lnt> 81
+</span><span class=lnt> 82
+</span><span class=lnt> 83
+</span><span class=lnt> 84
+</span><span class=lnt> 85
+</span><span class=lnt> 86
+</span><span class=lnt> 87
+</span><span class=lnt> 88
+</span><span class=lnt> 89
+</span><span class=lnt> 90
+</span><span class=lnt> 91
+</span><span class=lnt> 92
+</span><span class=lnt> 93
+</span><span class=lnt> 94
+</span><span class=lnt> 95
+</span><span class=lnt> 96
+</span><span class=lnt> 97
+</span><span class=lnt> 98
+</span><span class=lnt> 99
+</span><span class=lnt>100
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-javascript data-lang=javascript><span class=line><span class=cl><span class=c1>// pages/cashbook/cashbook.js
+</span></span></span><span class=line><span class=cl><span class=c1></span>
+</span></span><span class=line><span class=cl><span class=nx>Page</span><span class=p>({</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>  <span class=cm>/**
+</span></span></span><span class=line><span class=cl><span class=cm>   * 页面的初始数据
+</span></span></span><span class=line><span class=cl><span class=cm>   */</span>
+</span></span><span class=line><span class=cl>  <span class=nx>data</span><span class=o>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=nx>cashbook</span><span class=o>:</span> <span class=p>[],</span>
+</span></span><span class=line><span class=cl>    <span class=nx>startX</span><span class=o>:</span> <span class=mi>0</span><span class=p>,</span> <span class=c1>//开始坐标
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=nx>startY</span><span class=o>:</span> <span class=mi>0</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=nx>countereId</span><span class=o>:</span> <span class=kc>null</span>
+</span></span><span class=line><span class=cl>  <span class=p>},</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>  <span class=cm>/**
+</span></span></span><span class=line><span class=cl><span class=cm>   * 生命周期函数--监听页面显示
+</span></span></span><span class=line><span class=cl><span class=cm>   */</span>
+</span></span><span class=line><span class=cl>  <span class=nx>onShow</span><span class=o>:</span> <span class=kd>function</span> <span class=p>()</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=kr>const</span> <span class=nx>db</span> <span class=o>=</span> <span class=nx>wx</span><span class=p>.</span><span class=nx>cloud</span><span class=p>.</span><span class=nx>database</span><span class=p>()</span>
+</span></span><span class=line><span class=cl>    <span class=nx>db</span><span class=p>.</span><span class=nx>collection</span><span class=p>(</span><span class=s1>&#39;cashbook&#39;</span><span class=p>).</span><span class=nx>get</span><span class=p>({</span>
+</span></span><span class=line><span class=cl>      <span class=nx>success</span><span class=o>:</span> <span class=nx>res</span> <span class=p>=&gt;</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>        <span class=c1>//console.log(res.data)
+</span></span></span><span class=line><span class=cl><span class=c1></span>        <span class=nx>res</span><span class=p>.</span><span class=nx>data</span><span class=p>.</span><span class=nx>reverse</span><span class=p>()</span>
+</span></span><span class=line><span class=cl>        <span class=k>this</span><span class=p>.</span><span class=nx>setData</span><span class=p>({</span>
+</span></span><span class=line><span class=cl>          <span class=nx>cashbook</span><span class=o>:</span> <span class=nx>res</span><span class=p>.</span><span class=nx>data</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>        <span class=p>})</span>
+</span></span><span class=line><span class=cl>      <span class=p>}</span>
+</span></span><span class=line><span class=cl>    <span class=p>})</span>
+</span></span><span class=line><span class=cl>  <span class=p>},</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>  <span class=nx>addNewCash</span><span class=o>:</span> <span class=kd>function</span> <span class=p>()</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=nx>setTimeout</span><span class=p>(</span><span class=kd>function</span> <span class=p>()</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>      <span class=nx>wx</span><span class=p>.</span><span class=nx>navigateTo</span><span class=p>({</span>
+</span></span><span class=line><span class=cl>        <span class=nx>url</span><span class=o>:</span> <span class=s1>&#39;/pages/add-cash/add-cash&#39;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>      <span class=p>})</span>
+</span></span><span class=line><span class=cl>    <span class=p>},</span> <span class=mi>50</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>  <span class=p>},</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>  <span class=c1>//手指触摸动作开始 记录起点X坐标
+</span></span></span><span class=line><span class=cl><span class=c1></span>  <span class=nx>touchstart</span><span class=o>:</span> <span class=kd>function</span> <span class=p>(</span><span class=nx>e</span><span class=p>)</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=c1>//开始触摸时 重置所有删除
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=k>this</span><span class=p>.</span><span class=nx>data</span><span class=p>.</span><span class=nx>cashbook</span><span class=p>.</span><span class=nx>forEach</span><span class=p>(</span><span class=kd>function</span> <span class=p>(</span><span class=nx>v</span><span class=p>,</span> <span class=nx>i</span><span class=p>)</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>      <span class=k>if</span> <span class=p>(</span><span class=nx>v</span><span class=p>.</span><span class=nx>isTouchMove</span><span class=p>)</span><span class=c1>//只操作为true的
+</span></span></span><span class=line><span class=cl><span class=c1></span>        <span class=nx>v</span><span class=p>.</span><span class=nx>isTouchMove</span> <span class=o>=</span> <span class=kc>false</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=p>})</span>
+</span></span><span class=line><span class=cl>    <span class=k>this</span><span class=p>.</span><span class=nx>setData</span><span class=p>({</span>
+</span></span><span class=line><span class=cl>      <span class=nx>startX</span><span class=o>:</span> <span class=nx>e</span><span class=p>.</span><span class=nx>changedTouches</span><span class=p>[</span><span class=mi>0</span><span class=p>].</span><span class=nx>clientX</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>      <span class=nx>startY</span><span class=o>:</span> <span class=nx>e</span><span class=p>.</span><span class=nx>changedTouches</span><span class=p>[</span><span class=mi>0</span><span class=p>].</span><span class=nx>clientY</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>      <span class=nx>cashbook</span><span class=o>:</span> <span class=k>this</span><span class=p>.</span><span class=nx>data</span><span class=p>.</span><span class=nx>cashbook</span>
+</span></span><span class=line><span class=cl>    <span class=p>})</span>
+</span></span><span class=line><span class=cl>  <span class=p>},</span>
+</span></span><span class=line><span class=cl>  <span class=c1>//滑动事件处理
+</span></span></span><span class=line><span class=cl><span class=c1></span>  <span class=nx>touchmove</span><span class=o>:</span> <span class=kd>function</span> <span class=p>(</span><span class=nx>e</span><span class=p>)</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=kd>var</span> <span class=nx>that</span> <span class=o>=</span> <span class=k>this</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=nx>index</span> <span class=o>=</span> <span class=nx>e</span><span class=p>.</span><span class=nx>currentTarget</span><span class=p>.</span><span class=nx>dataset</span><span class=p>.</span><span class=nx>index</span><span class=p>,</span><span class=c1>//当前索引
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=nx>startX</span> <span class=o>=</span> <span class=nx>that</span><span class=p>.</span><span class=nx>data</span><span class=p>.</span><span class=nx>startX</span><span class=p>,</span><span class=c1>//开始X坐标
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=nx>startY</span> <span class=o>=</span> <span class=nx>that</span><span class=p>.</span><span class=nx>data</span><span class=p>.</span><span class=nx>startY</span><span class=p>,</span><span class=c1>//开始Y坐标
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=nx>touchMoveX</span> <span class=o>=</span> <span class=nx>e</span><span class=p>.</span><span class=nx>changedTouches</span><span class=p>[</span><span class=mi>0</span><span class=p>].</span><span class=nx>clientX</span><span class=p>,</span><span class=c1>//滑动变化坐标
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=nx>touchMoveY</span> <span class=o>=</span> <span class=nx>e</span><span class=p>.</span><span class=nx>changedTouches</span><span class=p>[</span><span class=mi>0</span><span class=p>].</span><span class=nx>clientY</span><span class=p>,</span><span class=c1>//滑动变化坐标
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=c1>//获取滑动角度
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=nx>angle</span> <span class=o>=</span> <span class=nx>that</span><span class=p>.</span><span class=nx>angle</span><span class=p>({</span> <span class=nx>X</span><span class=o>:</span> <span class=nx>startX</span><span class=p>,</span> <span class=nx>Y</span><span class=o>:</span> <span class=nx>startY</span> <span class=p>},</span> <span class=p>{</span> <span class=nx>X</span><span class=o>:</span> <span class=nx>touchMoveX</span><span class=p>,</span> <span class=nx>Y</span><span class=o>:</span> <span class=nx>touchMoveY</span> <span class=p>});</span>
+</span></span><span class=line><span class=cl>    <span class=nx>that</span><span class=p>.</span><span class=nx>data</span><span class=p>.</span><span class=nx>cashbook</span><span class=p>.</span><span class=nx>forEach</span><span class=p>(</span><span class=kd>function</span> <span class=p>(</span><span class=nx>v</span><span class=p>,</span> <span class=nx>i</span><span class=p>)</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>      <span class=nx>v</span><span class=p>.</span><span class=nx>isTouchMove</span> <span class=o>=</span> <span class=kc>false</span>
+</span></span><span class=line><span class=cl>      <span class=c1>//滑动超过30度角 return
+</span></span></span><span class=line><span class=cl><span class=c1></span>      <span class=k>if</span> <span class=p>(</span><span class=nb>Math</span><span class=p>.</span><span class=nx>abs</span><span class=p>(</span><span class=nx>angle</span><span class=p>)</span> <span class=o>&gt;</span> <span class=mi>30</span><span class=p>)</span> <span class=k>return</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>      <span class=k>if</span> <span class=p>(</span><span class=nx>i</span> <span class=o>==</span> <span class=nx>index</span><span class=p>)</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>        <span class=k>if</span> <span class=p>(</span><span class=nx>touchMoveX</span> <span class=o>&gt;</span> <span class=nx>startX</span><span class=p>)</span> <span class=c1>//右滑
+</span></span></span><span class=line><span class=cl><span class=c1></span>          <span class=nx>v</span><span class=p>.</span><span class=nx>isTouchMove</span> <span class=o>=</span> <span class=kc>false</span>
+</span></span><span class=line><span class=cl>        <span class=k>else</span> <span class=c1>//左滑
+</span></span></span><span class=line><span class=cl><span class=c1></span>          <span class=nx>v</span><span class=p>.</span><span class=nx>isTouchMove</span> <span class=o>=</span> <span class=kc>true</span>
+</span></span><span class=line><span class=cl>      <span class=p>}</span>
+</span></span><span class=line><span class=cl>    <span class=p>})</span>
+</span></span><span class=line><span class=cl>    <span class=c1>//更新数据
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=nx>that</span><span class=p>.</span><span class=nx>setData</span><span class=p>({</span>
+</span></span><span class=line><span class=cl>      <span class=nx>cashbook</span><span class=o>:</span> <span class=nx>that</span><span class=p>.</span><span class=nx>data</span><span class=p>.</span><span class=nx>cashbook</span>
+</span></span><span class=line><span class=cl>    <span class=p>})</span>
+</span></span><span class=line><span class=cl>  <span class=p>},</span>
+</span></span><span class=line><span class=cl>  <span class=cm>/**
+</span></span></span><span class=line><span class=cl><span class=cm>     * 计算滑动角度
+</span></span></span><span class=line><span class=cl><span class=cm>     * @param {Object} start 起点坐标
+</span></span></span><span class=line><span class=cl><span class=cm>     * @param {Object} end 终点坐标
+</span></span></span><span class=line><span class=cl><span class=cm>     */</span>
+</span></span><span class=line><span class=cl>  <span class=nx>angle</span><span class=o>:</span> <span class=kd>function</span> <span class=p>(</span><span class=nx>start</span><span class=p>,</span> <span class=nx>end</span><span class=p>)</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=kd>var</span> <span class=nx>_X</span> <span class=o>=</span> <span class=nx>end</span><span class=p>.</span><span class=nx>X</span> <span class=o>-</span> <span class=nx>start</span><span class=p>.</span><span class=nx>X</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>      <span class=nx>_Y</span> <span class=o>=</span> <span class=nx>end</span><span class=p>.</span><span class=nx>Y</span> <span class=o>-</span> <span class=nx>start</span><span class=p>.</span><span class=nx>Y</span>
+</span></span><span class=line><span class=cl>    <span class=c1>//返回角度 /Math.atan()返回数字的反正切值
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=k>return</span> <span class=mi>360</span> <span class=o>*</span> <span class=nb>Math</span><span class=p>.</span><span class=nx>atan</span><span class=p>(</span><span class=nx>_Y</span> <span class=o>/</span> <span class=nx>_X</span><span class=p>)</span> <span class=o>/</span> <span class=p>(</span><span class=mi>2</span> <span class=o>*</span> <span class=nb>Math</span><span class=p>.</span><span class=nx>PI</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>  <span class=p>},</span>
+</span></span><span class=line><span class=cl>  <span class=c1>//删除事件
+</span></span></span><span class=line><span class=cl><span class=c1></span>  <span class=nx>del</span><span class=o>:</span> <span class=kd>function</span> <span class=p>(</span><span class=nx>e</span><span class=p>)</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=k>this</span><span class=p>.</span><span class=nx>data</span><span class=p>.</span><span class=nx>cashbook</span><span class=p>.</span><span class=nx>splice</span><span class=p>(</span><span class=nx>e</span><span class=p>.</span><span class=nx>currentTarget</span><span class=p>.</span><span class=nx>dataset</span><span class=p>.</span><span class=nx>index</span><span class=p>,</span> <span class=mi>1</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=k>this</span><span class=p>.</span><span class=nx>setData</span><span class=p>({</span>
+</span></span><span class=line><span class=cl>      <span class=nx>cashbook</span><span class=o>:</span> <span class=k>this</span><span class=p>.</span><span class=nx>data</span><span class=p>.</span><span class=nx>cashbook</span>
+</span></span><span class=line><span class=cl>    <span class=p>})</span>
+</span></span><span class=line><span class=cl>    <span class=kd>var</span> <span class=nx>uid</span> <span class=o>=</span> <span class=nx>e</span><span class=p>.</span><span class=nx>target</span><span class=p>.</span><span class=nx>id</span>
+</span></span><span class=line><span class=cl>    <span class=c1>//console.log(uid)
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=kr>const</span> <span class=nx>db</span> <span class=o>=</span> <span class=nx>wx</span><span class=p>.</span><span class=nx>cloud</span><span class=p>.</span><span class=nx>database</span><span class=p>()</span>
+</span></span><span class=line><span class=cl>    <span class=nx>db</span><span class=p>.</span><span class=nx>collection</span><span class=p>(</span><span class=s1>&#39;cashbook&#39;</span><span class=p>).</span><span class=nx>doc</span><span class=p>(</span><span class=nx>uid</span><span class=p>).</span><span class=nx>remove</span><span class=p>()</span>
+</span></span><span class=line><span class=cl>  <span class=p>},</span>
+</span></span><span class=line><span class=cl><span class=p>})</span>
+</span></span></code></pre></td></tr></table></div></div></div><p>删除数据的关键就是获取当前数据的 <code>_id</code> 值。在 <code>wxml</code> 文件中，我通过使用 <code>id = '{{item._id}}'</code> 获取到了当前数据的 <code>_id</code> 值，然后使用 <code>remove()</code> 删除了指定数据。</p></div></article><div class=related-posts><h2 class=related-title>相关文章：<svg viewBox="0 0 512 512" class="icon related-icon"><path d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8zm144 276c0 6.6-5.4 12-12 12h-92v92c0 6.6-5.4 12-12 12h-56c-6.6.0-12-5.4-12-12v-92h-92c-6.6.0-12-5.4-12-12v-56c0-6.6 5.4-12 12-12h92v-92c0-6.6 5.4-12 12-12h56c6.6.0 12 5.4 12 12v92h92c6.6.0 12 5.4 12 12v56z"/></svg></h2><ul class=related-list><li class=related-item><a href=../../../tech/computer/upload-local-data-to-the-database-of-wechat-mini-app/ class=related-link>将本地数据上传至小程序云开发数据库</a></li><li class=related-item><a href=../../../tech/computer/insert-echart-into-wechat-mini-app/ class=related-link>在微信小程序中引入 ECharts 图表</a></li><li class=related-item><a href=../../../life/ideas/zju-wechat-official-account/ class=related-link>浙大官微「翻车」记</a></li><li class=related-item><a href=../../../life/ideas/wechat-article-typography/ class=related-link>浅谈微信推文编辑</a></li><li class=related-item><a href=../../../life/school/a-job-in-editorial-department/ class=related-link>回首过去，展望未来</a></li></ul></div><div class=post-tags><a href=../../../tags/mini-app/ rel=tag class=post-tags-link><svg viewBox="0 0 512 512" class="icon tag-icon"><path d="M0 252.118V48C0 21.49 21.49.0 48 0h204.118a48 48 0 0133.941 14.059l211.882 211.882c18.745 18.745 18.745 49.137.0 67.882L293.823 497.941c-18.745 18.745-49.137 18.745-67.882.0L14.059 286.059A48 48 0 010 252.118zM112 64c-26.51.0-48 21.49-48 48s21.49 48 48 48 48-21.49 48-48-21.49-48-48-48z"/></svg>小程序</a>
+<a href=../../../tags/typography/ rel=tag class=post-tags-link><svg viewBox="0 0 512 512" class="icon tag-icon"><path d="M0 252.118V48C0 21.49 21.49.0 48 0h204.118a48 48 0 0133.941 14.059l211.882 211.882c18.745 18.745 18.745 49.137.0 67.882L293.823 497.941c-18.745 18.745-49.137 18.745-67.882.0L14.059 286.059A48 48 0 010 252.118zM112 64c-26.51.0-48 21.49-48 48s21.49 48 48 48 48-21.49 48-48-21.49-48-48-48z"/></svg>排版</a>
+<a href=../../../tags/wechat/ rel=tag class=post-tags-link><svg viewBox="0 0 512 512" class="icon tag-icon"><path d="M0 252.118V48C0 21.49 21.49.0 48 0h204.118a48 48 0 0133.941 14.059l211.882 211.882c18.745 18.745 18.745 49.137.0 67.882L293.823 497.941c-18.745 18.745-49.137 18.745-67.882.0L14.059 286.059A48 48 0 010 252.118zM112 64c-26.51.0-48 21.49-48 48s21.49 48 48 48 48-21.49 48-48-21.49-48-48-48z"/></svg>微信</a>
+<a href=../../../tags/zju/ rel=tag class=post-tags-link><svg viewBox="0 0 512 512" class="icon tag-icon"><path d="M0 252.118V48C0 21.49 21.49.0 48 0h204.118a48 48 0 0133.941 14.059l211.882 211.882c18.745 18.745 18.745 49.137.0 67.882L293.823 497.941c-18.745 18.745-49.137 18.745-67.882.0L14.059 286.059A48 48 0 010 252.118zM112 64c-26.51.0-48 21.49-48 48s21.49 48 48 48 48-21.49 48-48-21.49-48-48-48z"/></svg>浙里</a></div><div class=load-comments><div id=load-comments>加载评论</div></div><div id=waline></div></div></main><div id=back-to-top class=back-to-top><a href=#top aria-label=回到顶部><svg viewBox="0 0 448 512" class="icon arrow-up"><path d="M34.9 289.5l-22.2-22.2c-9.4-9.4-9.4-24.6.0-33.9L207 39c9.4-9.4 24.6-9.4 33.9.0l194.3 194.3c9.4 9.4 9.4 24.6.0 33.9L413 289.4c-9.5 9.5-25 9.3-34.3-.4L264 168.6V456c0 13.3-10.7 24-24 24h-32c-13.3.0-24-10.7-24-24V168.6L69.2 289.1c-9.3 9.8-24.8 10-34.3.4z"/></svg></a></div><footer id=footer class=footer><div class=footer-inner><div class=site-info>©&nbsp;2019–2026&nbsp;<svg viewBox="0 0 512 512" class="icon footer-icon"><path d="M462.3 62.6C407.5 15.9 326 24.3 275.7 76.2L256 96.5l-19.7-20.3C186.1 24.3 104.5 15.9 49.7 62.6c-62.8 53.6-66.1 149.8-9.9 207.9l193.5 199.8c12.5 12.9 32.8 12.9 45.3.0l193.5-199.8c56.3-58.1 53-154.3-9.8-207.9z"/></svg>&nbsp;Guan Qirui</div></div></footer></div><div class=app-refresh id=app-refresh><div class=app-refresh-wrap onclick=location.reload()><label>已更新最新版本</label>
+<span>点击刷新</span></div></div><script>"serviceWorker"in navigator&&(navigator.serviceWorker.controller&&navigator.serviceWorker.addEventListener("controllerchange",function(){showNotification()}),window.addEventListener("load",function(){navigator.serviceWorker.register("../../../sw.js")}));function showNotification(){document.querySelector("meta[name=theme-color]").content="#000",document.getElementById("app-refresh").className+=" app-refresh-show"}</script><script src=https://cdn.jsdelivr.net/npm/medium-zoom@latest/dist/medium-zoom.min.js></script><script>let imgNodes=document.querySelectorAll("div.post-body img");imgNodes=Array.from(imgNodes).filter(e=>e.parentNode.tagName!=="A"),mediumZoom(imgNodes,{background:"hsla(var(--color-bg-h), var(--color-bg-s), var(--color-bg-l), 0.95)"})</script><script src=https://cdn.jsdelivr.net/npm/instant.page@5.1.0/instantpage.min.js type=module defer></script><script>navigator.userAgent.includes("Safari")&&!navigator.userAgent.includes("Chrome")&&document.body.classList.add("safari-only")</script><link rel=stylesheet href=https://unpkg.com/@waline/client@2.15.8/dist/waline.css><script>function loadComments(){if(!document.getElementById("waline"))return;if(typeof init=="undefined"){const e=e=>{const t=document.createElement("script");t.defer=!0,t.crossOrigin="anonymous",Object.keys(e).forEach(n=>{t[n]=e[n]}),document.body.appendChild(t)};e({src:"https://unpkg.com/@waline/client@2.15.8/dist/waline.js",onload:()=>{newWaline()}})}else newWaline()}function newWaline(){const e={nick:"昵称*",mail:"邮箱*",placeholder:"请填写正确的昵称和邮箱，方便接收评论回复信息。若随意填写邮箱地址，发布包括但不限于广告、攻击性、无意义等内容文字，将会作删除处理。"};Waline.init({el:"#waline",serverURL:"https://waline.guanqr.com/",lang:"zh-CN",locale:e,emoji:["https://unpkg.com/@waline/emojis@1.4.0/weibo","https://unpkg.com/@waline/emojis@1.4.0/bilibili"],dark:'html[data-theme="dark"]',commentSorting:"latest",meta:["nick","mail","link"],requiredMeta:["nick","mail"],login:"enabled",wordLimit:0,pageSize:10,imageUploader:!1,highlighter:!0,search:!1,copyright:!0})}</script></body></html>

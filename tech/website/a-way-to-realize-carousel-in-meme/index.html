@@ -1,0 +1,565 @@
+<!doctype html><html lang=zh-cn><head prefix="og: http://ogp.me/ns# article: http://ogp.me/ns/article#"><meta charset=UTF-8><meta name=generator content="Hugo 0.148.2"><meta name=theme-color content="#fff"><meta name=color-scheme content="light dark"><meta name=viewport content="width=device-width,initial-scale=1"><meta name=format-detection content="telephone=no, date=no, address=no, email=no"><meta http-equiv=Cache-Control content="no-transform"><meta http-equiv=Cache-Control content="no-siteapp"><title>在 MemE 主题中实现轮播图功能 | 荷戟獨彷徨</title><link rel=stylesheet href=../../../css/meme.min.css><script src=../../../js/meme.min.js></script><link rel=preconnect href=https://fonts.gstatic.com crossorigin><link rel=stylesheet href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@700&amp;family=Noto+Serif+SC:wght@700&amp;display=swap" media=print onload='this.media="all"'><noscript><link rel=stylesheet href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@700&amp;family=Noto+Serif+SC:wght@700&amp;display=swap"></noscript><meta name=author content="Guan Qirui"><meta name=description content="问题描述 前段时间有位博友向我询问如何在 Hugo 的 MemE 主题中添加轮播图功能。我以前见过一些博客，在首页的文章目录上方放置有一个轮播图。与各种网站上的轮播图功能类似，通过轮播图，可以吸引读者访问博主推荐阅读的文章。NexT 和 MemE 主题都没有自带这一功能，以前看过的轮播图只是一些博主进行 DIY 的结果。
+我没有使用轮播图的需求，所以没有仔细研究过如何添加轮播图。不过既然有博友向我询问了，不妨尝试一下。本文提供了一种实现轮播图功能的思路。所谓「一种思路」，就是说我提供的这种方法只是一次简单的尝试，个人能力有限，还有很多值得完善的地方，方法仅供参考。
+"><link rel="shortcut icon" type=image/x-icon href=../../../favicon.ico><link rel=icon type=image/svg+xml href=../../../icons/favicon.svg><link rel=icon type=image/png href=../../../icons/favicon-96x96.png sizes=96x96><link rel=apple-touch-icon href=../../../icons/apple-touch-icon.png sizes=180x180><meta name=apple-mobile-web-app-capable content="yes"><meta name=apple-mobile-web-app-title content="荷戟獨彷徨"><meta name=apple-mobile-web-app-status-bar-style content="black"><meta name=mobile-web-app-capable content="yes"><meta name=application-name content="荷戟獨彷徨"><link rel=manifest href=../../../manifest.json><link rel=canonical href=https://guanqr.com/tech/website/a-way-to-realize-carousel-in-meme/><script type=application/ld+json>{"@context":"https://schema.org","@type":"BlogPosting","datePublished":"2021-01-28T10:49:25+08:00","dateModified":"2021-02-03T14:28:12+08:00","url":"https://guanqr.com/tech/website/a-way-to-realize-carousel-in-meme/","headline":"\n在 MemE 主题中实现轮播图功能","description":"问题描述 前段时间有位博友向我询问如何在 Hugo 的 MemE 主题中添加轮播图功能。我以前见过一些博客，在首页的文章目录上方放置有一个轮播图。与各种网站上的轮播图功能类似，通过轮播图，可以吸引读者访问博主推荐阅读的文章。NexT 和 MemE 主题都没有自带这一功能，以前看过的轮播图只是一些博主进行 DIY 的结果。\n我没有使用轮播图的需求，所以没有仔细研究过如何添加轮播图。不过既然有博友向我询问了，不妨尝试一下。本文提供了一种实现轮播图功能的思路。所谓「一种思路」，就是说我提供的这种方法只是一次简单的尝试，个人能力有限，还有很多值得完善的地方，方法仅供参考。\n","inLanguage":"zh-cn","articleSection":"tech","wordCount":3061,"image":["https://guanqr.com/images/carousel-0.png","https://guanqr.com/images/carousel-1.png","https://guanqr.com/images/soul-0.jpg","https://guanqr.com/images/soul-1.jpg","https://guanqr.com/images/soul-2.jpg","https://guanqr.com/images/soul-3.jpg"],"author":{"@type":"Person","description":"爱光学，爱生活，爱创造","email":"guanqirui@zju.edu.cn","image":"https://guanqr.com/icons/apple-touch-icon.png","url":"https://guanqr.com/","name":"Guan Qirui"},"license":"本文采用 [CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh) 许可协议，转载请注明出处。","publisher":{"@type":"Organization","name":"荷戟獨彷徨","logo":{"@type":"ImageObject","url":"https://guanqr.com/icons/apple-touch-icon.png"},"url":"https://guanqr.com/"},"mainEntityOfPage":{"@type":"WebSite","@id":"https://guanqr.com/"}}</script><meta name=twitter:card content="summary_large_image"><meta property="og:title" content="
+在 MemE 主题中实现轮播图功能"><meta property="og:description" content="问题描述 前段时间有位博友向我询问如何在 Hugo 的 MemE 主题中添加轮播图功能。我以前见过一些博客，在首页的文章目录上方放置有一个轮播图。与各种网站上的轮播图功能类似，通过轮播图，可以吸引读者访问博主推荐阅读的文章。NexT 和 MemE 主题都没有自带这一功能，以前看过的轮播图只是一些博主进行 DIY 的结果。
+我没有使用轮播图的需求，所以没有仔细研究过如何添加轮播图。不过既然有博友向我询问了，不妨尝试一下。本文提供了一种实现轮播图功能的思路。所谓「一种思路」，就是说我提供的这种方法只是一次简单的尝试，个人能力有限，还有很多值得完善的地方，方法仅供参考。
+"><meta property="og:url" content="https://guanqr.com/tech/website/a-way-to-realize-carousel-in-meme/"><meta property="og:site_name" content="荷戟獨彷徨"><meta property="og:locale" content="zh-cn"><meta property="og:image" content="https://guanqr.com/images/carousel-0.png"><meta property="og:type" content="article"><meta property="article:published_time" content="2021-01-28T10:49:25+08:00"><meta property="article:modified_time" content="2021-02-03T14:28:12+08:00"><meta property="article:section" content="tech"><link rel=preconnect href=https://www.google-analytics.com crossorigin><script async src="https://www.googletagmanager.com/gtag/js?id=UA-140800645-1"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","UA-140800645-1")</script><link rel=preconnect href=https://cdn.jsdelivr.net crossorigin><link rel=stylesheet href=https://cdn.jsdelivr.net/gh/guanqr/fonts@build/css/fonts.min.css media=print onload='this.media="all"'></head><body><div class=container><header class=header><div class=header-wrapper><div class="header-inner single"><div class=site-brand><a href=../../../ class=brand>荷戟獨彷徨</a></div><nav class=nav><ul class=menu id=menu><li class=menu-item><a href=../../../archives/><svg viewBox="0 0 512 512" class="icon archives"><path d="M32 448c0 17.7 14.3 32 32 32h384c17.7.0 32-14.3 32-32V160H32v288zm160-212c0-6.6 5.4-12 12-12h104c6.6.0 12 5.4 12 12v8c0 6.6-5.4 12-12 12H204c-6.6.0-12-5.4-12-12v-8zM480 32H32C14.3 32 0 46.3.0 64v48c0 8.8 7.2 16 16 16h480c8.8.0 16-7.2 16-16V64c0-17.7-14.3-32-32-32z"/></svg><span class=menu-item-name>文章</span></a></li><li class=menu-item><a href=../../../tags/><svg viewBox="0 0 640 512" class="icon tags"><path d="M497.941 225.941 286.059 14.059A48 48 0 00252.118.0H48C21.49.0.0 21.49.0 48v204.118a48 48 0 0014.059 33.941l211.882 211.882c18.744 18.745 49.136 18.746 67.882.0l204.118-204.118c18.745-18.745 18.745-49.137.0-67.882zM112 160c-26.51.0-48-21.49-48-48s21.49-48 48-48 48 21.49 48 48-21.49 48-48 48zm513.941 133.823L421.823 497.941c-18.745 18.745-49.137 18.745-67.882.0l-.36-.36L527.64 323.522c16.999-16.999 26.36-39.6 26.36-63.64s-9.362-46.641-26.36-63.64L331.397.0h48.721a48 48 0 0133.941 14.059l211.882 211.882c18.745 18.745 18.745 49.137.0 67.882z"/></svg><span class=menu-item-name>标签</span></a></li><li class=menu-item><a href=../../../blogroll/><svg viewBox="0 0 384 512" class="icon friends"><path d="M384 312.7c-55.1 136.7-187.1 54-187.1 54-40.5 81.8-107.4 134.4-184.6 134.7-16.1.0-16.6-24.4.0-24.4 64.4-.3 120.5-42.7 157.2-110.1-41.1 15.9-118.6 27.9-161.6-82.2 109-44.9 159.1 11.2 178.3 45.5 9.9-24.4 17-50.9 21.6-79.7.0.0-139.7 21.9-149.5-98.1 119.1-47.9 152.6 76.7 152.6 76.7 1.6-16.7 3.3-52.6 3.3-53.4.0.0-106.3-73.7-38.1-165.2 124.6 43 61.4 162.4 61.4 162.4.5 1.6.5 23.8.0 33.4.0.0 45.2-89 136.4-57.5-4.2 134-141.9 106.4-141.9 106.4-4.4 27.4-11.2 53.4-20 77.5.0.0 83-91.8 172-20z"/></svg><span class=menu-item-name>友链</span></a></li><li class=menu-item><a href=../../../about/><svg viewBox="0 0 496 512" class="icon about"><path d="M248 8C111 8 0 119 0 256s111 248 248 248 248-111 248-248S385 8 248 8zm0 96c48.6.0 88 39.4 88 88s-39.4 88-88 88-88-39.4-88-88 39.4-88 88-88zm0 344c-58.7.0-111.3-26.6-146.5-68.2 18.8-35.4 55.6-59.8 98.5-59.8 2.4.0 4.8.4 7.1 1.1 13 4.2 26.6 6.9 40.9 6.9s28-2.7 40.9-6.9c2.3-.7 4.7-1.1 7.1-1.1 42.9.0 79.7 24.4 98.5 59.8C359.3 421.4 306.7 448 248 448z"/></svg><span class=menu-item-name>关于</span></a></li><li class=menu-item><button id=theme-switcher type=button aria-label=切换主题><svg viewBox="0 0 512 512" class="icon theme-icon-light"><path d="M193.2 104.5 242 7a18 18 0 0128 0l48.8 97.5L422.2 70A18 18 0 01442 89.8l-34.5 103.4L505 242a18 18 0 010 28l-97.5 48.8L442 422.2A18 18 0 01422.2 442l-103.4-34.5L270 505a18 18 0 01-28 0l-48.8-97.5L89.8 442A18 18 0 0170 422.2l34.5-103.4-97.5-48.8a18 18 0 010-28l97.5-48.8L70 89.8A18 18 0 0189.8 70zM256 128a128 128 0 10.01.0M256 160a96 96 0 10.01.0"/></svg><svg viewBox="0 0 512 512" class="icon theme-icon-dark"><path d="M27 412A256 256 0 10181 5a11.5 11.5.0 00-5 20A201.5 201.5.0 0142 399a11.5 11.5.0 00-15 13"/></svg><svg viewBox="0 0 576 512" class="icon theme-icon-system"><path d="M528 0H48C21.5.0.0 21.5.0 48v320c0 26.5 21.5 48 48 48h192l-16 48h-72c-13.3.0-24 10.7-24 24s10.7 24 24 24h272c13.3.0 24-10.7 24-24s-10.7-24-24-24h-72l-16-48h192c26.5.0 48-21.5 48-48V48c0-26.5-21.5-48-48-48zm-16 352H64V64h448v288z"/></svg></button></li></ul></nav></div></div><input type=checkbox id=nav-toggle aria-hidden=true>
+<label for=nav-toggle class=nav-toggle></label><label for=nav-toggle class=nav-curtain></label></header><main class="main single" id=main><div class=main-inner><article class="content post h-entry" data-align=justify data-type=tech data-toc-num=true><h1 class="post-title p-name">在 MemE 主题中实现轮播图功能</h1><div class=post-meta><time datetime=2021-01-28T10:49:25+08:00 class="post-meta-item published dt-published"><svg viewBox="0 0 448 512" class="icon post-meta-icon"><path d="M148 288h-40c-6.6.0-12-5.4-12-12v-40c0-6.6 5.4-12 12-12h40c6.6.0 12 5.4 12 12v40c0 6.6-5.4 12-12 12zm108-12v-40c0-6.6-5.4-12-12-12h-40c-6.6.0-12 5.4-12 12v40c0 6.6 5.4 12 12 12h40c6.6.0 12-5.4 12-12zm96 0v-40c0-6.6-5.4-12-12-12h-40c-6.6.0-12 5.4-12 12v40c0 6.6 5.4 12 12 12h40c6.6.0 12-5.4 12-12zm-96 96v-40c0-6.6-5.4-12-12-12h-40c-6.6.0-12 5.4-12 12v40c0 6.6 5.4 12 12 12h40c6.6.0 12-5.4 12-12zm-96 0v-40c0-6.6-5.4-12-12-12h-40c-6.6.0-12 5.4-12 12v40c0 6.6 5.4 12 12 12h40c6.6.0 12-5.4 12-12zm192 0v-40c0-6.6-5.4-12-12-12h-40c-6.6.0-12 5.4-12 12v40c0 6.6 5.4 12 12 12h40c6.6.0 12-5.4 12-12zm96-260v352c0 26.5-21.5 48-48 48H48c-26.5.0-48-21.5-48-48V112c0-26.5 21.5-48 48-48h48V12c0-6.6 5.4-12 12-12h40c6.6.0 12 5.4 12 12v52h128V12c0-6.6 5.4-12 12-12h40c6.6.0 12 5.4 12 12v52h48c26.5.0 48 21.5 48 48zm-48 346V160H48v298c0 3.3 2.7 6 6 6h340c3.3.0 6-2.7 6-6z"/></svg>&nbsp;2021-01-28</time>
+<span class="post-meta-item category"><svg viewBox="0 0 512 512" class="icon post-meta-icon"><path d="M464 128H272l-54.63-54.63c-6-6-14.14-9.37-22.63-9.37H48C21.49 64 0 85.49.0 112v288c0 26.51 21.49 48 48 48h416c26.51.0 48-21.49 48-48V176c0-26.51-21.49-48-48-48zm0 272H48V112h140.12l54.63 54.63c6 6 14.14 9.37 22.63 9.37H464v224z"/></svg>&nbsp;<a href=../../../tech/ class="category-link p-category">科学技术</a>·<a href=../../../tech/website/ class="category-link p-category">建站笔记</a></span></div><div class="post-body e-content"><h2 id=问题描述><a href=#问题描述 class=anchor-link aria-label=问题描述><svg viewBox="0 0 512 512" class="icon anchor-icon"><path d="M326.612 185.391c59.747 59.809 58.927 155.698.36 214.59-.11.12-.24.25-.36.37l-67.2 67.2c-59.27 59.27-155.699 59.262-214.96.0-59.27-59.26-59.27-155.7.0-214.96l37.106-37.106c9.84-9.84 26.786-3.3 27.294 10.606.648 17.722 3.826 35.527 9.69 52.721 1.986 5.822.567 12.262-3.783 16.612l-13.087 13.087c-28.026 28.026-28.905 73.66-1.155 101.96 28.024 28.579 74.086 28.749 102.325.51l67.2-67.19c28.191-28.191 28.073-73.757.0-101.83-3.701-3.694-7.429-6.564-10.341-8.569a16.037 16.037.0 01-6.947-12.606c-.396-10.567 3.348-21.456 11.698-29.806l21.054-21.055c5.521-5.521 14.182-6.199 20.584-1.731a152.482 152.482.0 0120.522 17.197zM467.547 44.449c-59.261-59.262-155.69-59.27-214.96.0l-67.2 67.2c-.12.12-.25.25-.36.37-58.566 58.892-59.387 154.781.36 214.59a152.454 152.454.0 0020.521 17.196c6.402 4.468 15.064 3.789 20.584-1.731l21.054-21.055c8.35-8.35 12.094-19.239 11.698-29.806a16.037 16.037.0 00-6.947-12.606c-2.912-2.005-6.64-4.875-10.341-8.569-28.073-28.073-28.191-73.639.0-101.83l67.2-67.19c28.239-28.239 74.3-28.069 102.325.51 27.75 28.3 26.872 73.934-1.155 101.96l-13.087 13.087c-4.35 4.35-5.769 10.79-3.783 16.612 5.864 17.194 9.042 34.999 9.69 52.721.509 13.906 17.454 20.446 27.294 10.606l37.106-37.106c59.271-59.259 59.271-155.699.001-214.959z"/></svg></a>问题描述</h2><p>前段时间有位博友向我询问如何在 Hugo 的 MemE 主题中添加轮播图功能。我以前见过一些博客，在首页的文章目录上方放置有一个轮播图。与各种网站上的轮播图功能类似，通过轮播图，可以吸引读者访问博主推荐阅读的文章。NexT 和 MemE 主题都没有自带这一功能，以前看过的轮播图只是一些博主进行 DIY 的结果。</p><p>我没有使用轮播图的需求，所以没有仔细研究过如何添加轮播图。不过既然有博友向我询问了，不妨尝试一下。本文提供了一种实现轮播图功能的思路。所谓「一种思路」，就是说我提供的这种方法只是一次简单的尝试，个人能力有限，还有很多值得完善的地方，方法仅供参考。</p><h2 id=实现方法><a href=#实现方法 class=anchor-link aria-label=实现方法><svg viewBox="0 0 512 512" class="icon anchor-icon"><path d="M326.612 185.391c59.747 59.809 58.927 155.698.36 214.59-.11.12-.24.25-.36.37l-67.2 67.2c-59.27 59.27-155.699 59.262-214.96.0-59.27-59.26-59.27-155.7.0-214.96l37.106-37.106c9.84-9.84 26.786-3.3 27.294 10.606.648 17.722 3.826 35.527 9.69 52.721 1.986 5.822.567 12.262-3.783 16.612l-13.087 13.087c-28.026 28.026-28.905 73.66-1.155 101.96 28.024 28.579 74.086 28.749 102.325.51l67.2-67.19c28.191-28.191 28.073-73.757.0-101.83-3.701-3.694-7.429-6.564-10.341-8.569a16.037 16.037.0 01-6.947-12.606c-.396-10.567 3.348-21.456 11.698-29.806l21.054-21.055c5.521-5.521 14.182-6.199 20.584-1.731a152.482 152.482.0 0120.522 17.197zM467.547 44.449c-59.261-59.262-155.69-59.27-214.96.0l-67.2 67.2c-.12.12-.25.25-.36.37-58.566 58.892-59.387 154.781.36 214.59a152.454 152.454.0 0020.521 17.196c6.402 4.468 15.064 3.789 20.584-1.731l21.054-21.055c8.35-8.35 12.094-19.239 11.698-29.806a16.037 16.037.0 00-6.947-12.606c-2.912-2.005-6.64-4.875-10.341-8.569-28.073-28.073-28.191-73.639.0-101.83l67.2-67.19c28.239-28.239 74.3-28.069 102.325.51 27.75 28.3 26.872 73.934-1.155 101.96l-13.087 13.087c-4.35 4.35-5.769 10.79-3.783 16.612 5.864 17.194 9.042 34.999 9.69 52.721.509 13.906 17.454 20.446 27.294 10.606l37.106-37.106c59.271-59.259 59.271-155.699.001-214.959z"/></svg></a>实现方法</h2><h3 id=初步尝试><a href=#初步尝试 class=anchor-link aria-label=初步尝试><svg viewBox="0 0 512 512" class="icon anchor-icon"><path d="M326.612 185.391c59.747 59.809 58.927 155.698.36 214.59-.11.12-.24.25-.36.37l-67.2 67.2c-59.27 59.27-155.699 59.262-214.96.0-59.27-59.26-59.27-155.7.0-214.96l37.106-37.106c9.84-9.84 26.786-3.3 27.294 10.606.648 17.722 3.826 35.527 9.69 52.721 1.986 5.822.567 12.262-3.783 16.612l-13.087 13.087c-28.026 28.026-28.905 73.66-1.155 101.96 28.024 28.579 74.086 28.749 102.325.51l67.2-67.19c28.191-28.191 28.073-73.757.0-101.83-3.701-3.694-7.429-6.564-10.341-8.569a16.037 16.037.0 01-6.947-12.606c-.396-10.567 3.348-21.456 11.698-29.806l21.054-21.055c5.521-5.521 14.182-6.199 20.584-1.731a152.482 152.482.0 0120.522 17.197zM467.547 44.449c-59.261-59.262-155.69-59.27-214.96.0l-67.2 67.2c-.12.12-.25.25-.36.37-58.566 58.892-59.387 154.781.36 214.59a152.454 152.454.0 0020.521 17.196c6.402 4.468 15.064 3.789 20.584-1.731l21.054-21.055c8.35-8.35 12.094-19.239 11.698-29.806a16.037 16.037.0 00-6.947-12.606c-2.912-2.005-6.64-4.875-10.341-8.569-28.073-28.073-28.191-73.639.0-101.83l67.2-67.19c28.239-28.239 74.3-28.069 102.325.51 27.75 28.3 26.872 73.934-1.155 101.96l-13.087 13.087c-4.35 4.35-5.769 10.79-3.783 16.612 5.864 17.194 9.042 34.999 9.69 52.721.509 13.906 17.454 20.446 27.294 10.606l37.106-37.106c59.271-59.259 59.271-155.699.001-214.959z"/></svg></a>初步尝试</h3><p>首先我参考了 Sanarous 在 CSDN 上的文章：《<a href=https://blog.csdn.net/weixin_42073018/article/details/89600035 target=_blank rel=noopener> Hexo 博客首页添加轮播图</a>》。作者在文中给出了在 NexT 中添加轮播图的详细代码。如果将代码完全复制到 Hugo 中显然不行。首先我对文中的代码进行整理，新建了一个页面进行效果展示，将 HTML 代码放到页面中，将 CSS 代码放到主题的 <code>_custom.scss</code> 中。具体代码如下：</p><p>HTML:</p><div class=highlight><div class=chroma><div class=table-container><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span><span class=lnt>33
+</span><span class=lnt>34
+</span><span class=lnt>35
+</span><span class=lnt>36
+</span><span class=lnt>37
+</span><span class=lnt>38
+</span><span class=lnt>39
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-html data-lang=html><span class=line><span class=cl><span class=p>&lt;</span><span class=nt>script</span> <span class=na>src</span><span class=o>=</span><span class=s>&#34;https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js&#34;</span><span class=p>&gt;&lt;/</span><span class=nt>script</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl><span class=p>&lt;</span><span class=nt>script</span> <span class=na>src</span><span class=o>=</span><span class=s>&#34;https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js&#34;</span><span class=p>&gt;&lt;/</span><span class=nt>script</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=p>&lt;</span><span class=nt>div</span> <span class=na>width</span><span class=o>=</span><span class=s>&#34;100%&#34;</span> <span class=na>height</span><span class=o>=</span><span class=s>&#34;320px&#34;</span> <span class=na>style</span><span class=o>=</span><span class=s>&#34;border: 0px; overflow: hidden; border-radius: 10px;&#34;</span> <span class=na>scrolling</span><span class=o>=</span><span class=s>&#34;no&#34;</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>	  <span class=p>&lt;</span><span class=nt>div</span> <span class=na>id</span><span class=o>=</span><span class=s>&#34;myCarousel&#34;</span> <span class=na>class</span><span class=o>=</span><span class=s>&#34;carousel slide&#34;</span> <span class=na>data-ride</span><span class=o>=</span><span class=s>&#34;carousel&#34;</span> <span class=na>data-interval</span><span class=o>=</span><span class=s>&#34;3500&#34;</span> <span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>		    <span class=p>&lt;</span><span class=nt>ol</span> <span class=na>class</span><span class=o>=</span><span class=s>&#34;carousel-indicators&#34;</span><span class=p>&gt;</span> <span class=c>&lt;!--这里手动设置五个轮播图--&gt;</span>
+</span></span><span class=line><span class=cl>            <span class=p>&lt;</span><span class=nt>li</span> <span class=na>data-target</span><span class=o>=</span><span class=s>&#34;#myCarousel&#34;</span> <span class=na>data-slide-to</span><span class=o>=</span><span class=s>&#34;0&#34;</span><span class=p>&gt;&lt;/</span><span class=nt>li</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>            <span class=p>&lt;</span><span class=nt>li</span> <span class=na>data-target</span><span class=o>=</span><span class=s>&#34;#myCarousel&#34;</span> <span class=na>data-slide-to</span><span class=o>=</span><span class=s>&#34;1&#34;</span><span class=p>&gt;&lt;/</span><span class=nt>li</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>            <span class=p>&lt;</span><span class=nt>li</span> <span class=na>data-target</span><span class=o>=</span><span class=s>&#34;#myCarousel&#34;</span> <span class=na>data-slide-to</span><span class=o>=</span><span class=s>&#34;2&#34;</span><span class=p>&gt;&lt;/</span><span class=nt>li</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>            <span class=p>&lt;</span><span class=nt>li</span> <span class=na>data-target</span><span class=o>=</span><span class=s>&#34;#myCarousel&#34;</span> <span class=na>data-slide-to</span><span class=o>=</span><span class=s>&#34;3&#34;</span><span class=p>&gt;&lt;/</span><span class=nt>li</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>            <span class=p>&lt;</span><span class=nt>li</span> <span class=na>data-target</span><span class=o>=</span><span class=s>&#34;#myCarousel&#34;</span> <span class=na>data-slide-to</span><span class=o>=</span><span class=s>&#34;4&#34;</span><span class=p>&gt;&lt;/</span><span class=nt>li</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>		    <span class=p>&lt;/</span><span class=nt>ol</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>        <span class=c>&lt;!-- 轮播（Carousel）项目 --&gt;</span>
+</span></span><span class=line><span class=cl>        <span class=p>&lt;</span><span class=nt>div</span> <span class=na>class</span><span class=o>=</span><span class=s>&#34;carousel-inner&#34;</span> <span class=na>style</span><span class=o>=</span><span class=s>&#34;height: 280px; border-radius: 10px; width: 100%;&#34;</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>            <span class=p>&lt;</span><span class=nt>a</span> <span class=na>class</span><span class=o>=</span><span class=s>&#34;item active&#34;</span> <span class=na>href</span><span class=o>=</span><span class=s>&#34;超链接地址 1&#34;</span> <span class=na>target</span><span class=o>=</span><span class=s>&#34;_blank&#34;</span> <span class=na>style</span><span class=o>=</span><span class=s>&#34;height: 100%;&#34;</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>                <span class=p>&lt;</span><span class=nt>img</span> <span class=na>src</span><span class=o>=</span><span class=s>&#34;图片地址 1&#34;</span>   <span class=na>style</span><span class=o>=</span><span class=s>&#34;width: 100%; height: 100%&#34;</span> <span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>            <span class=p>&lt;/</span><span class=nt>a</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>            <span class=p>&lt;</span><span class=nt>a</span> <span class=na>class</span><span class=o>=</span><span class=s>&#34;item&#34;</span> <span class=na>href</span><span class=o>=</span><span class=s>&#34;超链接地址 2&#34;</span> <span class=na>target</span><span class=o>=</span><span class=s>&#34;_blank&#34;</span> <span class=na>style</span><span class=o>=</span><span class=s>&#34;height: 100%;&#34;</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>                <span class=p>&lt;</span><span class=nt>img</span> <span class=na>src</span><span class=o>=</span><span class=s>&#34;图片地址 2&#34;</span>  <span class=na>style</span><span class=o>=</span><span class=s>&#34;width: 100%; height: 100%;&#34;</span> <span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>            <span class=p>&lt;/</span><span class=nt>a</span><span class=p>&gt;</span> 
+</span></span><span class=line><span class=cl>            <span class=p>&lt;</span><span class=nt>a</span> <span class=na>class</span><span class=o>=</span><span class=s>&#34;item&#34;</span> <span class=na>href</span><span class=o>=</span><span class=s>&#34;超链接地址 3&#34;</span> <span class=na>target</span><span class=o>=</span><span class=s>&#34;_blank&#34;</span> <span class=na>style</span><span class=o>=</span><span class=s>&#34;height: 100%;&#34;</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>                <span class=p>&lt;</span><span class=nt>img</span> <span class=na>src</span><span class=o>=</span><span class=s>&#34;图片地址 3&#34;</span>  <span class=na>style</span><span class=o>=</span><span class=s>&#34;width: 100%; height: 100%;&#34;</span> <span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>            <span class=p>&lt;/</span><span class=nt>a</span><span class=p>&gt;</span> 
+</span></span><span class=line><span class=cl>            <span class=p>&lt;</span><span class=nt>a</span> <span class=na>class</span><span class=o>=</span><span class=s>&#34;item&#34;</span> <span class=na>href</span><span class=o>=</span><span class=s>&#34;超链接地址 4&#34;</span> <span class=na>target</span><span class=o>=</span><span class=s>&#34;_blank&#34;</span> <span class=na>style</span><span class=o>=</span><span class=s>&#34;height: 100%;&#34;</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>                <span class=p>&lt;</span><span class=nt>img</span> <span class=na>src</span><span class=o>=</span><span class=s>&#34;图片地址 4&#34;</span>  <span class=na>style</span><span class=o>=</span><span class=s>&#34;width: 100%; height: 100%;&#34;</span> <span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>            <span class=p>&lt;/</span><span class=nt>a</span><span class=p>&gt;</span> 
+</span></span><span class=line><span class=cl>            <span class=p>&lt;</span><span class=nt>a</span> <span class=na>class</span><span class=o>=</span><span class=s>&#34;item&#34;</span> <span class=na>href</span><span class=o>=</span><span class=s>&#34;超链接地址 5&#34;</span> <span class=na>target</span><span class=o>=</span><span class=s>&#34;_blank&#34;</span> <span class=na>style</span><span class=o>=</span><span class=s>&#34;height: 100%;&#34;</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>                <span class=p>&lt;</span><span class=nt>img</span> <span class=na>src</span><span class=o>=</span><span class=s>&#34;图片地址 5&#34;</span>  <span class=na>style</span><span class=o>=</span><span class=s>&#34;width: 100%; height: 100%;&#34;</span> <span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>            <span class=p>&lt;/</span><span class=nt>a</span><span class=p>&gt;</span> 
+</span></span><span class=line><span class=cl>        <span class=p>&lt;/</span><span class=nt>div</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>        <span class=c>&lt;!-- 轮播（Carousel）导航 --&gt;</span>
+</span></span><span class=line><span class=cl>        <span class=p>&lt;</span><span class=nt>a</span> <span class=na>class</span><span class=o>=</span><span class=s>&#34;left carousel-control&#34;</span> <span class=na>href</span><span class=o>=</span><span class=s>&#34;#myCarousel&#34;</span> <span class=na>role</span><span class=o>=</span><span class=s>&#34;button&#34;</span> <span class=na>data-slide</span><span class=o>=</span><span class=s>&#34;prev&#34;</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>            <span class=p>&lt;</span><span class=nt>span</span> <span class=na>class</span><span class=o>=</span><span class=s>&#34;glyphicon glyphicon-chevron-left&#34;</span> <span class=na>aria-hidden</span><span class=o>=</span><span class=s>&#34;true&#34;</span><span class=p>&gt;&lt;/</span><span class=nt>span</span><span class=p>&gt;</span>  
+</span></span><span class=line><span class=cl>        <span class=p>&lt;/</span><span class=nt>a</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>        <span class=p>&lt;</span><span class=nt>a</span> <span class=na>class</span><span class=o>=</span><span class=s>&#34;right carousel-control&#34;</span> <span class=na>href</span><span class=o>=</span><span class=s>&#34;#myCarousel&#34;</span> <span class=na>role</span><span class=o>=</span><span class=s>&#34;button&#34;</span> <span class=na>data-slide</span><span class=o>=</span><span class=s>&#34;next&#34;</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>            <span class=p>&lt;</span><span class=nt>span</span> <span class=na>class</span><span class=o>=</span><span class=s>&#34;glyphicon glyphicon-chevron-right&#34;</span> <span class=na>aria-hidden</span><span class=o>=</span><span class=s>&#34;true&#34;</span><span class=p>&gt;&lt;/</span><span class=nt>span</span><span class=p>&gt;</span>   
+</span></span><span class=line><span class=cl>        <span class=p>&lt;/</span><span class=nt>a</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>	  <span class=p>&lt;/</span><span class=nt>div</span><span class=p>&gt;</span> 
+</span></span><span class=line><span class=cl><span class=p>&lt;/</span><span class=nt>div</span><span class=p>&gt;</span> 
+</span></span></code></pre></td></tr></table></div></div></div><p>CSS:</p><div class=highlight><div class=chroma><div class=table-container><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>  1
+</span><span class=lnt>  2
+</span><span class=lnt>  3
+</span><span class=lnt>  4
+</span><span class=lnt>  5
+</span><span class=lnt>  6
+</span><span class=lnt>  7
+</span><span class=lnt>  8
+</span><span class=lnt>  9
+</span><span class=lnt> 10
+</span><span class=lnt> 11
+</span><span class=lnt> 12
+</span><span class=lnt> 13
+</span><span class=lnt> 14
+</span><span class=lnt> 15
+</span><span class=lnt> 16
+</span><span class=lnt> 17
+</span><span class=lnt> 18
+</span><span class=lnt> 19
+</span><span class=lnt> 20
+</span><span class=lnt> 21
+</span><span class=lnt> 22
+</span><span class=lnt> 23
+</span><span class=lnt> 24
+</span><span class=lnt> 25
+</span><span class=lnt> 26
+</span><span class=lnt> 27
+</span><span class=lnt> 28
+</span><span class=lnt> 29
+</span><span class=lnt> 30
+</span><span class=lnt> 31
+</span><span class=lnt> 32
+</span><span class=lnt> 33
+</span><span class=lnt> 34
+</span><span class=lnt> 35
+</span><span class=lnt> 36
+</span><span class=lnt> 37
+</span><span class=lnt> 38
+</span><span class=lnt> 39
+</span><span class=lnt> 40
+</span><span class=lnt> 41
+</span><span class=lnt> 42
+</span><span class=lnt> 43
+</span><span class=lnt> 44
+</span><span class=lnt> 45
+</span><span class=lnt> 46
+</span><span class=lnt> 47
+</span><span class=lnt> 48
+</span><span class=lnt> 49
+</span><span class=lnt> 50
+</span><span class=lnt> 51
+</span><span class=lnt> 52
+</span><span class=lnt> 53
+</span><span class=lnt> 54
+</span><span class=lnt> 55
+</span><span class=lnt> 56
+</span><span class=lnt> 57
+</span><span class=lnt> 58
+</span><span class=lnt> 59
+</span><span class=lnt> 60
+</span><span class=lnt> 61
+</span><span class=lnt> 62
+</span><span class=lnt> 63
+</span><span class=lnt> 64
+</span><span class=lnt> 65
+</span><span class=lnt> 66
+</span><span class=lnt> 67
+</span><span class=lnt> 68
+</span><span class=lnt> 69
+</span><span class=lnt> 70
+</span><span class=lnt> 71
+</span><span class=lnt> 72
+</span><span class=lnt> 73
+</span><span class=lnt> 74
+</span><span class=lnt> 75
+</span><span class=lnt> 76
+</span><span class=lnt> 77
+</span><span class=lnt> 78
+</span><span class=lnt> 79
+</span><span class=lnt> 80
+</span><span class=lnt> 81
+</span><span class=lnt> 82
+</span><span class=lnt> 83
+</span><span class=lnt> 84
+</span><span class=lnt> 85
+</span><span class=lnt> 86
+</span><span class=lnt> 87
+</span><span class=lnt> 88
+</span><span class=lnt> 89
+</span><span class=lnt> 90
+</span><span class=lnt> 91
+</span><span class=lnt> 92
+</span><span class=lnt> 93
+</span><span class=lnt> 94
+</span><span class=lnt> 95
+</span><span class=lnt> 96
+</span><span class=lnt> 97
+</span><span class=lnt> 98
+</span><span class=lnt> 99
+</span><span class=lnt>100
+</span><span class=lnt>101
+</span><span class=lnt>102
+</span><span class=lnt>103
+</span><span class=lnt>104
+</span><span class=lnt>105
+</span><span class=lnt>106
+</span><span class=lnt>107
+</span><span class=lnt>108
+</span><span class=lnt>109
+</span><span class=lnt>110
+</span><span class=lnt>111
+</span><span class=lnt>112
+</span><span class=lnt>113
+</span><span class=lnt>114
+</span><span class=lnt>115
+</span><span class=lnt>116
+</span><span class=lnt>117
+</span><span class=lnt>118
+</span><span class=lnt>119
+</span><span class=lnt>120
+</span><span class=lnt>121
+</span><span class=lnt>122
+</span><span class=lnt>123
+</span><span class=lnt>124
+</span><span class=lnt>125
+</span><span class=lnt>126
+</span><span class=lnt>127
+</span><span class=lnt>128
+</span><span class=lnt>129
+</span><span class=lnt>130
+</span><span class=lnt>131
+</span><span class=lnt>132
+</span><span class=lnt>133
+</span><span class=lnt>134
+</span><span class=lnt>135
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-css data-lang=css><span class=line><span class=cl><span class=p>.</span><span class=nc>carousel</span><span class=p>{</span>
+</span></span><span class=line><span class=cl>	<span class=k>width</span><span class=p>:</span> <span class=mi>100</span><span class=kt>%</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>	<span class=k>height</span><span class=p>:</span> <span class=mi>100</span><span class=kt>%</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=k>position</span><span class=p>:</span> <span class=kc>relative</span><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=p>.</span><span class=nc>carousel-inner</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=k>position</span><span class=p>:</span> <span class=kc>relative</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=k>overflow</span><span class=p>:</span> <span class=kc>hidden</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=k>width</span><span class=p>:</span> <span class=mi>100</span><span class=kt>%</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=err>&gt;</span> <span class=err>.item</span> <span class=err>{</span>
+</span></span><span class=line><span class=cl>        <span class=k>display</span><span class=p>:</span> <span class=kc>none</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>        <span class=k>position</span><span class=p>:</span> <span class=kc>relative</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>        <span class=k>transition</span><span class=p>:</span> <span class=mf>0.6</span><span class=kt>s</span> <span class=kc>ease-in-out</span> <span class=kc>left</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>        <span class=err>&gt;</span> <span class=err>img,</span>
+</span></span><span class=line><span class=cl>        <span class=err>&gt;</span> <span class=err>a</span> <span class=err>&gt;</span> <span class=err>img</span> <span class=err>{</span>
+</span></span><span class=line><span class=cl>            <span class=k>line-height</span><span class=p>:</span> <span class=mi>1</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>            <span class=k>margin</span><span class=p>:</span> <span class=mi>0</span> <span class=cp>!important</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>        <span class=p>}</span>
+</span></span><span class=line><span class=cl>    <span class=err>}</span>
+</span></span><span class=line><span class=cl>    <span class=o>&gt;</span> <span class=p>.</span><span class=nc>active</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>        <span class=k>display</span><span class=p>:</span> <span class=kc>block</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>        <span class=k>left</span><span class=p>:</span> <span class=mi>0</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>        <span class=err>&amp;.left</span> <span class=err>{</span>
+</span></span><span class=line><span class=cl>            <span class=k>left</span><span class=p>:</span> <span class=mi>-100</span><span class=kt>%</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>        <span class=p>}</span>
+</span></span><span class=line><span class=cl>        <span class=o>&amp;</span><span class=p>.</span><span class=nc>right</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>            <span class=k>left</span><span class=p>:</span> <span class=mi>100</span><span class=kt>%</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>        <span class=p>}</span>
+</span></span><span class=line><span class=cl>    <span class=err>}</span>
+</span></span><span class=line><span class=cl>    <span class=o>&gt;</span> <span class=p>.</span><span class=nc>next</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>        <span class=k>display</span><span class=p>:</span> <span class=kc>block</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>        <span class=k>position</span><span class=p>:</span> <span class=kc>absolute</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>        <span class=k>top</span><span class=p>:</span> <span class=mi>0</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>        <span class=k>width</span><span class=p>:</span> <span class=mi>100</span><span class=kt>%</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>        <span class=k>left</span><span class=p>:</span> <span class=mi>100</span><span class=kt>%</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>        <span class=err>&amp;.left</span> <span class=err>{</span>
+</span></span><span class=line><span class=cl>            <span class=k>left</span><span class=p>:</span> <span class=mi>0</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>        <span class=p>}</span>
+</span></span><span class=line><span class=cl>    <span class=err>}</span>
+</span></span><span class=line><span class=cl>    <span class=o>&gt;</span> <span class=p>.</span><span class=nc>prev</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>        <span class=k>display</span><span class=p>:</span> <span class=kc>block</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>        <span class=k>position</span><span class=p>:</span> <span class=kc>absolute</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>        <span class=k>top</span><span class=p>:</span> <span class=mi>0</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>        <span class=k>width</span><span class=p>:</span> <span class=mi>100</span><span class=kt>%</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>        <span class=k>left</span><span class=p>:</span> <span class=mi>-100</span><span class=kt>%</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>        <span class=err>&amp;.right</span> <span class=err>{</span>
+</span></span><span class=line><span class=cl>            <span class=k>left</span><span class=p>:</span> <span class=mi>0</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>        <span class=p>}</span>
+</span></span><span class=line><span class=cl>    <span class=err>}</span>
+</span></span><span class=line><span class=cl><span class=err>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=p>.</span><span class=nc>carousel-control</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=k>position</span><span class=p>:</span> <span class=kc>absolute</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=k>top</span><span class=p>:</span> <span class=mi>0</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=k>left</span><span class=p>:</span> <span class=mi>0</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=k>bottom</span><span class=p>:</span> <span class=mi>0</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=k>width</span><span class=p>:</span> <span class=mi>15</span><span class=kt>%</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=k>opacity</span><span class=p>:</span> <span class=mf>0.5</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=k>font-size</span><span class=p>:</span> <span class=mi>20</span><span class=kt>px</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=k>color</span><span class=p>:</span> <span class=mh>#fff</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=k>text-align</span><span class=p>:</span> <span class=kc>center</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=k>text-shadow</span><span class=p>:</span> <span class=mi>0</span> <span class=mi>1</span><span class=kt>px</span> <span class=mi>2</span><span class=kt>px</span> <span class=nb>rgba</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mf>0.6</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>    <span class=k>background-color</span><span class=p>:</span> <span class=nb>rgba</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>    <span class=err>&amp;.left</span> <span class=err>{</span>
+</span></span><span class=line><span class=cl>        <span class=k>background-image</span><span class=p>:</span> <span class=nb>linear-gradient</span><span class=p>(</span><span class=kc>to</span> <span class=kc>right</span><span class=p>,</span> <span class=nb>rgba</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mf>0.5</span><span class=p>)</span> <span class=mi>0</span><span class=kt>%</span><span class=p>,</span> <span class=nb>rgba</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mf>0.0001</span><span class=p>)</span> <span class=mi>100</span><span class=kt>%</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>        <span class=k>background-repeat</span><span class=p>:</span> <span class=kc>repeat-x</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=p>}</span>
+</span></span><span class=line><span class=cl>    <span class=o>&amp;</span><span class=p>.</span><span class=nc>right</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>        <span class=k>left</span><span class=p>:</span> <span class=kc>auto</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>        <span class=k>right</span><span class=p>:</span> <span class=mi>0</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>        <span class=k>background-image</span><span class=p>:</span> <span class=nb>linear-gradient</span><span class=p>(</span><span class=kc>to</span> <span class=kc>right</span><span class=p>,</span> <span class=nb>rgba</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mf>0.0001</span><span class=p>)</span> <span class=mi>0</span><span class=kt>%</span><span class=p>,</span> <span class=nb>rgba</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mf>0.5</span><span class=p>)</span> <span class=mi>100</span><span class=kt>%</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>        <span class=k>background-repeat</span><span class=p>:</span> <span class=kc>repeat-x</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=p>}</span>
+</span></span><span class=line><span class=cl>    <span class=o>&amp;</span><span class=p>:</span><span class=nd>hover</span><span class=o>,</span>
+</span></span><span class=line><span class=cl>    <span class=o>&amp;</span><span class=p>:</span><span class=nd>focus</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>        <span class=k>outline</span><span class=p>:</span> <span class=mi>0</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>        <span class=k>color</span><span class=p>:</span> <span class=mh>#fff</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>        <span class=k>text-decoration</span><span class=p>:</span> <span class=kc>none</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>        <span class=k>opacity</span><span class=p>:</span> <span class=mf>0.9</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=p>}</span>
+</span></span><span class=line><span class=cl>    <span class=p>.</span><span class=nc>glyphicon-chevron-left</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>        <span class=k>position</span><span class=p>:</span> <span class=kc>absolute</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>        <span class=k>top</span><span class=p>:</span> <span class=mi>50</span><span class=kt>%</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>        <span class=k>left</span><span class=p>:</span> <span class=mi>50</span><span class=kt>%</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>        <span class=k>margin-top</span><span class=p>:</span> <span class=mi>-10</span><span class=kt>px</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>        <span class=k>margin-left</span><span class=p>:</span> <span class=mi>-10</span><span class=kt>px</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>        <span class=k>z-index</span><span class=p>:</span> <span class=mi>5</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>        <span class=k>display</span><span class=p>:</span> <span class=kc>inline-block</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>        <span class=err>&amp;:before{</span>
+</span></span><span class=line><span class=cl>            <span class=k>content</span><span class=p>:</span> <span class=s2>&#34;《&#34;</span>
+</span></span><span class=line><span class=cl>        <span class=p>}</span>
+</span></span><span class=line><span class=cl>    <span class=err>}</span>
+</span></span><span class=line><span class=cl>    <span class=p>.</span><span class=nc>glyphicon-chevron-right</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>        <span class=k>position</span><span class=p>:</span> <span class=kc>absolute</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>        <span class=k>top</span><span class=p>:</span> <span class=mi>50</span><span class=kt>%</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>        <span class=k>right</span><span class=p>:</span> <span class=mi>50</span><span class=kt>%</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>        <span class=k>margin-top</span><span class=p>:</span> <span class=mi>-10</span><span class=kt>px</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>        <span class=k>margin-right</span><span class=p>:</span> <span class=mi>-10</span><span class=kt>px</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>        <span class=k>z-index</span><span class=p>:</span> <span class=mi>5</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>        <span class=k>display</span><span class=p>:</span> <span class=kc>inline-block</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>        <span class=err>&amp;:before{</span>
+</span></span><span class=line><span class=cl>            <span class=k>content</span><span class=p>:</span> <span class=s2>&#34;》&#34;</span>
+</span></span><span class=line><span class=cl>        <span class=p>}</span>
+</span></span><span class=line><span class=cl>    <span class=err>}</span>
+</span></span><span class=line><span class=cl><span class=err>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=p>.</span><span class=nc>carousel-indicators</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=k>position</span><span class=p>:</span> <span class=kc>absolute</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=k>bottom</span><span class=p>:</span> <span class=mi>10</span><span class=kt>px</span> <span class=cp>!important</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=k>left</span><span class=p>:</span> <span class=mi>50</span><span class=kt>%</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=k>z-index</span><span class=p>:</span> <span class=mi>15</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=k>width</span><span class=p>:</span> <span class=mi>60</span><span class=kt>%</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=k>margin-left</span><span class=p>:</span> <span class=mi>-30</span><span class=kt>%</span> <span class=cp>!important</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=k>padding-left</span><span class=p>:</span> <span class=mi>0</span> <span class=cp>!important</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=k>list-style</span><span class=p>:</span> <span class=kc>none</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=k>text-align</span><span class=p>:</span> <span class=kc>center</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=err>li</span> <span class=err>{</span>
+</span></span><span class=line><span class=cl>        <span class=k>display</span><span class=p>:</span> <span class=kc>inline-block</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>        <span class=k>width</span><span class=p>:</span> <span class=mi>10</span><span class=kt>px</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>        <span class=k>height</span><span class=p>:</span> <span class=mi>10</span><span class=kt>px</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>        <span class=k>margin</span><span class=p>:</span> <span class=mi>1</span><span class=kt>px</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>        <span class=k>text-indent</span><span class=p>:</span> <span class=mi>-999</span><span class=kt>px</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>        <span class=k>border</span><span class=p>:</span> <span class=mi>1</span><span class=kt>px</span> <span class=kc>solid</span> <span class=mh>#fff</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>        <span class=k>border-radius</span><span class=p>:</span> <span class=mi>10</span><span class=kt>px</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>        <span class=k>cursor</span><span class=p>:</span> <span class=kc>pointer</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>        <span class=k>background-color</span><span class=p>:</span> <span class=nb>rgba</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>    <span class=p>}</span>
+</span></span><span class=line><span class=cl>    <span class=p>.</span><span class=nc>active</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>        <span class=k>margin</span><span class=p>:</span> <span class=mi>0</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>        <span class=k>width</span><span class=p>:</span> <span class=mi>12</span><span class=kt>px</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>        <span class=k>height</span><span class=p>:</span> <span class=mi>12</span><span class=kt>px</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>        <span class=k>background-color</span><span class=p>:</span> <span class=mh>#fff</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=p>}</span>
+</span></span><span class=line><span class=cl><span class=err>}</span>
+</span></span></code></pre></td></tr></table></div></div></div><div class="notice notice-info"><div class=notice-title><svg class="icon notice-icon" viewBox="0 0 512 512"><path d="M256 8a248 248 0 100 496 248 248 0 000-496zm0 110a42 42 0 110 84 42 42 0 010-84zm56 254c0 7-5 12-12 12h-88c-7 0-12-5-12-12v-24c0-7 5-12 12-12h12v-64h-12c-7 0-12-5-12-12v-24c0-7 5-12 12-12h64c7 0 12 5 12 12v1e2h12c7 0 12 5 12 12v24z"/></svg></div><p>注意，原文中的代码可以通过检索配置文件中插入的图片个数自动生成对应数目的轮播图，但原文代码的循环语句在 Hugo 中不适用。为了方便对主题进行适配，先直接采用无脑列举的方法，而不是添加循环语句。</p></div><p>现在具体的代码已经写好了，接下来需要考虑将图片的设定插入到主题配置文件 <code>config.toml</code> 中。</p><h3 id=进阶方法><a href=#进阶方法 class=anchor-link aria-label=进阶方法><svg viewBox="0 0 512 512" class="icon anchor-icon"><path d="M326.612 185.391c59.747 59.809 58.927 155.698.36 214.59-.11.12-.24.25-.36.37l-67.2 67.2c-59.27 59.27-155.699 59.262-214.96.0-59.27-59.26-59.27-155.7.0-214.96l37.106-37.106c9.84-9.84 26.786-3.3 27.294 10.606.648 17.722 3.826 35.527 9.69 52.721 1.986 5.822.567 12.262-3.783 16.612l-13.087 13.087c-28.026 28.026-28.905 73.66-1.155 101.96 28.024 28.579 74.086 28.749 102.325.51l67.2-67.19c28.191-28.191 28.073-73.757.0-101.83-3.701-3.694-7.429-6.564-10.341-8.569a16.037 16.037.0 01-6.947-12.606c-.396-10.567 3.348-21.456 11.698-29.806l21.054-21.055c5.521-5.521 14.182-6.199 20.584-1.731a152.482 152.482.0 0120.522 17.197zM467.547 44.449c-59.261-59.262-155.69-59.27-214.96.0l-67.2 67.2c-.12.12-.25.25-.36.37-58.566 58.892-59.387 154.781.36 214.59a152.454 152.454.0 0020.521 17.196c6.402 4.468 15.064 3.789 20.584-1.731l21.054-21.055c8.35-8.35 12.094-19.239 11.698-29.806a16.037 16.037.0 00-6.947-12.606c-2.912-2.005-6.64-4.875-10.341-8.569-28.073-28.073-28.191-73.639.0-101.83l67.2-67.19c28.239-28.239 74.3-28.069 102.325.51 27.75 28.3 26.872 73.934-1.155 101.96l-13.087 13.087c-4.35 4.35-5.769 10.79-3.783 16.612 5.864 17.194 9.042 34.999 9.69 52.721.509 13.906 17.454 20.446 27.294 10.606l37.106-37.106c59.271-59.259 59.271-155.699.001-214.959z"/></svg></a>进阶方法</h3><p>首先在主题配置文件 <code>config.toml</code> 中的 <code>[params]</code> 下创建新配置：</p><div class=highlight><div class=chroma><div class=table-container><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span><span class=lnt>8
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-toml data-lang=toml><span class=line><span class=cl><span class=c># 自定义轮播图功能</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c># 是否开启轮播图</span>
+</span></span><span class=line><span class=cl><span class=nx>enableCarousel</span> <span class=p>=</span> <span class=kc>true</span> 
+</span></span><span class=line><span class=cl><span class=c># 轮播图展示的第一幅图的超链接</span>
+</span></span><span class=line><span class=cl><span class=nx>carouselActiveUrl</span> <span class=p>=</span> <span class=s2>&#34;超链接地址 1&#34;</span>
+</span></span><span class=line><span class=cl><span class=c># 轮播图展示的第一幅图的地址</span>
+</span></span><span class=line><span class=cl><span class=nx>carouselActiveImage</span> <span class=p>=</span> <span class=s2>&#34;图片地址 1&#34;</span>
+</span></span></code></pre></td></tr></table></div></div></div><p>配置中的各项内容说明已在代码中注释。这里需要注意，在我们访问到有轮播图的这一页面的时候，轮播图首先要展示一幅图片，然后再向左滑动展示第二幅图，第一幅图 HTML 代码中的 <code>class</code> 最开始的状态即为 <code>active</code>，所以第一幅图需要单独配置。</p><p>至于轮播图中其他图的配置，单独创建一个文件储存即可。我们首先在文件夹的根目录下创建 <code>data</code> 文件夹（即 <code>SVG.toml</code> 所在的文件夹，如果已有该文件夹则忽略此步骤）。然后在 <code>data</code> 文件夹下创建 <code>carousel.toml</code> 文件。在该文件中，填写如下内容：</p><div class=highlight><div class=chroma><div class=table-container><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-toml data-lang=toml><span class=line><span class=cl><span class=p>[[</span><span class=nx>carousel</span><span class=p>]]</span>
+</span></span><span class=line><span class=cl>    <span class=nx>url</span> <span class=p>=</span> <span class=s2>&#34;超链接地址 2&#34;</span>
+</span></span><span class=line><span class=cl>    <span class=nx>image</span> <span class=p>=</span> <span class=s2>&#34;图片地址 2&#34;</span>
+</span></span><span class=line><span class=cl>    <span class=nx>weight</span> <span class=p>=</span> <span class=mi>1</span>
+</span></span><span class=line><span class=cl>    
+</span></span><span class=line><span class=cl><span class=p>[[</span><span class=nx>carousel</span><span class=p>]]</span>
+</span></span><span class=line><span class=cl>    <span class=nx>url</span> <span class=p>=</span> <span class=s2>&#34;超链接地址 3&#34;</span>
+</span></span><span class=line><span class=cl>    <span class=nx>image</span> <span class=p>=</span> <span class=s2>&#34;图片地址 3&#34;</span>
+</span></span><span class=line><span class=cl>    <span class=nx>weight</span> <span class=p>=</span> <span class=mi>2</span>
+</span></span><span class=line><span class=cl>    
+</span></span><span class=line><span class=cl><span class=p>[[</span><span class=nx>carousel</span><span class=p>]]</span>
+</span></span><span class=line><span class=cl>    <span class=nx>url</span> <span class=p>=</span> <span class=s2>&#34;超链接地址 4&#34;</span>
+</span></span><span class=line><span class=cl>    <span class=nx>image</span> <span class=p>=</span> <span class=s2>&#34;图片地址 4&#34;</span>
+</span></span><span class=line><span class=cl>    <span class=nx>weight</span> <span class=p>=</span> <span class=mi>3</span>
+</span></span></code></pre></td></tr></table></div></div></div><p>除了你要展示的第一幅图（第一幅图已在主题配置文件 <code>config.toml</code> 中配置过了），其他图片的超链接和地址都按照这样的格式添加到文件中。即如果你要展示 5 幅图，将第 1 幅图配置在 <code>config.toml</code> 中，后 4 幅图配置在 <code>carousel.toml</code> 中。在 <code>carousel.toml</code> 中，每个图的设定中有个 <code>weight</code> 权重设置。即，要展示的 5 幅图中，在 <code>config.toml</code> 中配置的第 1 幅图 <code>weight = 0</code>，这里不用再进行设置；第二幅图 <code>weight = 1</code>；第三幅图 <code>weight = 2</code> ……以此类推。什么这么麻烦呢？因为我个人能力有限，暂时写不出更好的调用方式。</p><p>接着就将下面修改后的 HTML 代码添加到你想要放置轮播图的页面，CSS 的设定不变。注意这里的 HTML 代码中添加了循环语句，不能直接放置在 Markdown 中，因为无法直接转义。</p><div class=highlight><div class=chroma><div class=table-container><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span><span class=lnt>33
+</span><span class=lnt>34
+</span><span class=lnt>35
+</span><span class=lnt>36
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-html data-lang=html><span class=line><span class=cl>{{ if .Site.Params.enableCarousel }}
+</span></span><span class=line><span class=cl>    <span class=p>&lt;</span><span class=nt>script</span> <span class=na>src</span><span class=o>=</span><span class=s>&#34;https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js&#34;</span><span class=p>&gt;&lt;/</span><span class=nt>script</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=p>&lt;</span><span class=nt>script</span> <span class=na>src</span><span class=o>=</span><span class=s>&#34;https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js&#34;</span><span class=p>&gt;&lt;/</span><span class=nt>script</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=p>&lt;</span><span class=nt>div</span> <span class=na>width</span><span class=o>=</span><span class=s>&#34;100%&#34;</span> <span class=na>height</span><span class=o>=</span><span class=s>&#34;320px&#34;</span> <span class=na>style</span><span class=o>=</span><span class=s>&#34;border: 0px; overflow: hidden; border-radius: 10px;&#34;</span> <span class=na>scrolling</span><span class=o>=</span><span class=s>&#34;no&#34;</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>        <span class=p>&lt;</span><span class=nt>div</span> <span class=na>id</span><span class=o>=</span><span class=s>&#34;myCarousel&#34;</span> <span class=na>class</span><span class=o>=</span><span class=s>&#34;carousel slide&#34;</span> <span class=na>data-ride</span><span class=o>=</span><span class=s>&#34;carousel&#34;</span> <span class=na>data-interval</span><span class=o>=</span><span class=s>&#34;3500&#34;</span> <span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>            <span class=p>&lt;</span><span class=nt>ol</span> <span class=na>class</span><span class=o>=</span><span class=s>&#34;carousel-indicators&#34;</span><span class=p>&gt;</span> <span class=c>&lt;!--这里手动设置五个轮播图--&gt;</span>
+</span></span><span class=line><span class=cl>                <span class=p>&lt;</span><span class=nt>li</span> <span class=na>data-target</span><span class=o>=</span><span class=s>&#34;#myCarousel&#34;</span> <span class=na>data-slide-to</span><span class=o>=</span><span class=s>&#34;0&#34;</span><span class=p>&gt;&lt;/</span><span class=nt>li</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>                    {{ range .Site.Data.carousel }}
+</span></span><span class=line><span class=cl>                        {{ range sort . &#34;weight&#34; }}
+</span></span><span class=line><span class=cl>                            <span class=p>&lt;</span><span class=nt>li</span> <span class=na>data-target</span><span class=o>=</span><span class=s>&#34;#myCarousel&#34;</span> <span class=na>data-slide-to</span><span class=o>=</span><span class=s>&#34;{{ .weight }}&#34;</span><span class=p>&gt;&lt;/</span><span class=nt>li</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>                        {{ end }}
+</span></span><span class=line><span class=cl>                    {{ end }}
+</span></span><span class=line><span class=cl>            <span class=p>&lt;/</span><span class=nt>ol</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>            <span class=c>&lt;!-- 轮播（Carousel）项目 --&gt;</span>
+</span></span><span class=line><span class=cl>            <span class=p>&lt;</span><span class=nt>div</span> <span class=na>class</span><span class=o>=</span><span class=s>&#34;carousel-inner&#34;</span> <span class=na>style</span><span class=o>=</span><span class=s>&#34;height: 280px; border-radius: 10px; width: 100%;&#34;</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>                <span class=p>&lt;</span><span class=nt>a</span> <span class=na>class</span><span class=o>=</span><span class=s>&#34;item active&#34;</span> <span class=na>href</span><span class=o>=</span><span class=s>&#34;{{ .Site.Params.carouselActiveUrl }}&#34;</span> <span class=na>target</span><span class=o>=</span><span class=s>&#34;_blank&#34;</span> <span class=na>style</span><span class=o>=</span><span class=s>&#34;height: 100%;&#34;</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>                    <span class=p>&lt;</span><span class=nt>img</span> <span class=na>src</span><span class=o>=</span><span class=s>&#34;{{ .Site.Params.carouselActiveImage }}&#34;</span>   <span class=na>style</span><span class=o>=</span><span class=s>&#34;width: 100%; height: 100%&#34;</span> <span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>                <span class=p>&lt;/</span><span class=nt>a</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>                {{ range .Site.Data.carousel }}
+</span></span><span class=line><span class=cl>                    {{ range sort . &#34;weight&#34; }}
+</span></span><span class=line><span class=cl>                        <span class=p>&lt;</span><span class=nt>a</span> <span class=na>class</span><span class=o>=</span><span class=s>&#34;item&#34;</span> <span class=na>href</span><span class=o>=</span><span class=s>&#34;{{ .url }}&#34;</span> <span class=na>target</span><span class=o>=</span><span class=s>&#34;_blank&#34;</span> <span class=na>style</span><span class=o>=</span><span class=s>&#34;height: 100%;&#34;</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>                            <span class=p>&lt;</span><span class=nt>img</span> <span class=na>src</span><span class=o>=</span><span class=s>&#34;{{ .image }}&#34;</span>   <span class=na>style</span><span class=o>=</span><span class=s>&#34;width: 100%; height: 100%&#34;</span> <span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>                        <span class=p>&lt;/</span><span class=nt>a</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>                    {{ end }}
+</span></span><span class=line><span class=cl>                {{ end }}
+</span></span><span class=line><span class=cl>            <span class=p>&lt;/</span><span class=nt>div</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>            <span class=c>&lt;!-- 轮播（Carousel）导航 --&gt;</span>
+</span></span><span class=line><span class=cl>            <span class=p>&lt;</span><span class=nt>a</span> <span class=na>class</span><span class=o>=</span><span class=s>&#34;left carousel-control&#34;</span> <span class=na>href</span><span class=o>=</span><span class=s>&#34;#myCarousel&#34;</span> <span class=na>role</span><span class=o>=</span><span class=s>&#34;button&#34;</span> <span class=na>data-slide</span><span class=o>=</span><span class=s>&#34;prev&#34;</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>                <span class=p>&lt;</span><span class=nt>span</span> <span class=na>class</span><span class=o>=</span><span class=s>&#34;glyphicon glyphicon-chevron-left&#34;</span> <span class=na>aria-hidden</span><span class=o>=</span><span class=s>&#34;true&#34;</span><span class=p>&gt;&lt;/</span><span class=nt>span</span><span class=p>&gt;</span>  
+</span></span><span class=line><span class=cl>            <span class=p>&lt;/</span><span class=nt>a</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>            <span class=p>&lt;</span><span class=nt>a</span> <span class=na>class</span><span class=o>=</span><span class=s>&#34;right carousel-control&#34;</span> <span class=na>href</span><span class=o>=</span><span class=s>&#34;#myCarousel&#34;</span> <span class=na>role</span><span class=o>=</span><span class=s>&#34;button&#34;</span> <span class=na>data-slide</span><span class=o>=</span><span class=s>&#34;next&#34;</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>                <span class=p>&lt;</span><span class=nt>span</span> <span class=na>class</span><span class=o>=</span><span class=s>&#34;glyphicon glyphicon-chevron-right&#34;</span> <span class=na>aria-hidden</span><span class=o>=</span><span class=s>&#34;true&#34;</span><span class=p>&gt;&lt;/</span><span class=nt>span</span><span class=p>&gt;</span>   
+</span></span><span class=line><span class=cl>            <span class=p>&lt;/</span><span class=nt>a</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>        <span class=p>&lt;/</span><span class=nt>div</span><span class=p>&gt;</span> 
+</span></span><span class=line><span class=cl>    <span class=p>&lt;/</span><span class=nt>div</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>{{ end }}
+</span></span></code></pre></td></tr></table></div></div></div><p>主题首页布局的代码存放在 <code>/layouts/partials/pages/</code> 文件夹中。比如说，想要将轮播图加入到首页布局为文章摘要的页面，则将该段代码插入到文件夹中的 <code>home-posts.html</code> 文件的 <code>&lt;div class="main-inner">&lt;/div></code> 中。在诗意人生的布局中，将代码插入到 <code>home-poetry.html</code> 的 <code>&lt;div class="poetry">&lt;/div></code> 中。可能在不同的首页布局中，轮播图呈现出来的宽度不同，这里就需要根据具体的情况对 CSS 进行修改，或者调整图片的长宽比。</p><p><img src=../../../images/carousel-0.png alt=carousel-0.png><span class=caption>※ 文章摘要页面</span></p><p><img src=../../../images/carousel-1.png alt=carousel-1.png><span class=caption>※ 诗意人生页面</span></p><h3 id=简化方法><a href=#简化方法 class=anchor-link aria-label=简化方法><svg viewBox="0 0 512 512" class="icon anchor-icon"><path d="M326.612 185.391c59.747 59.809 58.927 155.698.36 214.59-.11.12-.24.25-.36.37l-67.2 67.2c-59.27 59.27-155.699 59.262-214.96.0-59.27-59.26-59.27-155.7.0-214.96l37.106-37.106c9.84-9.84 26.786-3.3 27.294 10.606.648 17.722 3.826 35.527 9.69 52.721 1.986 5.822.567 12.262-3.783 16.612l-13.087 13.087c-28.026 28.026-28.905 73.66-1.155 101.96 28.024 28.579 74.086 28.749 102.325.51l67.2-67.19c28.191-28.191 28.073-73.757.0-101.83-3.701-3.694-7.429-6.564-10.341-8.569a16.037 16.037.0 01-6.947-12.606c-.396-10.567 3.348-21.456 11.698-29.806l21.054-21.055c5.521-5.521 14.182-6.199 20.584-1.731a152.482 152.482.0 0120.522 17.197zM467.547 44.449c-59.261-59.262-155.69-59.27-214.96.0l-67.2 67.2c-.12.12-.25.25-.36.37-58.566 58.892-59.387 154.781.36 214.59a152.454 152.454.0 0020.521 17.196c6.402 4.468 15.064 3.789 20.584-1.731l21.054-21.055c8.35-8.35 12.094-19.239 11.698-29.806a16.037 16.037.0 00-6.947-12.606c-2.912-2.005-6.64-4.875-10.341-8.569-28.073-28.073-28.191-73.639.0-101.83l67.2-67.19c28.239-28.239 74.3-28.069 102.325.51 27.75 28.3 26.872 73.934-1.155 101.96l-13.087 13.087c-4.35 4.35-5.769 10.79-3.783 16.612 5.864 17.194 9.042 34.999 9.69 52.721.509 13.906 17.454 20.446 27.294 10.606l37.106-37.106c59.271-59.259 59.271-155.699.001-214.959z"/></svg></a>简化方法</h3><p>经过和博友交流，博友分享了一种更为简单的方法。就是利用 Hugo 博客的简码功能，设定一个简码模板，这样可以灵活地调用轮播图功能，不再局限于在特定页面使用固定图片的轮播图，并且轮播图的样式更加适配主题。有关 Hugo 简码的功能介绍，可以参考我的另一篇文章：《<a href=../../../tech/website/hugo-shortcodes-customization/>自定义 Hugo Shortcodes 简码</a>》。这种轮播图取消了轮播的箭头，需要左右拨动图片进行轮播。</p><p>首先新增一个名为 <code>carousel.html</code> 的简码模板文件：</p><div class=highlight><div class=chroma><div class=table-container><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-html data-lang=html><span class=line><span class=cl>{{ if .Site.Params.enableCarousel }}
+</span></span><span class=line><span class=cl>    <span class=p>&lt;</span><span class=nt>link</span> <span class=na>rel</span><span class=o>=</span><span class=s>&#34;stylesheet&#34;</span> <span class=na>href</span><span class=o>=</span><span class=s>&#34;https://cdnjs.cloudflare.com/ajax/libs/Swiper/3.4.2/css/swiper.min.css&#34;</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=c>&lt;!-- Swiper --&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=p>&lt;</span><span class=nt>div</span> <span class=na>class</span><span class=o>=</span><span class=s>&#34;swiper-container&#34;</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>        <span class=p>&lt;</span><span class=nt>div</span> <span class=na>class</span><span class=o>=</span><span class=s>&#34;swiper-wrapper&#34;</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>            {{$itItems := split (.Get 0) &#34;,&#34;}}
+</span></span><span class=line><span class=cl>            {{range $itItems }}
+</span></span><span class=line><span class=cl>            <span class=p>&lt;</span><span class=nt>div</span> <span class=na>class</span><span class=o>=</span><span class=s>&#34;swiper-slide&#34;</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>                <span class=p>&lt;</span><span class=nt>img</span> <span class=na>src</span><span class=o>=</span><span class=s>&#34;{{.}}&#34;</span> <span class=na>alt</span><span class=o>=</span><span class=s>&#34;&#34;</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>            <span class=p>&lt;/</span><span class=nt>div</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>            {{end}}
+</span></span><span class=line><span class=cl>        <span class=p>&lt;/</span><span class=nt>div</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>        <span class=c>&lt;!-- Add Pagination --&gt;</span>
+</span></span><span class=line><span class=cl>        <span class=p>&lt;</span><span class=nt>div</span> <span class=na>class</span><span class=o>=</span><span class=s>&#34;swiper-pagination&#34;</span><span class=p>&gt;&lt;/</span><span class=nt>div</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=p>&lt;/</span><span class=nt>div</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=p>&lt;</span><span class=nt>script</span> <span class=na>src</span><span class=o>=</span><span class=s>&#34;https://cdnjs.cloudflare.com/ajax/libs/Swiper/3.4.2/js/swiper.min.js&#34;</span><span class=p>&gt;&lt;/</span><span class=nt>script</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>     <span class=c>&lt;!-- Initialize Swiper --&gt;</span>
+</span></span><span class=line><span class=cl>     <span class=p>&lt;</span><span class=nt>script</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>        <span class=kd>var</span> <span class=nx>swiper</span> <span class=o>=</span> <span class=k>new</span> <span class=nx>Swiper</span><span class=p>(</span><span class=s1>&#39;.swiper-container&#39;</span><span class=p>,</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>            <span class=nx>pagination</span><span class=o>:</span> <span class=s1>&#39;.swiper-pagination&#39;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>            <span class=nx>paginationClickable</span><span class=o>:</span> <span class=kc>true</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>        <span class=p>});</span>
+</span></span><span class=line><span class=cl>        <span class=p>&lt;/</span><span class=nt>script</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>{{ end }}
+</span></span></code></pre></td></tr></table></div></div></div><p>接着增加 CSS 样式：</p><div class=highlight><div class=chroma><div class=table-container><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-css data-lang=css><span class=line><span class=cl><span class=p>.</span><span class=nc>swiper-container</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=k>width</span><span class=p>:</span> <span class=mi>100</span><span class=kt>%</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=k>height</span><span class=p>:</span> <span class=mi>100</span><span class=kt>%</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=k>margin</span><span class=p>:</span> <span class=mi>2</span><span class=kt>em</span> <span class=kc>auto</span><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span><span class=line><span class=cl><span class=p>.</span><span class=nc>swiper-slide</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=k>text-align</span><span class=p>:</span> <span class=kc>center</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=k>font-size</span><span class=p>:</span> <span class=mi>18</span><span class=kt>px</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=k>background-color</span><span class=p>:</span> <span class=nb>hsla</span><span class=p>(</span><span class=nf>var</span><span class=p>(</span><span class=o>--</span><span class=kc>color</span><span class=o>-</span><span class=n>contrast</span><span class=o>-</span><span class=kc>lower</span><span class=o>-</span><span class=n>h</span><span class=p>),</span> <span class=nf>var</span><span class=p>(</span><span class=o>--</span><span class=kc>color</span><span class=o>-</span><span class=n>contrast</span><span class=o>-</span><span class=kc>lower</span><span class=o>-</span><span class=n>s</span><span class=p>),</span> <span class=nf>var</span><span class=p>(</span><span class=o>--</span><span class=kc>color</span><span class=o>-</span><span class=n>contrast</span><span class=o>-</span><span class=kc>lower</span><span class=o>-</span><span class=n>l</span><span class=p>),</span> <span class=mf>0.5</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>    <span class=c>/* Center slide text vertically */</span>
+</span></span><span class=line><span class=cl>    <span class=k>display</span><span class=p>:</span> <span class=kc>flex</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=k>justify-content</span><span class=p>:</span> <span class=kc>center</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=k>align-items</span><span class=p>:</span> <span class=kc>center</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=err>img</span> <span class=err>{</span>
+</span></span><span class=line><span class=cl>        <span class=k>margin</span><span class=p>:</span> <span class=mi>0</span> <span class=cp>!important</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=p>}</span>
+</span></span><span class=line><span class=cl><span class=err>}</span>
+</span></span></code></pre></td></tr></table></div></div></div><p>如果在某篇文章中想要插入轮播图，使用如下所示的简码：</p><div class=highlight><div class=chroma><div class=table-container><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-markdown data-lang=markdown><span class=line><span class=cl>{{<span class=p>&lt;</span> <span class=nt>carousel</span> <span class=err>&#34;</span><span class=na>URL1</span><span class=err>,</span><span class=na>URL2</span><span class=err>,</span><span class=na>URL3</span><span class=err>,</span><span class=na>URL4</span><span class=err>,</span><span class=na>URL5</span><span class=err>&#34;</span> <span class=p>&gt;</span>}}
+</span></span></code></pre></td></tr></table></div></div></div><p>代码中的 <code>URL1</code>、<code>URL2</code>……<code>URL5</code> 即为图片链接地址，图片数目自行设定，逗号后不能空格。</p><p>最后在主题配置文件 <code>config.toml</code> 中的 <code>[params]</code> 下创建新配置：</p><div class=highlight><div class=chroma><div class=table-container><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-toml data-lang=toml><span class=line><span class=cl><span class=c># 是否开启轮播图</span>
+</span></span><span class=line><span class=cl><span class=nx>enableCarousel</span> <span class=p>=</span> <span class=kc>true</span> 
+</span></span></code></pre></td></tr></table></div></div></div><p>具体样式如下所示：</p><link rel=stylesheet href=https://cdnjs.cloudflare.com/ajax/libs/Swiper/3.4.2/css/swiper.min.css><div class=swiper-container><div class=swiper-wrapper><div class=swiper-slide><img src=../../../images/soul-0.jpg alt></div><div class=swiper-slide><img src=../../../images/soul-1.jpg alt></div><div class=swiper-slide><img src=../../../images/soul-2.jpg alt></div><div class=swiper-slide><img src=../../../images/soul-3.jpg alt></div></div><div class=swiper-pagination></div></div><script src=https://cdnjs.cloudflare.com/ajax/libs/Swiper/3.4.2/js/swiper.min.js></script><script>var swiper=new Swiper(".swiper-container",{pagination:".swiper-pagination",paginationClickable:!0})</script><h2 id=总结><a href=#总结 class=anchor-link aria-label=总结><svg viewBox="0 0 512 512" class="icon anchor-icon"><path d="M326.612 185.391c59.747 59.809 58.927 155.698.36 214.59-.11.12-.24.25-.36.37l-67.2 67.2c-59.27 59.27-155.699 59.262-214.96.0-59.27-59.26-59.27-155.7.0-214.96l37.106-37.106c9.84-9.84 26.786-3.3 27.294 10.606.648 17.722 3.826 35.527 9.69 52.721 1.986 5.822.567 12.262-3.783 16.612l-13.087 13.087c-28.026 28.026-28.905 73.66-1.155 101.96 28.024 28.579 74.086 28.749 102.325.51l67.2-67.19c28.191-28.191 28.073-73.757.0-101.83-3.701-3.694-7.429-6.564-10.341-8.569a16.037 16.037.0 01-6.947-12.606c-.396-10.567 3.348-21.456 11.698-29.806l21.054-21.055c5.521-5.521 14.182-6.199 20.584-1.731a152.482 152.482.0 0120.522 17.197zM467.547 44.449c-59.261-59.262-155.69-59.27-214.96.0l-67.2 67.2c-.12.12-.25.25-.36.37-58.566 58.892-59.387 154.781.36 214.59a152.454 152.454.0 0020.521 17.196c6.402 4.468 15.064 3.789 20.584-1.731l21.054-21.055c8.35-8.35 12.094-19.239 11.698-29.806a16.037 16.037.0 00-6.947-12.606c-2.912-2.005-6.64-4.875-10.341-8.569-28.073-28.073-28.191-73.639.0-101.83l67.2-67.19c28.239-28.239 74.3-28.069 102.325.51 27.75 28.3 26.872 73.934-1.155 101.96l-13.087 13.087c-4.35 4.35-5.769 10.79-3.783 16.612 5.864 17.194 9.042 34.999 9.69 52.721.509 13.906 17.454 20.446 27.294 10.606l37.106-37.106c59.271-59.259 59.271-155.699.001-214.959z"/></svg></a>总结</h2><p>对于在 MemE 主题中插入轮播图功能，我提供了一种比较繁琐的方法。需要在主题配置文件 <code>config.toml</code> 中添加新配置，在 <code>data</code> 文件夹中创建新的存储数据，并对主题的首页布局文件进行修改，同时添加新的 CSS 样式。因为我并非计算机专业出身，对前端设计的内容只懂个皮毛，所以，轮播图的代码还有很多值得改进的地方。比如，使用更为简化的循环语句。将第 1 幅图和其他图存在同一个文件中，不用如此麻烦的调用。如果有精通这方面的大佬能够提供更为简化的方法，欢迎交流沟通。</p></div></article><div class=related-posts><h2 class=related-title>相关文章：<svg viewBox="0 0 512 512" class="icon related-icon"><path d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8zm144 276c0 6.6-5.4 12-12 12h-92v92c0 6.6-5.4 12-12 12h-56c-6.6.0-12-5.4-12-12v-92h-92c-6.6.0-12-5.4-12-12v-56c0-6.6 5.4-12 12-12h92v-92c0-6.6 5.4-12 12-12h56c6.6.0 12 5.4 12 12v92h92c6.6.0 12 5.4 12 12v56z"/></svg></h2><ul class=related-list><li class=related-item><a href=../../../tech/website/hugo-shortcodes-customization/ class=related-link>自定义 Hugo Shortcodes 简码</a></li><li class=related-item><a href=../../../tech/website/add-blogroll/ class=related-link>重构博客的友情链接</a></li><li class=related-item><a href=../../../tech/website/add-expired-tip-in-meme/ class=related-link>在 MemE 主题文章开头添加过时提醒</a></li><li class=related-item><a href=../../../tech/website/add-jinrishici-in-meme/ class=related-link>在 MemE 主题页脚添加今日诗词</a></li><li class=related-item><a href=../../../tech/website/host-blog-on-ipfs/ class=related-link>将博客持续集成地部署到 IPFS</a></li></ul></div><div class=post-tags><a href=../../../tags/hugo/ rel=tag class=post-tags-link><svg viewBox="0 0 512 512" class="icon tag-icon"><path d="M0 252.118V48C0 21.49 21.49.0 48 0h204.118a48 48 0 0133.941 14.059l211.882 211.882c18.745 18.745 18.745 49.137.0 67.882L293.823 497.941c-18.745 18.745-49.137 18.745-67.882.0L14.059 286.059A48 48 0 010 252.118zM112 64c-26.51.0-48 21.49-48 48s21.49 48 48 48 48-21.49 48-48-21.49-48-48-48z"/></svg>Hugo</a>
+<a href=../../../tags/meme/ rel=tag class=post-tags-link><svg viewBox="0 0 512 512" class="icon tag-icon"><path d="M0 252.118V48C0 21.49 21.49.0 48 0h204.118a48 48 0 0133.941 14.059l211.882 211.882c18.745 18.745 18.745 49.137.0 67.882L293.823 497.941c-18.745 18.745-49.137 18.745-67.882.0L14.059 286.059A48 48 0 010 252.118zM112 64c-26.51.0-48 21.49-48 48s21.49 48 48 48 48-21.49 48-48-21.49-48-48-48z"/></svg>MemE</a>
+<a href=../../../tags/typography/ rel=tag class=post-tags-link><svg viewBox="0 0 512 512" class="icon tag-icon"><path d="M0 252.118V48C0 21.49 21.49.0 48 0h204.118a48 48 0 0133.941 14.059l211.882 211.882c18.745 18.745 18.745 49.137.0 67.882L293.823 497.941c-18.745 18.745-49.137 18.745-67.882.0L14.059 286.059A48 48 0 010 252.118zM112 64c-26.51.0-48 21.49-48 48s21.49 48 48 48 48-21.49 48-48-21.49-48-48-48z"/></svg>排版</a></div><div class=load-comments><div id=load-comments>加载评论</div></div><div id=waline></div></div></main><div id=back-to-top class=back-to-top><a href=#top aria-label=回到顶部><svg viewBox="0 0 448 512" class="icon arrow-up"><path d="M34.9 289.5l-22.2-22.2c-9.4-9.4-9.4-24.6.0-33.9L207 39c9.4-9.4 24.6-9.4 33.9.0l194.3 194.3c9.4 9.4 9.4 24.6.0 33.9L413 289.4c-9.5 9.5-25 9.3-34.3-.4L264 168.6V456c0 13.3-10.7 24-24 24h-32c-13.3.0-24-10.7-24-24V168.6L69.2 289.1c-9.3 9.8-24.8 10-34.3.4z"/></svg></a></div><footer id=footer class=footer><div class=footer-inner><div class=site-info>©&nbsp;2019–2026&nbsp;<svg viewBox="0 0 512 512" class="icon footer-icon"><path d="M462.3 62.6C407.5 15.9 326 24.3 275.7 76.2L256 96.5l-19.7-20.3C186.1 24.3 104.5 15.9 49.7 62.6c-62.8 53.6-66.1 149.8-9.9 207.9l193.5 199.8c12.5 12.9 32.8 12.9 45.3.0l193.5-199.8c56.3-58.1 53-154.3-9.8-207.9z"/></svg>&nbsp;Guan Qirui</div></div></footer></div><div class=app-refresh id=app-refresh><div class=app-refresh-wrap onclick=location.reload()><label>已更新最新版本</label>
+<span>点击刷新</span></div></div><script>"serviceWorker"in navigator&&(navigator.serviceWorker.controller&&navigator.serviceWorker.addEventListener("controllerchange",function(){showNotification()}),window.addEventListener("load",function(){navigator.serviceWorker.register("../../../sw.js")}));function showNotification(){document.querySelector("meta[name=theme-color]").content="#000",document.getElementById("app-refresh").className+=" app-refresh-show"}</script><script src=https://cdn.jsdelivr.net/npm/medium-zoom@latest/dist/medium-zoom.min.js></script><script>let imgNodes=document.querySelectorAll("div.post-body img");imgNodes=Array.from(imgNodes).filter(e=>e.parentNode.tagName!=="A"),mediumZoom(imgNodes,{background:"hsla(var(--color-bg-h), var(--color-bg-s), var(--color-bg-l), 0.95)"})</script><script src=https://cdn.jsdelivr.net/npm/instant.page@5.1.0/instantpage.min.js type=module defer></script><script>navigator.userAgent.includes("Safari")&&!navigator.userAgent.includes("Chrome")&&document.body.classList.add("safari-only")</script><link rel=stylesheet href=https://unpkg.com/@waline/client@2.15.8/dist/waline.css><script>function loadComments(){if(!document.getElementById("waline"))return;if(typeof init=="undefined"){const e=e=>{const t=document.createElement("script");t.defer=!0,t.crossOrigin="anonymous",Object.keys(e).forEach(n=>{t[n]=e[n]}),document.body.appendChild(t)};e({src:"https://unpkg.com/@waline/client@2.15.8/dist/waline.js",onload:()=>{newWaline()}})}else newWaline()}function newWaline(){const e={nick:"昵称*",mail:"邮箱*",placeholder:"请填写正确的昵称和邮箱，方便接收评论回复信息。若随意填写邮箱地址，发布包括但不限于广告、攻击性、无意义等内容文字，将会作删除处理。"};Waline.init({el:"#waline",serverURL:"https://waline.guanqr.com/",lang:"zh-CN",locale:e,emoji:["https://unpkg.com/@waline/emojis@1.4.0/weibo","https://unpkg.com/@waline/emojis@1.4.0/bilibili"],dark:'html[data-theme="dark"]',commentSorting:"latest",meta:["nick","mail","link"],requiredMeta:["nick","mail"],login:"enabled",wordLimit:0,pageSize:10,imageUploader:!1,highlighter:!0,search:!1,copyright:!0})}</script></body></html>
